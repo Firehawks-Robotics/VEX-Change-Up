@@ -1,2 +1,2 @@
 # VEX-Change-Up
-Programming for Firehawks Robotics Team's robot built for the VEX Change Up game for 2020-2021
+Programming for our VEX Robot for the VEX Change Up game of 2020-2021
