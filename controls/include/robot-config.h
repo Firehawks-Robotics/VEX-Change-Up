@@ -1,3 +1,12 @@
+/*----------------------------------------------------------------------------------*/
+/*                                                                                  */
+/*    Module:       robot-config.h                                                  */
+/*    Author:       Sean Johnson, Richard Wang, Luke Wittbrodt (Firehawks Robotics) */
+/*    Created:      Thu Oct 22 2020                                                 */
+/*    Description:  Robot Configuration Header                                      */
+/*                                                                                  */
+/*----------------------------------------------------------------------------------*/
+
 #ifndef CONFIG_HEADER_GUARD
 #define CONFIG_HEADER_GUARD
 

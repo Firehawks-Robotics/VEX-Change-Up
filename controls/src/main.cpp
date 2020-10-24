@@ -1,11 +1,11 @@
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*    Module:       main.cpp                                                  */
-/*    Author:       Sean Johnson, RiChArD WaNg, Luke Wittbrodt                */
-/*    Created:      Thurs Oct 22 2020                                         */
-/*    Description:  Change Up Driver Controls                                 */
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------------*/
+/*                                                                                  */
+/*    Module:       main.cpp                                                        */
+/*    Author:       Sean Johnson, Richard Wang, Luke Wittbrodt (Firehawks Robotics) */
+/*    Created:      Thurs Oct 22 2020                                               */
+/*    Description:  Change Up Driver Controls                                       */
+/*                                                                                  */
+/*----------------------------------------------------------------------------------*/
 
 #include "vex.h"
 
