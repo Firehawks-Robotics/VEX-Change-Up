@@ -1,11 +1,11 @@
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*    Module:       debugMenuTemp.h                                           */
-/*    Author:       Sean Johnson, Richard Wang, Luke Wittbrodt                */
-/*    Created:      Thu Oct 22 2020                                           */
-/*    Description:  Robot Debug Screen                                        */
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------------*/
+/*                                                                                  */
+/*    Module:       debugMenuTemp.cpp                                               */
+/*    Author:       Sean Johnson, Richard Wang, Luke Wittbrodt (Firehawks Robotics) */
+/*    Created:      Thu Oct 22 2020                                                 */
+/*    Description:  Robot Debug Screen Implementation                               */
+/*                                                                                  */
+/*----------------------------------------------------------------------------------*/
 #include "vex.h"
 
 using namespace vex;

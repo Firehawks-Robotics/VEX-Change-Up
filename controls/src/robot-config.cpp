@@ -1,3 +1,12 @@
+/*----------------------------------------------------------------------------------*/
+/*                                                                                  */
+/*    Module:       robot-config.cpp                                                */
+/*    Author:       Sean Johnson, Richard Wang, Luke Wittbrodt (Firehawks Robotics) */
+/*    Created:      Thu Oct 22 2020                                                 */
+/*    Description:  Robot Configuration Implementation                              */
+/*                                                                                  */
+/*----------------------------------------------------------------------------------*/
+
 #include "vex.h"
 
 using namespace vex;
