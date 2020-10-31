@@ -39,17 +39,52 @@ void snagMode(){
         }
     }
 }
+
+//NOTE: Currently, all the controls are mapped to button A
+
+/* CONTROLS MAPPING: (Currently all mapped to button A)
+ * Forwards - Button A
+ * Backwards - Button A
+ * Suck In - Button A
+ * Suck Out - Button A
+ * Lift Up - Button A
+ * Lift Down - Button A
+ * Turn Right - Button A
+ * Turn Left - Button A
+*/
  
 void controlInput(){
     debugMenuController();
     snagMode();
        
-    //ForwardDrive (idk why this isnt connected to a controller button)
-    neWheel.setVelocity(mainCon.Axis3.value() + 70, vex::velocityUnits::rpm);
-    neWheel.spin(forward);
+    //Movement
+    if(mainCon.ButtonA.pressing()) { //Forwards
+        neWheel.setVelocity(mainCon.Axis3.value() + 70, vex::velocityUnits::rpm);
+        neWheel.spin(forward);
 
-    nwWheel.setVelocity((mainCon.Axis2.value() + 70) * -1, vex::velocityUnits::rpm);
-    nwWheel.spin(forward);
+        nwWheel.setVelocity((mainCon.Axis2.value() + 70) * -1, vex::velocityUnits::rpm);
+        nwWheel.spin(forward);
+    } else if(mainCon.ButtonA.pressing()) { //Backwards
+        neWheel.setVelocity(mainCon.Axis3.value() + 70, vex::velocityUnits::rpm);
+        neWheel.spin(reverse);
+
+        nwWheel.setVelocity((mainCon.Axis2.value() + 70) * -1, vex::velocityUnits::rpm);
+        nwWheel.spin(reverse);
+    } 
+    
+    if(mainCon.ButtonA.pressing()) { //Turn Right
+        neWheel.setVelocity(mainCon.Axis3.value() + 70, vex::velocityUnits::rpm);
+        neWheel.spin(forward);
+
+        nwWheel.setVelocity((mainCon.Axis2.value() + 70) * -1, vex::velocityUnits::rpm);
+        nwWheel.spin(forward);
+    } else if(mainCon.ButtonA.pressing()) { //Turn Left
+        neWheel.setVelocity(mainCon.Axis3.value() + 70, vex::velocityUnits::rpm);
+        neWheel.spin(reverse);
+
+        nwWheel.setVelocity((mainCon.Axis2.value() + 70) * -1, vex::velocityUnits::rpm);
+        nwWheel.spin(reverse);
+    } 
 
     //Consume the balls
     if(mainCon.ButtonA.pressing()) { //Suck in
@@ -58,12 +93,12 @@ void controlInput(){
 
         consumeRight.setVelocity(200, vex::velocityUnits::rpm);
         consumeRight.spin(forward);
-    } else if(mainCon.ButtonB.pressing()) { // Suck out
-        consumeLeft.setVelocity(-200, vex::velocityUnits::rpm);
-        consumeLeft.spin(forward);
+    } else if(mainCon.ButtonA.pressing()) { // Suck out
+        consumeLeft.setVelocity(200, vex::velocityUnits::rpm);
+        consumeLeft.spin(reverse);
 
-        consumeRight.setVelocity(-200, vex::velocityUnits::rpm);
-        consumeRight.spin(forward);
+        consumeRight.setVelocity(200, vex::velocityUnits::rpm);
+        consumeRight.spin(reverse);
     } else {
         consumeLeft.stop();
         consumeRight.stop();
@@ -76,7 +111,7 @@ void controlInput(){
 
         consumeRight.setVelocity(200, vex::velocityUnits::rpm);
         consumeRight.spin(forward);
-    } else if(mainCon.ButtonB.pressing()) {  //Lift down
+    } else if(mainCon.ButtonA.pressing()) {  //Lift down
         consumeLeft.setVelocity(200, vex::velocityUnits::rpm);
         consumeLeft.spin(reverse);
 
