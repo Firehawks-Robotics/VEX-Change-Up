@@ -74,9 +74,7 @@ void controlInput(){
 
         swWheel.setVelocity((mainCon.Axis2.value() + 70) * -1, vex::velocityUnits::rpm);
         swWheel.spin(reverse);
-    } 
-    
-    if(mainCon.ButtonA.pressing()) { //Turn Right
+    } else if(mainCon.ButtonA.pressing()) { //Turn Right
         neWheel.setVelocity(mainCon.Axis3.value() + 70, vex::velocityUnits::rpm);
         neWheel.spin(forward);
 
