@@ -18,13 +18,13 @@ brain Brain;
 
 // VEXcode device constructors (Need to update Ports)
 motor neWheel = motor(PORT10, ratio18_1, false);
-motor nwWheel = motor(PORT2, ratio36_1, false);
+motor nwWheel = motor(PORT2, ratio36_1, true);
 motor seWheel = motor(PORT3, ratio36_1, false);
-motor swWheel = motor(PORT4, ratio36_1, false);
+motor swWheel = motor(PORT4, ratio36_1, true);
 motor consumeLeft = motor(PORT5, ratio36_1, false);
-motor consumeRight = motor(PORT6, ratio36_1, false);
+motor consumeRight = motor(PORT6, ratio36_1, true);
 motor liftLeft = motor(PORT7, ratio36_1, false);
-motor liftRight = motor(PORT8, ratio36_1, false);
+motor liftRight = motor(PORT8, ratio36_1, true);
 
 // VEXcode generated functions
 
