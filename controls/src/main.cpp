@@ -45,7 +45,7 @@ using namespace vex;
 int currentMode = 0;
  
 //Why does this exist? idk. I guess I should ask luke
-void snagMode(){
+void ChangeModeControl(){
     if(currentMode == 0){
         if(mainCon.ButtonRight.pressing()){
             currentMode = 1;
@@ -59,10 +59,11 @@ void snagMode(){
  
 void controlInput(){
     debugMenuController();
-    snagMode();
+    ChangeModeControl();
        
-    //Movement
-    if(mainCon.ButtonA.pressing()) { //Forwards
+    //Omni-directional Movement maintaining orientation
+
+    /*if(mainCon.ButtonA.pressing()) { //Forwards
         neWheel.setVelocity(mainCon.Axis3.value() + 70, vex::velocityUnits::rpm);
         neWheel.spin(forward);
 
@@ -99,7 +100,7 @@ void controlInput(){
 
         seWheel.setVelocity(mainCon.Axis2.value() + 70, vex::velocityUnits::rpm);
         seWheel.spin(reverse);
-    } 
+    }*/
 
     //Consume the VEX balls
     if(mainCon.ButtonA.pressing()) { //Pull in
