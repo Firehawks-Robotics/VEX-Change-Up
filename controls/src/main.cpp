@@ -69,12 +69,24 @@ void controlInput(){
 
         nwWheel.setVelocity(mainCon.Axis2.value() + 70, vex::velocityUnits::rpm);
         nwWheel.spin(forward);
+
+        seWheel.setVelocity(mainCon.Axis2.value() + 70, vex::velocityUnits::rpm);
+        seWheel.spin(reverse);
+
+        seWheel.setVelocity(mainCon.Axis2.value() + 70, vex::velocityUnits::rpm);
+        seWheel.spin(reverse);
     } else if(mainCon.ButtonA.pressing()) { //Backwards
         seWheel.setVelocity(mainCon.Axis3.value() + 70, vex::velocityUnits::rpm);
         seWheel.spin(reverse);
 
         swWheel.setVelocity((mainCon.Axis2.value() + 70) * -1, vex::velocityUnits::rpm);
         swWheel.spin(reverse);
+
+        neWheel.setVelocity(mainCon.Axis2.value() + 70, vex::velocityUnits::rpm);
+        neWheel.spin(forward);
+
+        nwWheel.setVelocity(mainCon.Axis2.value() + 70, vex::velocityUnits::rpm);
+        nwWheel.spin(forward);
     } else if(mainCon.ButtonA.pressing()) { //Turn Right
         neWheel.setVelocity(mainCon.Axis3.value() + 70, vex::velocityUnits::rpm);
         neWheel.spin(forward);
