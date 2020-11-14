@@ -14,6 +14,8 @@ using namespace vex;
 
 extern brain Brain;
 
+extern controller mainCon;
+
 // VEXcode devices
 extern motor neWheel;
 extern motor nwWheel;
@@ -23,6 +25,21 @@ extern motor consumeLeft;
 extern motor consumeRight;
 extern motor liftLeft;
 extern motor liftRight;
+
+//Controls
+extern vex::controller::axis omnidirectionalY;
+extern vex::controller::axis omnidirectionalX;
+
+extern vex::controller::axis turning;
+
+extern vex::controller::button intakeIn;
+extern vex::controller::button intakeOut;
+
+extern vex::controller::button liftUp;
+extern vex::controller::button liftDown;
+
+extern vex::controller::button toggleMode;
+
 
 /**
  * Used to initialize code/tasks/devices added using tools in VEXcode Text.

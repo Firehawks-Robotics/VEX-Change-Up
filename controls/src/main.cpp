@@ -25,15 +25,14 @@ using namespace vex;
 // ---- END VEXCODE CONFIGURED DEVICES ----
 
 
-/* CONTROLS MAPPING: (Currently all mapped to button A)
- * Forwards - Button A
- * Backwards - Button A
- * Pull In - Button A
- * Push Out - Button A
- * Lift Up - Button A
- * Lift Down - Button A
- * Turn Right - Button A
- * Turn Left - Button A
+/* CONTROLS MAPPING:
+ * Omnidirectional Movement - Left Analog Stick
+ * Turn Left/Right - Right Analog Stick
+ * Intake In - Right Bumper
+ * Intake Out - Left Bumper
+ * Lift/Shoot Up - A
+ * Lift/Shoot Down - B
+ * Toggle Mode - Right
 */
 
 /* Notes:
@@ -44,14 +43,11 @@ using namespace vex;
 
 int currentMode = 0;
  
-//Why does this exist? idk. I guess I should ask luke
 void ChangeModeControl(){
-    if(currentMode == 0){
-        if(mainCon.ButtonRight.pressing()){
+    if(mainCon.ButtonRight.pressing()){
+        if(currentMode == 0){
             currentMode = 1;
-        }
-    } else { //Not really sure why this is necessary but ok
-        if(mainCon.ButtonRight.pressing()){
+        } else {
             currentMode = 0;
         }
     }
@@ -63,7 +59,6 @@ void controlInput(){
        
     //Omni-directional Movement maintaining orientation
 
-    if(mainCon.)
     /*if(mainCon.ButtonA.pressing()) { //Forwards
         neWheel.setVelocity(mainCon.Axis3.value() + 70, vex::velocityUnits::rpm);
         neWheel.spin(forward);
@@ -115,14 +110,14 @@ void controlInput(){
         seWheel.spin(reverse);
     }*/
 
-    //Consume the VEX balls
-    if(mainCon.ButtonA.pressing()) { //Pull in
+    //Ball Intake
+    if(intakeIn.pressing()) { //Intake - in
         consumeLeft.setVelocity(200, vex::velocityUnits::rpm);
         consumeLeft.spin(forward);
 
         consumeRight.setVelocity(200, vex::velocityUnits::rpm);
         consumeRight.spin(forward);
-    } else if(mainCon.ButtonA.pressing()) { //Push out
+    } else if(intakeOut.pressing()) { //Intake - out
         consumeLeft.setVelocity(200, vex::velocityUnits::rpm);
         consumeLeft.spin(reverse);
 
@@ -133,14 +128,14 @@ void controlInput(){
         consumeRight.stop();
     }
 
-    //Lift the balls
-    if(mainCon.ButtonA.pressing()) {  //Lift up
+    //Lift/shoot
+    if(liftUp.pressing()) {  //Lift - up
         consumeLeft.setVelocity(200, vex::velocityUnits::rpm);
         consumeLeft.spin(forward);
 
         consumeRight.setVelocity(200, vex::velocityUnits::rpm);
         consumeRight.spin(forward);
-    } else if(mainCon.ButtonA.pressing()) {  //Lift down
+    } else if(liftDown.pressing()) {  //Lift - down
         consumeLeft.setVelocity(200, vex::velocityUnits::rpm);
         consumeLeft.spin(reverse);
 
@@ -151,24 +146,6 @@ void controlInput(){
         consumeRight.stop();
     }
         
-    //Arrows move center platform
-    if(mainCon.ButtonUp.pressing()) {
-        liftLeft.setVelocity(100, vex::velocityUnits::rpm);
-        liftLeft.spin(forward);
-        liftRight.setVelocity(-100, vex::velocityUnits::rpm);
-        liftRight.spin(forward);
-    } else if(mainCon.ButtonDown.pressing()) {
-        liftRight.setVelocity(-100, vex::velocityUnits::rpm);
-        liftRight.spin(forward);
-        liftLeft.setVelocity(100, vex::velocityUnits::rpm);
-        liftLeft.spin(forward);
-    } else {
-        liftRight.stop();
-        liftLeft.stop();
-    }
-
-    vexBrain.Screen.print(currentMode);
-    resetDebug();
 }
 
 int main() {

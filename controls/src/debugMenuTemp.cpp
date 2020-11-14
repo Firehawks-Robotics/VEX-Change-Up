@@ -13,6 +13,8 @@ using namespace vex;
 // A global instance of vex::brain used for printing to the V5 brain screen
 brain vexBrain;
 
+#include "robot-config.h"
+
 //Controllers
 controller mainCon;
 
