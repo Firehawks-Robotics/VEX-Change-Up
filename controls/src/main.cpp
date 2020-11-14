@@ -42,115 +42,64 @@ using namespace vex;
 #include "debugMenuTemp.h"
 
 int currentMode = 0;
- 
-void ChangeModeControl(){
-    if(mainCon.ButtonRight.pressing()){
-        if(currentMode == 0){
-            currentMode = 1;
-        } else {
-            currentMode = 0;
-        }
-    }
+
+//We're gonna have to modify the speed of all the wheels for this
+/*
+ * 0 = X axis
+ * 1 = Y axis
+*/
+void omnidirectionalMovement(int axis) {
+
 }
- 
-void controlInput(){
-    debugMenuController();
-    ChangeModeControl();
-       
-    //Omni-directional Movement maintaining orientation
 
-    /*if(mainCon.ButtonA.pressing()) { //Forwards
-        neWheel.setVelocity(mainCon.Axis3.value() + 70, vex::velocityUnits::rpm);
-        neWheel.spin(forward);
+void turned() {
 
-        nwWheel.setVelocity(mainCon.Axis2.value() + 70, vex::velocityUnits::rpm);
-        nwWheel.spin(forward);
 
-        seWheel.setVelocity(mainCon.Axis2.value() + 70, vex::velocityUnits::rpm);
-        seWheel.spin(reverse);
+}
 
-        seWheel.setVelocity(mainCon.Axis2.value() + 70, vex::velocityUnits::rpm);
-        seWheel.spin(reverse);
-    } else if(mainCon.ButtonA.pressing()) { //Backwards
-        seWheel.setVelocity(mainCon.Axis3.value() + 70, vex::velocityUnits::rpm);
-        seWheel.spin(reverse);
+/*
+ * 0 = In
+ * 1 = Out
+*/
+void intake(int inOrOut) {
 
-        swWheel.setVelocity((mainCon.Axis2.value() + 70) * -1, vex::velocityUnits::rpm);
-        swWheel.spin(reverse);
+}
 
-        neWheel.setVelocity(mainCon.Axis2.value() + 70, vex::velocityUnits::rpm);
-        neWheel.spin(forward);
+/*
+ * 0 = Up
+ * 1 = Down
+*/
+void lift(int upOrDown) {
 
-        nwWheel.setVelocity(mainCon.Axis2.value() + 70, vex::velocityUnits::rpm);
-        nwWheel.spin(forward);
-    } else if(mainCon.ButtonA.pressing()) { //Turn Right
-        neWheel.setVelocity(mainCon.Axis3.value() + 70, vex::velocityUnits::rpm);
-        neWheel.spin(forward);
-
-        nwWheel.setVelocity(mainCon.Axis3.value() + 70, vex::velocityUnits::rpm);
-        nwWheel.spin(forward);
-
-        swWheel.setVelocity(mainCon.Axis2.value() + 70, vex::velocityUnits::rpm);
-        swWheel.spin(forward);
-
-        seWheel.setVelocity(mainCon.Axis2.value() + 70, vex::velocityUnits::rpm);
-        seWheel.spin(forward);
-
-    } else if(mainCon.ButtonA.pressing()) { //Turn Left
-        neWheel.setVelocity(mainCon.Axis3.value() + 70, vex::velocityUnits::rpm);
-        neWheel.spin(reverse);
-
-        nwWheel.setVelocity(mainCon.Axis3.value() + 70, vex::velocityUnits::rpm);
-        nwWheel.spin(reverse);
-
-        swWheel.setVelocity(mainCon.Axis2.value() + 70, vex::velocityUnits::rpm);
-        swWheel.spin(reverse);
-
-        seWheel.setVelocity(mainCon.Axis2.value() + 70, vex::velocityUnits::rpm);
-        seWheel.spin(reverse);
-    }*/
-
-    //Ball Intake
-    if(intakeIn.pressing()) { //Intake - in
-        consumeLeft.setVelocity(200, vex::velocityUnits::rpm);
-        consumeLeft.spin(forward);
-
-        consumeRight.setVelocity(200, vex::velocityUnits::rpm);
-        consumeRight.spin(forward);
-    } else if(intakeOut.pressing()) { //Intake - out
-        consumeLeft.setVelocity(200, vex::velocityUnits::rpm);
-        consumeLeft.spin(reverse);
-
-        consumeRight.setVelocity(200, vex::velocityUnits::rpm);
-        consumeRight.spin(reverse);
-    } else {
-        consumeLeft.stop();
-        consumeRight.stop();
-    }
-
-    //Lift/shoot
-    if(liftUp.pressing()) {  //Lift - up
-        consumeLeft.setVelocity(200, vex::velocityUnits::rpm);
-        consumeLeft.spin(forward);
-
-        consumeRight.setVelocity(200, vex::velocityUnits::rpm);
-        consumeRight.spin(forward);
-    } else if(liftDown.pressing()) {  //Lift - down
-        consumeLeft.setVelocity(200, vex::velocityUnits::rpm);
-        consumeLeft.spin(reverse);
-
-        consumeRight.setVelocity(200, vex::velocityUnits::rpm);
-        consumeRight.spin(reverse);
-    } else {
-        consumeLeft.stop();
-        consumeRight.stop();
-    }
-        
 }
 
 int main() {
+
     vexcodeInit();
+
+    //Using lambdas here btw (learn more: https://en.cppreference.com/w/cpp/language/lambda)
+    omnidirectionalX.changed([](){omnidirectionalMovement(0);});
+    omnidirectionalY.changed([](){omnidirectionalMovement(1);});
+
+    turning.changed(turned);
+
+    intakeIn.pressed([](){intake(0);});
+    intakeOut.pressed([](){intake(1);});
+
+    liftUp.pressed([](){lift(0);});
+    liftUp.pressed([](){lift(1);});
+
+    toggleMode.pressed(
+        [](){
+            if(currentMode == 0){
+                currentMode = 1;
+            } else {
+                currentMode = 0;
+            }
+        }
+    );
+
     while(1) {
-        controlInput();
+        debugMenuController();
     }
 }
