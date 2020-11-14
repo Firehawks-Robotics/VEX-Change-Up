@@ -63,6 +63,7 @@ void controlInput(){
        
     //Omni-directional Movement maintaining orientation
 
+    if(mainCon.)
     /*if(mainCon.ButtonA.pressing()) { //Forwards
         neWheel.setVelocity(mainCon.Axis3.value() + 70, vex::velocityUnits::rpm);
         neWheel.spin(forward);
