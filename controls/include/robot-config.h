@@ -21,8 +21,8 @@ extern motor neWheel;
 extern motor nwWheel;
 extern motor seWheel;
 extern motor swWheel;
-extern motor consumeLeft;
-extern motor consumeRight;
+extern motor intakeLeft;
+extern motor intakeRight;
 extern motor liftLeft;
 extern motor liftRight;
 

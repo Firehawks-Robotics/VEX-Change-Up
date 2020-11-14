@@ -41,7 +41,10 @@ using namespace vex;
 
 #include "debugMenuTemp.h"
 
-int currentMode = 0;
+int speed = 200; //rpm
+
+//If not driver mode, then autonomous mode
+int driverMode = true; 
 
 //We're gonna have to modify the speed of all the wheels for this
 /*
@@ -49,12 +52,11 @@ int currentMode = 0;
  * 1 = Y axis
 */
 void omnidirectionalMovement(int axis) {
-
+    debugMenuController();
 }
 
 void turned() {
-
-
+    debugMenuController();
 }
 
 /*
@@ -62,7 +64,14 @@ void turned() {
  * 1 = Out
 */
 void intake(int inOrOut) {
-
+    if(inOrOut == 1) { //In
+        intakeLeft.spin(forward);
+        intakeRight.spin(forward);
+    } else { //Out
+        intakeLeft.spin(reverse);
+        intakeRight.spin(reverse);
+    }  
+    debugMenuController();
 }
 
 /*
@@ -70,12 +79,25 @@ void intake(int inOrOut) {
  * 1 = Down
 */
 void lift(int upOrDown) {
+    if(upOrDown == 1) { //Up
+        liftLeft.spin(forward);
+        liftRight.spin(forward);
+    } else { //Down
+        liftLeft.spin(reverse);
+        liftRight.spin(reverse);
+    }
+    debugMenuController();
+}
 
+void modeToggled() {
+    driverMode = !driverMode;
+    debugMenuController();
 }
 
 int main() {
 
     vexcodeInit();
+    debugMenuController(); //Put stuff on debug screen
 
     //Using lambdas here btw (learn more: https://en.cppreference.com/w/cpp/language/lambda)
     omnidirectionalX.changed([](){omnidirectionalMovement(0);});
@@ -89,17 +111,7 @@ int main() {
     liftUp.pressed([](){lift(0);});
     liftUp.pressed([](){lift(1);});
 
-    toggleMode.pressed(
-        [](){
-            if(currentMode == 0){
-                currentMode = 1;
-            } else {
-                currentMode = 0;
-            }
-        }
-    );
+    toggleMode.pressed(modeToggled);
 
-    while(1) {
-        debugMenuController();
-    }
+    //The debug screen is updated on every event
 }

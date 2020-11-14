@@ -21,8 +21,8 @@ motor neWheel = motor(PORT1, ratio36_1, false);
 motor nwWheel = motor(PORT1, ratio36_1, true);
 motor seWheel = motor(PORT1, ratio36_1, false);
 motor swWheel = motor(PORT1, ratio36_1, true);
-motor consumeLeft = motor(PORT1, ratio36_1, false);
-motor consumeRight = motor(PORT1, ratio36_1, true);
+motor intakeLeft = motor(PORT1, ratio36_1, false);
+motor intakeRight = motor(PORT1, ratio36_1, true);
 motor liftLeft = motor(PORT1, ratio36_1, false);
 motor liftRight = motor(PORT1, ratio36_1, true);
 
@@ -50,5 +50,10 @@ vex::controller::button toggleMode = mainCon.ButtonRight;
  * This should be called at the start of your int main function.
  */
 void vexcodeInit( void ) {
-  // nothing to initialize
+    //Inititalize the default velocity for motors with unchanging velocities
+    intakeLeft.setVelocity(200, vex::velocityUnits::rpm);
+    intakeRight.setVelocity(200, vex::velocityUnits::rpm);
+
+    liftLeft.setVelocity(200, vex::velocityUnits::rpm);
+    liftRight.setVelocity(200, vex::velocityUnits::rpm);
 }
