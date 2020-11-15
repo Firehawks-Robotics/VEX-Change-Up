@@ -2,8 +2,8 @@
 /*                                                                                  */
 /*    Module:       functionality.h                                                 */
 /*    Author:       Sean Johnson, Richard Wang, Luke Wittbrodt (Firehawks Robotics) */
-/*    Created:      Thurs Oct 22 2020                                               */
-/*    Description:  Change Up Motor Movement Functionality Definitions              */
+/*    Created:      Sun Nov 15 2020                                                 */
+/*    Description:  Change Up Motor Functionality Header Definitions                */
 /*                                                                                  */
 /*----------------------------------------------------------------------------------*/
 
@@ -38,4 +38,7 @@ void intake(int inOrOut);
 */
 void lift(int upOrDown);
 
+/*
+ * Toggles between driver and autonomous control
+*/
 void modeToggled();

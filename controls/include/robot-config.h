@@ -3,7 +3,7 @@
 /*    Module:       robot-config.h                                                  */
 /*    Author:       Sean Johnson, Richard Wang, Luke Wittbrodt (Firehawks Robotics) */
 /*    Created:      Thu Oct 22 2020                                                 */
-/*    Description:  Robot Configuration Header                                      */
+/*    Description:  Robot Configuration Header Definitions                          */
 /*                                                                                  */
 /*----------------------------------------------------------------------------------*/
 

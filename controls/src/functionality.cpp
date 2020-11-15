@@ -1,9 +1,9 @@
 /*----------------------------------------------------------------------------------*/
 /*                                                                                  */
-/*    Module:       functionality.cpp                                               */
+/*    Module:       functionality.h                                                 */
 /*    Author:       Sean Johnson, Richard Wang, Luke Wittbrodt (Firehawks Robotics) */
-/*    Created:      Thurs Oct 22 2020                                               */
-/*    Description:  Change Up Driver Controls                                       */
+/*    Created:      Sun Nov 15 2020                                                 */
+/*    Description:  Change Up Motor Functionality Implementation                    */
 /*                                                                                  */
 /*----------------------------------------------------------------------------------*/
 

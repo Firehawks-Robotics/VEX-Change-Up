@@ -3,7 +3,7 @@
 /*    Module:       debugMenuTemp.h                                                 */
 /*    Author:       Sean Johnson, Richard Wang, Luke Wittbrodt (Firehawks Robotics) */
 /*    Created:      Thu Oct 22 2020                                                 */
-/*    Description:  Robot Debug Screen Header                                       */
+/*    Description:  Robot Debug Screen Header Defintions                            */
 /*                                                                                  */
 /*----------------------------------------------------------------------------------*/
 

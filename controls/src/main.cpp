@@ -3,7 +3,7 @@
 /*    Module:       main.cpp                                                        */
 /*    Author:       Sean Johnson, Richard Wang, Luke Wittbrodt (Firehawks Robotics) */
 /*    Created:      Thurs Oct 22 2020                                               */
-/*    Description:  Change Up Driver Controls                                       */
+/*    Description:  Change Up Main                                                  */
 /*                                                                                  */
 /*----------------------------------------------------------------------------------*/
 

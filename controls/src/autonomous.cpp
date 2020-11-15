@@ -16,5 +16,6 @@ using namespace vex;
 // Procedural
 void autonomous() {
 
-  
+
+    //Do not automatically go back to driver controls  
 }
