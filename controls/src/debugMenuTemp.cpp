@@ -83,6 +83,8 @@ void resetDebug() {
 }*/
 
 void debugMenuController(){
+    resetDebug();
+
     rightTrigger();
     vexBrain.Screen.newLine();
 
