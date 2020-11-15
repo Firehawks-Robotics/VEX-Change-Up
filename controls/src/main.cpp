@@ -62,10 +62,10 @@ void movement() {
     double desired_angle = atan(y/x);
     
     double neSpeed = speed*sin(M_PI/4-desired_angle);
-    double swSpeed = speed*sin(-M_PI/4-desired_angle);
+    double swSpeed = speed*sin(-3*M_PI/4-desired_angle);
 
     double nwSpeed = speed*sin(3*M_PI/4-desired_angle);
-    double seSpeed = speed*sin(-3*M_PI/4-desired_angle);
+    double seSpeed = speed*sin(-M_PI/4-desired_angle);
 
     //Turning (Right analog stick)
     //Simply add the speed to the motors
