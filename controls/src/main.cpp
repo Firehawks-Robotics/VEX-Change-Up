@@ -44,18 +44,15 @@ using namespace vex;
 
 int speed = 200; //rpm
 
+const int MAX_AXIS_VALUE = 127;
+//const int MIN_AXIS_VALUE = -127;
+
 //If not driver mode, then autonomous mode
 bool driverMode = true; 
 
 //We're gonna have to change the velocity of all the wheels by taking
 //the value of both left and right analog sticks.
 void movement() {
-
-    //Reset all wheel speeds
-    neWheel.setVelocity(0, rpm);
-    nwWheel.setVelocity(0, rpm);
-    seWheel.setVelocity(0, rpm);
-    swWheel.setVelocity(0, rpm);
 
     //Omnidirectional (Left analog stick)
     //Subtract the desired angle (relative to the origin) from each motor's
@@ -64,14 +61,23 @@ void movement() {
     double y = omnidirectionalY.value();
     double desired_angle = atan(y/x);
     
-    neWheel.setVelocity(speed*sin(M_PI/4-desired_angle), rpm);
-    swWheel.setVelocity(speed*sin(-M_PI/4-desired_angle), rpm);
+    double neSpeed = speed*sin(M_PI/4-desired_angle);
+    double swSpeed = speed*sin(-M_PI/4-desired_angle);
 
-    nwWheel.setVelocity(speed*sin(3*M_PI/4-desired_angle), rpm);
-    seWheel.setVelocity(speed*sin(-3*M_PI/4-desired_angle), rpm);
+    double nwSpeed = speed*sin(3*M_PI/4-desired_angle);
+    double seSpeed = speed*sin(-3*M_PI/4-desired_angle);
 
     //Turning (Right analog stick)
+    //Simply add the speed to the motors
+    neSpeed += speed*(turning.value()/MAX_AXIS_VALUE);
+    nwSpeed += speed*(turning.value()/MAX_AXIS_VALUE);
+    seSpeed += speed*(turning.value()/MAX_AXIS_VALUE);
+    swSpeed += speed*(turning.value()/MAX_AXIS_VALUE);
 
+    neWheel.setVelocity(neSpeed, rpm);
+    nwWheel.setVelocity(nwSpeed, rpm);
+    seWheel.setVelocity(seSpeed, rpm);
+    swWheel.setVelocity(swSpeed, rpm);
 
     neWheel.spin(forward);
     swWheel.spin(forward);
