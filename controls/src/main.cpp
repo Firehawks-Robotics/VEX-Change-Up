@@ -59,13 +59,16 @@ void movement() {
     //angle on the unit circle.
     double x = omnidirectionalX.value();
     double y = omnidirectionalY.value();
+    double added_vectors = sqrt(pow(x, 2) + pow(y, 2));
     double desired_angle = atan(y/x);
-    
-    double neSpeed = speed*sin(M_PI/4-desired_angle);
-    double swSpeed = speed*sin(-3*M_PI/4-desired_angle);
 
-    double nwSpeed = speed*sin(3*M_PI/4-desired_angle);
-    double seSpeed = speed*sin(-M_PI/4-desired_angle);
+    // Speed derived from analog stick displacement * max rpm * angle
+    
+    double neSpeed = (added_vectors/MAX_AXIS_VALUE)*speed*sin(M_PI/4-desired_angle);
+    double swSpeed = (added_vectors/MAX_AXIS_VALUE)*speed*sin(-3*M_PI/4-desired_angle);
+
+    double nwSpeed = (added_vectors/MAX_AXIS_VALUE)*speed*sin(3*M_PI/4-desired_angle);
+    double seSpeed = (added_vectors/MAX_AXIS_VALUE)*speed*sin(-M_PI/4-desired_angle);
 
     //Turning (Right analog stick)
     //Simply add the speed to the motors
