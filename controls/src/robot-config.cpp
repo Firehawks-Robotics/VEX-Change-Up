@@ -8,6 +8,7 @@
 /*----------------------------------------------------------------------------------*/
 
 #include "vex.h"
+#include "debugMenuTemp.h"
 
 using namespace vex;
 using signature = vision::signature;
@@ -21,14 +22,26 @@ motor neWheel = motor(PORT1, ratio36_1, false);
 motor nwWheel = motor(PORT1, ratio36_1, true);
 motor seWheel = motor(PORT1, ratio36_1, false);
 motor swWheel = motor(PORT1, ratio36_1, true);
-motor consumeLeft = motor(PORT1, ratio36_1, false);
-motor consumeRight = motor(PORT1, ratio36_1, true);
+motor intakeLeft = motor(PORT1, ratio36_1, false);
+motor intakeRight = motor(PORT1, ratio36_1, true);
 motor liftLeft = motor(PORT1, ratio36_1, false);
 motor liftRight = motor(PORT1, ratio36_1, true);
 
+// Controls
+vex::controller::axis omnidirectionalY = mainCon.Axis3;
+vex::controller::axis omnidirectionalX = mainCon.Axis2;
+
+vex::controller::axis turning = mainCon.Axis1;
+
+vex::controller::button intakeIn = mainCon.ButtonR1;
+vex::controller::button intakeOut = mainCon.ButtonL1;
+
+vex::controller::button liftUp = mainCon.ButtonA;
+vex::controller::button liftDown = mainCon.ButtonB;
+
+vex::controller::button toggleMode = mainCon.ButtonRight;
+
 // VEXcode generated functions
-
-
 
 /**
  * Used to initialize code/tasks/devices added using tools in VEXcode Text.
@@ -36,5 +49,12 @@ motor liftRight = motor(PORT1, ratio36_1, true);
  * This should be called at the start of your int main function.
  */
 void vexcodeInit( void ) {
-  // nothing to initialize
+    //Inititalize the default velocity for motors with unchanging velocities
+    intakeLeft.setVelocity(200, rpm);
+    intakeRight.setVelocity(200, rpm);
+
+    liftLeft.setVelocity(200, rpm);
+    liftRight.setVelocity(200, rpm);
+
+    debugMenuController(); //Put stuff on debug screen
 }
