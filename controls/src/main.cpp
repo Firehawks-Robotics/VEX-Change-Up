@@ -52,13 +52,11 @@ bool driverMode = true;
 
 //We're gonna have to change the velocity of all the wheels by taking
 //the value of both left and right analog sticks.
-void movement() {
+void movement(double x, double y, double turnvalue) {
 
     //Omnidirectional (Left analog stick)
     //Subtract the desired angle (relative to the origin) from each motor's
     //angle on the unit circle.
-    double x = omnidirectionalX.value();
-    double y = omnidirectionalY.value();
     double added_vectors = sqrt(pow(x, 2) + pow(y, 2));
 
     //Prevent dividing by 0 (while still maintaining direction)
@@ -76,10 +74,10 @@ void movement() {
 
     //Turning (Right analog stick)
     //Simply add the speed to the motors
-    neSpeed += speed*(turning.value()/MAX_AXIS_VALUE);
-    nwSpeed += speed*(turning.value()/MAX_AXIS_VALUE);
-    seSpeed += speed*(turning.value()/MAX_AXIS_VALUE);
-    swSpeed += speed*(turning.value()/MAX_AXIS_VALUE);
+    neSpeed += speed*(turnvalue/MAX_AXIS_VALUE);
+    nwSpeed += speed*(turnvalue/MAX_AXIS_VALUE);
+    seSpeed += speed*(turnvalue/MAX_AXIS_VALUE);
+    swSpeed += speed*(turnvalue/MAX_AXIS_VALUE);
 
     neWheel.setVelocity(neSpeed, rpm);
     nwWheel.setVelocity(nwSpeed, rpm);
@@ -126,6 +124,7 @@ void lift(int upOrDown) {
 
 void modeToggled() {
     driverMode = !driverMode;
+    vexcodeInit(); //Reset the lift and intake motor velocities
     debugMenuController();
 }
 
@@ -134,10 +133,11 @@ int main() {
     vexcodeInit();
 
     //Using lambdas here btw (learn more: https://en.cppreference.com/w/cpp/language/lambda)
-    omnidirectionalX.changed(movement);
-    omnidirectionalY.changed(movement);
+    //Values of all axes are needed so that wheel velocity can be modified accordingly
+    omnidirectionalX.changed([](){movement(omnidirectionalX.value(), omnidirectionalY.value(), turning.value());});
+    omnidirectionalY.changed([](){movement(omnidirectionalX.value(), omnidirectionalY.value(), turning.value());});
 
-    turning.changed(movement);
+    turning.changed([](){movement(omnidirectionalX.value(), omnidirectionalY.value(), turning.value());});
 
     intakeIn.pressed([](){intake(0);});
     intakeOut.pressed([](){intake(1);});
