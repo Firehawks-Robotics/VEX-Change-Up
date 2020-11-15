@@ -7,6 +7,9 @@
 /*                                                                                  */
 /*----------------------------------------------------------------------------------*/
 
+#ifndef FUNCTIONALITY_HEADER_GUARD
+#define FUNCTIONALITY_HEADER_GUARD
+
 #include "vex.h"
 
 using namespace vex;
@@ -44,3 +47,5 @@ void lift(int upOrDown);
  * Toggles between driver and autonomous control.
 */
 void modeToggled();
+
+#endif
