@@ -92,7 +92,7 @@ void movement() {
  * 1 = Out
 */
 void intake(int inOrOut) {
-    if(inOrOut == 1) { //In
+    if(inOrOut == 0) { //In
         intakeLeft.spin(forward);
         intakeRight.spin(forward);
     } else { //Out
@@ -107,7 +107,7 @@ void intake(int inOrOut) {
  * 1 = Down
 */
 void lift(int upOrDown) {
-    if(upOrDown == 1) { //Up
+    if(upOrDown == 0) { //Up
         liftLeft.spin(forward);
         liftRight.spin(forward);
     } else { //Down
