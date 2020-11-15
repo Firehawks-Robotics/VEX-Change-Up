@@ -51,10 +51,19 @@ void movement(double x, double y, double turnvalue) {
     seWheel.setVelocity(seSpeed, rpm);
     swWheel.setVelocity(swSpeed, rpm);
 
-    neWheel.spin(forward);
-    swWheel.spin(forward);
-    nwWheel.spin(forward);
-    seWheel.spin(forward);
+    //Brake if the wheel is not supposed to move (just have the wheel lock)
+    //Should do some testing to make sure this is actually helpful
+    if(neSpeed == 0) neWheel.setBrake(brake);
+    else neWheel.spin(forward);
+
+    if(nwSpeed == 0) nwWheel.setBrake(brake);
+    else nwWheel.spin(forward);
+
+    if(seSpeed == 0) seWheel.setBrake(brake);
+    else seWheel.spin(forward);
+
+    if(swSpeed == 0) swWheel.setBrake(brake);
+    else swWheel.spin(forward);
 
     debugMenuController();
 }
