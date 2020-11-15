@@ -60,8 +60,12 @@ void movement() {
     double x = omnidirectionalX.value();
     double y = omnidirectionalY.value();
     double added_vectors = sqrt(pow(x, 2) + pow(y, 2));
-    double desired_angle = atan(y/x);
 
+    //Prevent dividing by 0 (while still maintaining direction)
+    //At large numbers like 100/0.0001, arctan(x) changes very little with each decimal place
+    if (x == 0) x = 0.0001; 
+    double desired_angle = atan(y/x);
+    
     // Speed derived from analog stick displacement * max rpm * angle
     
     double neSpeed = (added_vectors/MAX_AXIS_VALUE)*speed*sin(M_PI/4-desired_angle);
