@@ -8,6 +8,7 @@
 /*----------------------------------------------------------------------------------*/
 
 #include "vex.h"
+#include "debugMenuTemp.h"
 
 using namespace vex;
 using signature = vision::signature;
@@ -42,8 +43,6 @@ vex::controller::button toggleMode = mainCon.ButtonRight;
 
 // VEXcode generated functions
 
-
-
 /**
  * Used to initialize code/tasks/devices added using tools in VEXcode Text.
  * 
@@ -51,9 +50,11 @@ vex::controller::button toggleMode = mainCon.ButtonRight;
  */
 void vexcodeInit( void ) {
     //Inititalize the default velocity for motors with unchanging velocities
-    intakeLeft.setVelocity(200, vex::velocityUnits::rpm);
-    intakeRight.setVelocity(200, vex::velocityUnits::rpm);
+    intakeLeft.setVelocity(200, rpm);
+    intakeRight.setVelocity(200, rpm);
 
-    liftLeft.setVelocity(200, vex::velocityUnits::rpm);
-    liftRight.setVelocity(200, vex::velocityUnits::rpm);
+    liftLeft.setVelocity(200, rpm);
+    liftRight.setVelocity(200, rpm);
+
+    debugMenuController(); //Put stuff on debug screen
 }

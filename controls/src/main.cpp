@@ -8,6 +8,7 @@
 /*----------------------------------------------------------------------------------*/
 
 #include "vex.h"
+#include <math.h>
 
 using namespace vex;
 
@@ -18,8 +19,8 @@ using namespace vex;
 // nwWheel              motor         ?              (northwest wheel)
 // seWheel              motor         ?              (southeast wheel)
 // swWheel              motor         ?              (southwest wheel)
-// consumeRight         motor         ?               
-// consumeLeft          motor         ?               
+// intakeRight          motor         ?               
+// intakeLeft           motor         ?               
 // liftLeft             motor         ?               
 // liftRight            motor         ?               
 // ---- END VEXCODE CONFIGURED DEVICES ----
@@ -44,18 +45,39 @@ using namespace vex;
 int speed = 200; //rpm
 
 //If not driver mode, then autonomous mode
-int driverMode = true; 
+bool driverMode = true; 
 
-//We're gonna have to modify the speed of all the wheels for this
-/*
- * 0 = X axis
- * 1 = Y axis
-*/
-void omnidirectionalMovement(int axis) {
-    debugMenuController();
-}
+//We're gonna have to change the velocity of all the wheels by taking
+//the value of both left and right analog sticks.
+void movement() {
 
-void turned() {
+    //Reset all wheel speeds
+    neWheel.setVelocity(0, rpm);
+    nwWheel.setVelocity(0, rpm);
+    seWheel.setVelocity(0, rpm);
+    swWheel.setVelocity(0, rpm);
+
+    //Omnidirectional (Left analog stick)
+    //Subtract the desired angle (relative to the origin) from each motor's
+    //angle on the unit circle.
+    double x = omnidirectionalX.value();
+    double y = omnidirectionalY.value();
+    double desired_angle = atan(y/x);
+    
+    neWheel.setVelocity(speed*sin(M_PI/4-desired_angle), rpm);
+    swWheel.setVelocity(speed*sin(-M_PI/4-desired_angle), rpm);
+
+    nwWheel.setVelocity(speed*sin(3*M_PI/4-desired_angle), rpm);
+    seWheel.setVelocity(speed*sin(-3*M_PI/4-desired_angle), rpm);
+
+    //Turning (Right analog stick)
+
+
+    neWheel.spin(forward);
+    swWheel.spin(forward);
+    nwWheel.spin(forward);
+    seWheel.spin(forward);
+
     debugMenuController();
 }
 
@@ -97,13 +119,12 @@ void modeToggled() {
 int main() {
 
     vexcodeInit();
-    debugMenuController(); //Put stuff on debug screen
 
     //Using lambdas here btw (learn more: https://en.cppreference.com/w/cpp/language/lambda)
-    omnidirectionalX.changed([](){omnidirectionalMovement(0);});
-    omnidirectionalY.changed([](){omnidirectionalMovement(1);});
+    omnidirectionalX.changed(movement);
+    omnidirectionalY.changed(movement);
 
-    turning.changed(turned);
+    turning.changed(movement);
 
     intakeIn.pressed([](){intake(0);});
     intakeOut.pressed([](){intake(1);});
