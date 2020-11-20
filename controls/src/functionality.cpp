@@ -44,6 +44,13 @@ void movement(double x, double y, double turnvalue) {
     //At large numbers like 100/0.0001, arctan(x) changes very little with each decimal place
     if (x == 0) x = 0.0001; 
     double desired_angle = atan(y/x);
+
+    //We need to have a 360 angle
+    if(x < 0 && y < 0) {
+        desired_angle-=180;
+    } else if(x < 0 && y > 0) {
+        desired_angle+=180;
+    }
     
     // Speed derived from analog stick displacement * max rpm * angle
     
@@ -87,25 +94,32 @@ void movement(double x, double y, double turnvalue) {
  * 1 = Out
 */
 void intake(int inOrOut) {
-    if(inOrOut == 0) { //In
-        intakeLeft.spin(forward);
-        intakeRight.spin(forward);
-    } else { //Out
+    if(inOrOut == -1) { //Stop
+        intakeLeft.stop(hold);
+        intakeRight.stop(hold);
+    } else if(inOrOut == 0) { //In
         intakeLeft.spin(reverse);
         intakeRight.spin(reverse);
+    } else if(inOrOut == 1) { //Out
+        intakeLeft.spin(forward);
+        intakeRight.spin(forward);
     }  
     debugMenuController();
 }
 
 /*
+ * -1 = stop
  * 0 = Up
  * 1 = Down
 */
 void lift(int upOrDown) {
-    if(upOrDown == 0) { //Up
+    if(upOrDown == -1) { //Stop
+        liftLeft.stop(hold);
+        liftRight.stop(hold);
+    } else if(upOrDown == 0) { //Up
         liftLeft.spin(forward);
         liftRight.spin(forward);
-    } else { //Down
+    } else if(upOrDown == 1) { //Down
         liftLeft.spin(reverse);
         liftRight.spin(reverse);
     }

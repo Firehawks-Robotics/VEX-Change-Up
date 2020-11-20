@@ -18,14 +18,14 @@ using code = vision::code;
 brain Brain;
 
 // VEXcode device constructors (Need to update Ports)
-motor neWheel = motor(PORT1, ratio36_1, false);
-motor nwWheel = motor(PORT1, ratio36_1, true);
-motor seWheel = motor(PORT1, ratio36_1, false);
-motor swWheel = motor(PORT1, ratio36_1, true);
+motor neWheel = motor(PORT11, ratio36_1, true);
+motor nwWheel = motor(PORT20, ratio36_1, true);
+motor seWheel = motor(PORT10, ratio36_1, false);
+motor swWheel = motor(PORT9, ratio36_1, true);
 motor intakeLeft = motor(PORT1, ratio36_1, false);
-motor intakeRight = motor(PORT1, ratio36_1, true);
-motor liftLeft = motor(PORT1, ratio36_1, false);
-motor liftRight = motor(PORT1, ratio36_1, true);
+motor intakeRight = motor(PORT8, ratio36_1, true);
+motor liftLeft = motor(PORT5, ratio36_1, false);
+motor liftRight = motor(PORT7, ratio36_1, true);
 
 // Controls
 vex::controller::axis omnidirectionalY = mainCon.Axis3;

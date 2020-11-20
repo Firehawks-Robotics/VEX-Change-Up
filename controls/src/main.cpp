@@ -15,14 +15,14 @@ using namespace vex;
 // ---- START VEXCODE CONFIGURED DEVICES ----
 // Robot Configuration:
 // [Name]               [Type]        [Port(s)]
-// neWheel              motor         ?              (northeast wheel)
-// nwWheel              motor         ?              (northwest wheel)
-// seWheel              motor         ?              (southeast wheel)
-// swWheel              motor         ?              (southwest wheel)
-// intakeRight          motor         ?               
-// intakeLeft           motor         ?               
-// liftLeft             motor         ?               
-// liftRight            motor         ?               
+// neWheel              motor         11             (northeast wheel)
+// nwWheel              motor         20             (northwest wheel)
+// seWheel              motor         10             (southeast wheel)
+// swWheel              motor         9              (southwest wheel)
+// intakeRight          motor         1               
+// intakeLeft           motor         8               
+// liftLeft             motor         5               
+// liftRight            motor         7               
 // ---- END VEXCODE CONFIGURED DEVICES ----
 
 
@@ -56,9 +56,13 @@ int main() {
 
     intakeIn.pressed([](){intake(0);});
     intakeOut.pressed([](){intake(1);});
+    intakeIn.released([](){intake(-1);});
+    intakeOut.released([](){intake(-1);});
 
     liftUp.pressed([](){lift(0);});
-    liftUp.pressed([](){lift(1);});
+    liftDown.pressed([](){lift(1);});
+    liftUp.released([](){lift(-1);});
+    liftDown.released([](){lift(-1);});
 
     toggleMode.pressed(modeToggled);
 
