@@ -21,6 +21,20 @@ bool driverMode = true;
 //the value of both left and right analog sticks.
 void movement(double x, double y, double turnvalue) {
 
+    //Sometimes when the analog stick is not being moved, the robot moves slightly anyways
+    //So we want it to not
+    if (turnvalue < 10 && turnvalue > 10) {
+        turnvalue = 0;
+    }
+
+    if (x < 10 && x < 10) {
+        x = 0;
+    }
+
+    if (y < 10 && y < 10) {
+        y = 0;
+    }
+
     //Omnidirectional (Left analog stick)
     //Subtract the desired angle (relative to the origin) from each motor's
     //angle on the unit circle.
