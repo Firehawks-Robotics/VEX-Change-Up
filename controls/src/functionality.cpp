@@ -94,15 +94,15 @@ void movement(double x, double y, double turnvalue) {
  * 1 = Out
 */
 void intake(int inOrOut) {
-    if(inOrOut == -1) { //Stop
-        intakeLeft.stop(hold);
-        intakeRight.stop(hold);
-    } else if(inOrOut == 0) { //In
-        intakeLeft.spin(reverse);
-        intakeRight.spin(reverse);
-    } else if(inOrOut == 1) { //Out
+    if(inOrOut == -1) { //Out
         intakeLeft.spin(forward);
         intakeRight.spin(forward);
+    } else if(inOrOut == 0) { //Stop
+        intakeLeft.stop(hold);
+        intakeRight.stop(hold);
+    } else if(inOrOut == 1) { //In
+        intakeLeft.spin(reverse);
+        intakeRight.spin(reverse);
     }  
     debugMenuController();
 }
@@ -113,13 +113,13 @@ void intake(int inOrOut) {
  * 1 = Down
 */
 void lift(int upOrDown) {
-    if(upOrDown == -1) { //Stop
-        liftLeft.stop(hold);
-        liftRight.stop(hold);
-    } else if(upOrDown == 0) { //Up
+    if(upOrDown == -1) { //Down
         liftLeft.spin(forward);
         liftRight.spin(forward);
-    } else if(upOrDown == 1) { //Down
+    } else if(upOrDown == 0) { //Stop
+        liftLeft.stop(hold);
+        liftRight.stop(hold);
+    } else if(upOrDown == 1) { //Up
         liftLeft.spin(reverse);
         liftRight.spin(reverse);
     }

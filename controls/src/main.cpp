@@ -47,8 +47,30 @@ int main() {
 
     vexcodeInit();
 
+    while(1) {
+        movement(omnidirectionalX.value(), omnidirectionalY.value(), turning.value());
+
+        if(intakeIn.pressing() || intakeOut.pressing()) {
+            if (intakeIn.pressing()) {
+                intake(1);
+            } else if (intakeOut.pressing()) {
+                intake(-1);
+            }
+        else { intake(0); }
+
+        if(liftUp.pressing() || liftDown.pressing()) {
+            if (liftUp.pressing()) {
+                intake(1);
+            } else if (liftDown.pressing()) {
+                intake(-1);
+            }
+        else { intake(0); }
+
+    }
+
     //Using lambdas here btw (learn more: https://en.cppreference.com/w/cpp/language/lambda)
     //Values of all axes are needed so that wheel velocity can be modified accordingly
+    /*
     omnidirectionalX.changed([](){movement(omnidirectionalX.value(), omnidirectionalY.value(), turning.value());});
     omnidirectionalY.changed([](){movement(omnidirectionalX.value(), omnidirectionalY.value(), turning.value());});
 
@@ -65,6 +87,6 @@ int main() {
     liftDown.released([](){lift(-1);});
 
     toggleMode.pressed(modeToggled);
-
+    */
     //The debug screen is updated on every event
 }

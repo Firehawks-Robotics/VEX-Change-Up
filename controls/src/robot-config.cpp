@@ -20,7 +20,7 @@ brain Brain;
 // VEXcode device constructors (Need to update Ports)
 motor neWheel = motor(PORT11, ratio36_1, true);
 motor nwWheel = motor(PORT20, ratio36_1, true);
-motor seWheel = motor(PORT10, ratio36_1, false);
+motor seWheel = motor(PORT10, ratio36_1, true);
 motor swWheel = motor(PORT9, ratio36_1, true);
 motor intakeLeft = motor(PORT1, ratio36_1, false);
 motor intakeRight = motor(PORT8, ratio36_1, true);
