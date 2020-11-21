@@ -23,15 +23,15 @@ void movement(double x, double y, double turnvalue) {
 
     //Sometimes when the analog stick is not being moved, the robot moves slightly anyways
     //So we want it to not
-    if (turnvalue < 10 && turnvalue > 10) {
+    if (turnvalue > -10 && turnvalue < 10) {
         turnvalue = 0;
     }
 
-    if (x < 10 && x < 10) {
+    if (x > -10 && x < 10) {
         x = 0;
     }
 
-    if (y < 10 && y < 10) {
+    if (y > -10 && y < 10) {
         y = 0;
     }
 
