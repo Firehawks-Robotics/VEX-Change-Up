@@ -29,10 +29,10 @@ using namespace vex;
 /* CONTROLS MAPPING:
  * Omnidirectional Movement - Left Analog Stick
  * Turn Left/Right - Right Analog Stick
- * Intake In - Right Bumper
- * Intake Out - Left Bumper
- * Lift/Shoot Up - A
- * Lift/Shoot Down - B
+ * Intake In - Front Right Bumper (R1)
+ * Intake Out - Back Right Bumper (R2)
+ * Lift/Shoot Up - Front Left Bumper (L1)
+ * Lift/Shoot Down - Back Left Bumper (L2)
  * Toggle Mode - Right
 */
 

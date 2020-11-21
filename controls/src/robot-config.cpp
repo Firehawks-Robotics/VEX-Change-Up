@@ -33,11 +33,11 @@ vex::controller::axis omnidirectionalX = mainCon.Axis2;
 
 vex::controller::axis turning = mainCon.Axis1;
 
-vex::controller::button intakeIn = mainCon.ButtonR1;
-vex::controller::button intakeOut = mainCon.ButtonL1;
+vex::controller::button intakeIn = mainCon.ButtonR1; //Front
+vex::controller::button intakeOut = mainCon.ButtonR2; //Back
 
-vex::controller::button liftUp = mainCon.ButtonA;
-vex::controller::button liftDown = mainCon.ButtonB;
+vex::controller::button liftUp = mainCon.ButtonL1; //Front
+vex::controller::button liftDown = mainCon.ButtonL2; //Back
 
 vex::controller::button toggleMode = mainCon.ButtonRight;
 
