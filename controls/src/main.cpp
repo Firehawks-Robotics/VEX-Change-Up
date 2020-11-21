@@ -47,46 +47,25 @@ int main() {
 
     vexcodeInit();
 
-    while(1) {
-        movement(omnidirectionalX.value(), omnidirectionalY.value(), turning.value());
-
-        if(intakeIn.pressing() || intakeOut.pressing()) {
-            if (intakeIn.pressing()) {
-                intake(1);
-            } else if (intakeOut.pressing()) {
-                intake(-1);
-            }
-        else { intake(0); }
-
-        if(liftUp.pressing() || liftDown.pressing()) {
-            if (liftUp.pressing()) {
-                intake(1);
-            } else if (liftDown.pressing()) {
-                intake(-1);
-            }
-        else { intake(0); }
-
-    }
-
     //Using lambdas here btw (learn more: https://en.cppreference.com/w/cpp/language/lambda)
     //Values of all axes are needed so that wheel velocity can be modified accordingly
-    /*
-    omnidirectionalX.changed([](){movement(omnidirectionalX.value(), omnidirectionalY.value(), turning.value());});
-    omnidirectionalY.changed([](){movement(omnidirectionalX.value(), omnidirectionalY.value(), turning.value());});
-
-    turning.changed([](){movement(omnidirectionalX.value(), omnidirectionalY.value(), turning.value());});
-
-    intakeIn.pressed([](){intake(0);});
+    intakeIn.pressed([](){intake(-1);});
     intakeOut.pressed([](){intake(1);});
-    intakeIn.released([](){intake(-1);});
-    intakeOut.released([](){intake(-1);});
+    intakeIn.released([](){intake(0);});
+    intakeOut.released([](){intake(0);});
 
-    liftUp.pressed([](){lift(0);});
-    liftDown.pressed([](){lift(1);});
-    liftUp.released([](){lift(-1);});
-    liftDown.released([](){lift(-1);});
+    liftUp.pressed([](){lift(1);});
+    liftDown.pressed([](){lift(-1);});
+    liftUp.released([](){lift(0);});
+    liftDown.released([](){lift(0);});
 
     toggleMode.pressed(modeToggled);
-    */
+
+    //Movement is handled by an infinite while loop to ensure that the movement gets updated like it should
+    //Sometimes the axis.changed event does not happen even if the axis value does change. Thus, our current solution:
+    while(1) { 
+        movement(omnidirectionalX.value(), omnidirectionalY.value(), turning.value());
+    }
+
     //The debug screen is updated on every event
 }
