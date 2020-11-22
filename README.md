@@ -8,4 +8,4 @@ Contributers should follow the Git branch model described in the [linked article
 ## Control Mapping
 
 Below is the control mapping for using the robot
-![controls mapping image](controls/control_mapping.png)
+![controls mapping image](control_mapping.png)
