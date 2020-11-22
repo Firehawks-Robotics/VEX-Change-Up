@@ -1,19 +1,19 @@
 /*----------------------------------------------------------------------------------*/
 /*                                                                                  */
-/*    Module:       side.h                                                          */
+/*    Module:       autonomous.h                                                    */
 /*    Author:       Sean Johnson (Firehawks Robotics)                               */
 /*    Created:      Sun Nov 22 2020                                                 */
-/*    Description:  Defines the Autonomous Side                                     */
+/*    Description:  Autonomous Declarations                                         */
 /*                                                                                  */
 /*----------------------------------------------------------------------------------*/
 
-//DO NOT COPY THIS FILE OVER TO THE AUTONOMOUS PROGRAMS
-//THAT WILL CHANGE THE PROGRAM
+#ifndef AUTONOMOUS_HEADER_GUARD
+#define AUTONOMOUS_HEADER_GUARD
 
-#ifndef SIDE_HEADER_GUARD
-#define SIDE_HEADER_GUARD
+#include "vex.h"
 
-// Controls (No Autonomous)
-const int SIDE = 0;
+using namespace vex;
+
+void auton();
 
 #endif
