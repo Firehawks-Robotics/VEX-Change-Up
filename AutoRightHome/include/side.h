@@ -13,7 +13,7 @@
 #ifndef SIDE_HEADER_GUARD
 #define SIDE_HEADER_GUARD
 
-// Controls (No Autonomous)
-const int SIDE = 0;
+// Right Side
+const int SIDE = 1;
 
 #endif
