@@ -14,6 +14,16 @@
 
 using namespace vex;
 
+//intake
+extern const int IN = 1;
+extern const int STOPINTAKE = 0;
+extern const int OUT = -1;
+
+//Lift/shoot
+extern const int UP = 1;
+extern const int STOPLIFT = 0;
+extern const int DOWN = -1;
+
 const int SPEED = 200; //rpm
 
 const int MAX_AXIS_VALUE = 127;
@@ -42,10 +52,5 @@ void intake(int inOrOut);
  * @param upOrDown     Direction desired. 0 = Up, 1 = Down.
 */
 void lift(int upOrDown);
-
-/*
- * Toggles between driver and autonomous control.
-*/
-void modeToggled();
 
 #endif

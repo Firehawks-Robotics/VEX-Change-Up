@@ -61,15 +61,15 @@ int main() {
 
     //Using lambdas here btw (learn more: https://en.cppreference.com/w/cpp/language/lambda)
     //Values of all axes are needed so that wheel velocity can be modified accordingly
-    intakeIn.pressed([](){intake(-1);});
-    intakeOut.pressed([](){intake(1);});
-    intakeIn.released([](){intake(0);});
-    intakeOut.released([](){intake(0);});
+    intakeIn.pressed([](){intake(OUT);});
+    intakeOut.pressed([](){intake(IN);});
+    intakeIn.released([](){intake(STOPINTAKE);});
+    intakeOut.released([](){intake(STOPINTAKE);});
 
-    liftUp.pressed([](){lift(1);});
-    liftDown.pressed([](){lift(-1);});
-    liftUp.released([](){lift(0);});
-    liftDown.released([](){lift(0);});
+    liftUp.pressed([](){lift(UP);});
+    liftDown.pressed([](){lift(DOWN);});
+    liftUp.released([](){lift(STOPLIFT);});
+    liftDown.released([](){lift(STOPLIFT);});
 
     //Movement is handled by an infinite while loop to ensure that the movement gets updated like it should
     //Sometimes the axis.changed event does not happen even if the axis value does change. Thus, our current solution:
