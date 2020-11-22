@@ -19,6 +19,13 @@ using namespace vex;
 #include "functionality.h"
 #include "autonomous.h"
 
+/* Using these values, all that is needed is to multiply some values by the side, thus making some negative and some positive
+ * Sides:
+ * -1: Left Side
+ *  0: Controls (no side and no autonomous) (Wont even reach this function)
+ *  1: Right Side
+*/
+
 void auton() {
-    
+    //e
 }

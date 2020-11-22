@@ -7,10 +7,13 @@
 /*                                                                                  */
 /*----------------------------------------------------------------------------------*/
 
+//DO NOT COPY THIS FILE OVER TO THE AUTONOMOUS PROGRAMS
+//THAT WILL CHANGE THE PROGRAM
+
 #ifndef SIDE_HEADER_GUARD
 #define SIDE_HEADER_GUARD
 
-// Left side
+// Left Side
 const int SIDE = -1;
 
 #endif

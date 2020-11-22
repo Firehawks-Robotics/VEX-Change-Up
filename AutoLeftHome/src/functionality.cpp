@@ -126,3 +126,10 @@ void lift(int upOrDown) {
     }
     debugMenuController();
 }
+
+/*
+void modeToggled() {
+    driverMode = !driverMode;
+    vexcodeInit(); //Reset the lift and intake motor velocities
+    debugMenuController();
+}*/

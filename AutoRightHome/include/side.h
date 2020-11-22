@@ -7,10 +7,13 @@
 /*                                                                                  */
 /*----------------------------------------------------------------------------------*/
 
+//DO NOT COPY THIS FILE OVER TO THE AUTONOMOUS PROGRAMS
+//THAT WILL CHANGE THE PROGRAM
+
 #ifndef SIDE_HEADER_GUARD
 #define SIDE_HEADER_GUARD
 
-// Right side
-const int SIDE = 1;
+// Controls (No Autonomous)
+const int SIDE = 0;
 
 #endif
