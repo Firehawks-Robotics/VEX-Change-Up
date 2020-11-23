@@ -47,9 +47,9 @@ void movement(double x, double y, double turnvalue) {
 
     //We need to have a 360 angle
     if(x < 0 && y < 0) {
-        desired_angle-=180;
+        desired_angle-=M_PI/2;
     } else if(x < 0 && y > 0) {
-        desired_angle+=180;
+        desired_angle+=M_PI/2;
     }
     
     // Speed derived from analog stick displacement * max rpm * angle
