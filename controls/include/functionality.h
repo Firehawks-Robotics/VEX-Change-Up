@@ -15,14 +15,14 @@
 using namespace vex;
 
 //intake
-extern const int IN = 1;
-extern const int STOPINTAKE = 0;
-extern const int OUT = -1;
+const int IN = 1;
+const int STOPINTAKE = 0;
+const int OUT = -1;
 
 //Lift/shoot
-extern const int UP = 1;
-extern const int STOPLIFT = 0;
-extern const int DOWN = -1;
+const int UP = 1;
+const int STOPLIFT = 0;
+const int DOWN = -1;
 
 const int SPEED = 200; //rpm
 
