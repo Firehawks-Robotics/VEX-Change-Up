@@ -14,6 +14,8 @@
 
 using namespace vex;
 
+extern double d_angle;
+
 //intake
 const int IN = 1;
 const int STOPINTAKE = 0;

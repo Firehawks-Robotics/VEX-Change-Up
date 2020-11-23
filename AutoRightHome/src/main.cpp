@@ -33,7 +33,6 @@ using namespace vex;
  * Intake Out - Back Right Bumper (R2)
  * Lift/Shoot Up - Front Left Bumper (L1)
  * Lift/Shoot Down - Back Left Bumper (L2)
- * Toggle Mode - Right
 */
 
 /* Notes:
