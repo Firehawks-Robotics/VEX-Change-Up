@@ -14,6 +14,7 @@ using namespace vex;
 brain vexBrain;
 
 #include "robot-config.h"
+#include "functionality.h"
 
 //Controllers
 controller mainCon;
@@ -72,6 +73,11 @@ void resetDebug() {
     vexBrain.Screen.setOrigin(0, 0);
 }
 
+void desiredangle() {
+    vexBrain.Screen.print(" | Angle | ");
+    vexBrain.Screen.print(d_angle);
+}
+
 /*void vexBrainPrint(std::string toPrint, bool doNewLine){
     if(doNewLine){
       vexBrain.Screen.print(toPrint);
@@ -98,5 +104,8 @@ void debugMenuController(){
     vexBrain.Screen.newLine();
 
     backButtons();
+    vexBrain.Screen.newLine();
+
+    desiredangle();
     vexBrain.Screen.newLine();
 }

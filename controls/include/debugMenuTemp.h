@@ -19,6 +19,8 @@ extern brain vexBrain;
 // A global instance of vex::vexBrain used for printing to the V5 vexBrain screen
 //vex::brain vexBrain;
 
+extern double d_angle;
+
 //Controllers
 extern controller mainCon;
 

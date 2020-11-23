@@ -17,6 +17,8 @@ using namespace vex;
 //If not driver mode, then autonomous mode
 bool driverMode = true; 
 
+double d_angle = 0;
+
 //We're gonna have to change the velocity of all the wheels by taking
 //the value of both left and right analog sticks.
 void movement(double x, double y, double turnvalue) {
@@ -47,18 +49,20 @@ void movement(double x, double y, double turnvalue) {
 
     //We need to have a 360 angle
     if(x < 0 && y < 0) {
-        desired_angle-=M_PI/2;
+        desired_angle = desired_angle - M_PI/2;
     } else if(x < 0 && y > 0) {
-        desired_angle+=M_PI/2;
+        desired_angle = desired_angle + M_PI/2;
     }
+
+    d_angle = desired_angle;
     
     // Speed derived from analog stick displacement * max rpm * angle
     
     double neSpeed = (added_vectors/MAX_AXIS_VALUE)*SPEED*sin(M_PI/4-desired_angle);
-    double swSpeed = (added_vectors/MAX_AXIS_VALUE)*SPEED*sin(-3*M_PI/4-desired_angle);
+    double swSpeed = -(added_vectors/MAX_AXIS_VALUE)*SPEED*sin(-3*M_PI/4-desired_angle);
 
     double nwSpeed = (added_vectors/MAX_AXIS_VALUE)*SPEED*sin(3*M_PI/4-desired_angle);
-    double seSpeed = (added_vectors/MAX_AXIS_VALUE)*SPEED*sin(-M_PI/4-desired_angle);
+    double seSpeed = -(added_vectors/MAX_AXIS_VALUE)*SPEED*sin(-M_PI/4-desired_angle);
 
     //Turning (Right analog stick)
     //Simply add the speed to the motors
