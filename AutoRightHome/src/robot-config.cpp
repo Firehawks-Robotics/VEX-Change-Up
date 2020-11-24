@@ -29,7 +29,7 @@ motor liftRight = motor(PORT7, ratio36_1, true);
 
 // Controls
 vex::controller::axis omnidirectionalY = mainCon.Axis3;
-vex::controller::axis omnidirectionalX = mainCon.Axis2;
+vex::controller::axis omnidirectionalX = mainCon.Axis4;
 
 vex::controller::axis turning = mainCon.Axis1;
 
