@@ -52,7 +52,7 @@ void movement(double x, double y, double turnvalue) {
         } else if(x < 0 && y > 0) {
             desired_angle = desired_angle + M_PI;
         } else if(x < 0 && y == 0) {
-            desired_angle = desired_angle + M_PI;
+            desired_angle = M_PI;
         }
         
         // Speed derived from analog stick displacement * max rpm * angle
@@ -66,7 +66,7 @@ void movement(double x, double y, double turnvalue) {
 
     //Turning (Right analog stick)
     //Simply add the speed to the motors
-    if(turnvalue < -10 || turnvalue > 10) {
+    if(turnvalue < -10 || turnvalue > 10) { //Dont want tiny values to have any effect
         neSpeed += SPEED*(turnvalue/MAX_AXIS_VALUE);
         nwSpeed += SPEED*(turnvalue/MAX_AXIS_VALUE);
         seSpeed += SPEED*(turnvalue/MAX_AXIS_VALUE);
