@@ -37,8 +37,6 @@ double desired_angle = 0;
  * Note that this will not be used during autonomous.
 */
 
-bool movementinput = true;
-
 /* USING LINKED LISTS (likely to use less battery)*/
 
 int numTicks = 0;
@@ -65,7 +63,7 @@ int avgFromLinkedList(Node *head) {
 /* USING ARRAYS (Likely to use more battery) */
 /*
 //These are the wheel velocities over the last 10 ticks
-//We will use integers here to save CPU when doing the calculations
+//We will use integers here to save CPU time when doing the calculations
 int neWheelVel10Tick[10];
 int nwWheelVel10Tick[10];
 int seWheelVel10Tick[10];
@@ -168,17 +166,21 @@ void movement(double x, double y, double turnvalue) {
         swWheelVelTail = swWheelVelTail->next;
 
         if(numTicks > 10) { //We only want to delete the old head if we have at least 10 records
-            neWheelVelHead->next = neWheelVelHead->next->next; //Dispose of old head
-            neWheelVelHead = neWheelVelHead->next;
+            Node *temp = neWheelVelHead;
+            neWheelVelHead = neWheelVelHead->next; //Dispose of old head
+            delete temp; temp = NULL;
 
-            nwWheelVelHead->next = neWheelVelHead->next->next; //Dispose of old head
-            nwWheelVelHead = neWheelVelHead->next;
+            temp = neWheelVelHead;
+            nwWheelVelHead = nwWheelVelHead->next; //Dispose of old head
+            delete temp; temp = NULL;
 
-            seWheelVelHead->next = neWheelVelHead->next->next; //Dispose of old head
-            seWheelVelHead = neWheelVelHead->next;
+            temp = neWheelVelHead;
+            seWheelVelHead = seWheelVelHead->next; //Dispose of old head
+            delete temp; temp = NULL;
 
-            swWheelVelHead->next = neWheelVelHead->next->next; //Dispose of old head
-            swWheelVelHead = neWheelVelHead->next;
+            temp = swWheelVelHead;
+            swWheelVelHead = swWheelVelHead->next; //Dispose of old head
+            delete temp; temp = NULL;
         }
 
         //Now adjust for the possible drifting
