@@ -41,6 +41,11 @@ const int MAX_AXIS_VALUE = 127;
 //If not driver mode, then autonomous mode
 extern bool driverMode; 
 
+/*
+ * Gets the average of the values of all the nodes
+ * @param head         The first node in this linked list
+ * @return int         The average of the values
+*/
 int avgFromLinkedList(Node *head);
 
 /*

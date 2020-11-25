@@ -135,75 +135,77 @@ void movement(double x, double y, double turnvalue) {
 
     /* BEGINNING IMPLEMENTATION FOR LINKED LIST STUFF FOR WHEEL CORRECTION */
 
-    if(numTicks == 0) { // No ticks have passed, so we need to start the linked list
-        neWheelVelHead->vel = neSpeed; neWheelVelTail = neWheelVelHead;
-        nwWheelVelHead->vel = nwSpeed; nwWheelVelTail = nwWheelVelHead;
-        seWheelVelHead->vel = seSpeed; seWheelVelTail = seWheelVelHead;
-        swWheelVelHead->vel = swSpeed; swWheelVelTail = swWheelVelHead;
+    if(driverMode) { //We only want this working during manual driver control
+        if(numTicks == 0) { // No ticks have passed, so we need to start the linked list
+            neWheelVelHead->vel = neSpeed; neWheelVelTail = neWheelVelHead;
+            nwWheelVelHead->vel = nwSpeed; nwWheelVelTail = nwWheelVelHead;
+            seWheelVelHead->vel = seSpeed; seWheelVelTail = seWheelVelHead;
+            swWheelVelHead->vel = swSpeed; swWheelVelTail = swWheelVelHead;
 
-    } else {
-        //We want to record the velocity before the adjustments are added so that
-        //the adjustments do not have any affect on themselves next tick or later.
+        } else {
+            //We want to record the velocity before the adjustments are added so that
+            //the adjustments do not have any affect on themselves next tick or later.
 
-        //Northeast
-        neWheelVelTail->next = new Node; //Add new node on end
-        neWheelVelTail->next->vel = neSpeed;
-        neWheelVelTail = neWheelVelTail->next;
+            //Northeast
+            neWheelVelTail->next = new Node; //Add new node on end
+            neWheelVelTail->next->vel = neSpeed;
+            neWheelVelTail = neWheelVelTail->next;
 
-        //Northwest
-        nwWheelVelTail->next = new Node; //Add new node on end
-        nwWheelVelTail->next->vel = nwSpeed;
-        nwWheelVelTail = nwWheelVelTail->next;
+            //Northwest
+            nwWheelVelTail->next = new Node; //Add new node on end
+            nwWheelVelTail->next->vel = nwSpeed;
+            nwWheelVelTail = nwWheelVelTail->next;
 
-        //Southeast
-        seWheelVelTail->next = new Node; //Add new node on end
-        seWheelVelTail->next->vel = seSpeed;
-        seWheelVelTail = seWheelVelTail->next;
+            //Southeast
+            seWheelVelTail->next = new Node; //Add new node on end
+            seWheelVelTail->next->vel = seSpeed;
+            seWheelVelTail = seWheelVelTail->next;
 
-        //Southwest
-        swWheelVelTail->next = new Node; //Add new node on end
-        swWheelVelTail->next->vel = swSpeed;
-        swWheelVelTail = swWheelVelTail->next;
+            //Southwest
+            swWheelVelTail->next = new Node; //Add new node on end
+            swWheelVelTail->next->vel = swSpeed;
+            swWheelVelTail = swWheelVelTail->next;
 
-        if(numTicks > 10) { //We only want to delete the old head if we have at least 10 records
-            Node *temp = neWheelVelHead;
-            neWheelVelHead = neWheelVelHead->next; //Dispose of old head
-            delete temp; temp = NULL;
+            if(numTicks > 10) { //We only want to delete the old head if we have at least 10 records
+                Node *temp = neWheelVelHead;
+                neWheelVelHead = neWheelVelHead->next; //Dispose of old head
+                delete temp; temp = NULL;
 
-            temp = neWheelVelHead;
-            nwWheelVelHead = nwWheelVelHead->next; //Dispose of old head
-            delete temp; temp = NULL;
+                temp = neWheelVelHead;
+                nwWheelVelHead = nwWheelVelHead->next; //Dispose of old head
+                delete temp; temp = NULL;
 
-            temp = neWheelVelHead;
-            seWheelVelHead = seWheelVelHead->next; //Dispose of old head
-            delete temp; temp = NULL;
+                temp = neWheelVelHead;
+                seWheelVelHead = seWheelVelHead->next; //Dispose of old head
+                delete temp; temp = NULL;
 
-            temp = swWheelVelHead;
-            swWheelVelHead = swWheelVelHead->next; //Dispose of old head
-            delete temp; temp = NULL;
+                temp = swWheelVelHead;
+                swWheelVelHead = swWheelVelHead->next; //Dispose of old head
+                delete temp; temp = NULL;
+            }
+
+            //Now adjust for the possible drifting
+            int neavg = avgFromLinkedList(neWheelVelHead); //We also want to know if they are in the opposite direction (in which case, going to drift)
+            if(((neSpeed<0) != (neavg<0)) || abs(int(neSpeed)) < abs(neavg)/2) { //We are slowing or going in the opposite direction (GOING TO DRIFT)
+                neSpeed -= neavg/4;
+            }
+
+            int nwavg = avgFromLinkedList(nwWheelVelHead);
+            if(((nwSpeed<0) != (nwavg<0)) || abs(int(nwSpeed)) < abs(nwavg)/2) { //We are slowing or going in the opposite direction (GOING TO DRIFT)
+                nwSpeed -= nwavg/4;
+            }
+
+            int seavg = avgFromLinkedList(seWheelVelHead);
+            if(((seSpeed<0) != (seavg<0)) || abs(int(seSpeed)) < abs(seavg)/2) { //We are slowing or going in the opposite direction (GOING TO DRIFT)
+                seSpeed -= seavg/4;
+            }
+
+            int swavg = avgFromLinkedList(swWheelVelHead);
+            if(((swSpeed<0) != (swavg<0)) || abs(int(swSpeed)) < abs(swavg)/2) { //We are slowing or going in the opposite direction (GOING TO DRIFT)
+                swSpeed -= swavg/4;
+            }
+
         }
-
-        //Now adjust for the possible drifting
-        int neavg = avgFromLinkedList(neWheelVelHead); //We also want to know if they are in the opposite direction (in which case, going to drift)
-        if(((neSpeed<0) != (neavg<0)) || abs(int(neSpeed)) < abs(neavg)/2) { //We are slowing or going in the opposite direction (GOING TO DRIFT)
-            neSpeed -= neavg/4;
-        }
-
-        int nwavg = avgFromLinkedList(nwWheelVelHead);
-        if(((nwSpeed<0) != (nwavg<0)) || abs(int(nwSpeed)) < abs(nwavg)/2) { //We are slowing or going in the opposite direction (GOING TO DRIFT)
-            nwSpeed -= nwavg/4;
-        }
-
-        int seavg = avgFromLinkedList(seWheelVelHead);
-        if(((seSpeed<0) != (seavg<0)) || abs(int(seSpeed)) < abs(seavg)/2) { //We are slowing or going in the opposite direction (GOING TO DRIFT)
-            seSpeed -= seavg/4;
-        }
-
-        int swavg = avgFromLinkedList(swWheelVelHead);
-        if(((swSpeed<0) != (swavg<0)) || abs(int(swSpeed)) < abs(swavg)/2) { //We are slowing or going in the opposite direction (GOING TO DRIFT)
-            swSpeed -= swavg/4;
-        }
-
     }
 
     neWheel.setVelocity(neSpeed, rpm);
@@ -212,7 +214,6 @@ void movement(double x, double y, double turnvalue) {
     swWheel.setVelocity(swSpeed, rpm);
 
     //Brake if the wheel is not supposed to move (Make the motor go back if it moves)
-    //Should do some testing to make sure this is actually helpful
     if(neSpeed == 0) { neWheel.setBrake(hold); }
     else neWheel.spin(forward);
 
