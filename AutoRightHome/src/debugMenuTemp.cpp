@@ -75,7 +75,7 @@ void resetDebug() {
 
 void desiredangle() {
     vexBrain.Screen.print(" | Angle | ");
-    vexBrain.Screen.print(d_angle);
+    vexBrain.Screen.print(desired_angle);
 }
 
 /*void vexBrainPrint(std::string toPrint, bool doNewLine){
