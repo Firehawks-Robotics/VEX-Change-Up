@@ -67,10 +67,10 @@ motor neWheelMotor = motor(PORT11, ratio36_1, true);
 motor nwWheelMotor = motor(PORT20, ratio36_1, true);
 motor seWheelMotor = motor(PORT10, ratio36_1, true);
 motor swWheelMotor = motor(PORT9, ratio36_1, true);
-motor intakeLeft = motor(PORT1, ratio36_1, false);
-motor intakeRight = motor(PORT8, ratio36_1, true);
-motor liftLeft = motor(PORT5, ratio36_1, false);
-motor liftRight = motor(PORT7, ratio36_1, true);
+motor intakeLeftMotor = motor(PORT1, ratio36_1, false);
+motor intakeRightMotor = motor(PORT8, ratio36_1, true);
+motor liftLeftMotor = motor(PORT5, ratio36_1, false);
+motor liftRightMotor = motor(PORT7, ratio36_1, true);
 
 // Wheels
 Wheel neWheel = *new Wheel(neWheelMotor);
@@ -103,11 +103,11 @@ vex::controller::button toggleMode = mainCon.ButtonRight;
  */
 void vexcodeInit( void ) {
     //Inititalize the default velocity for motors with unchanging velocities
-    intakeLeft.setVelocity(200, rpm);
-    intakeRight.setVelocity(200, rpm);
+    intakeLeftMotor.setVelocity(200, rpm);
+    intakeRightMotor.setVelocity(200, rpm);
 
-    liftLeft.setVelocity(200, rpm);
-    liftRight.setVelocity(200, rpm);
+    liftLeftMotor.setVelocity(200, rpm);
+    liftRightMotor.setVelocity(200, rpm);
 
     //Create wheel objects
 

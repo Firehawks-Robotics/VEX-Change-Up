@@ -81,10 +81,10 @@ extern motor neWheelMotor;
 extern motor nwWheelMotor;
 extern motor seWheelMotor;
 extern motor swWheelMotor;
-extern motor intakeLeft;
-extern motor intakeRight;
-extern motor liftLeft;
-extern motor liftRight;
+extern motor intakeLeftMotor;
+extern motor intakeRightMotor;
+extern motor liftLeftMotor;
+extern motor liftRightMotor;
 
 //Wheels
 extern Wheel neWheel;
@@ -94,6 +94,7 @@ extern Wheel swWheel;
 
 //Note that I am using pointers here to reference the wheels
 extern Wheel *wheels[4]; //Storage so we can use loops to easily modify all wheels without much code
+
 
 //Controls
 extern vex::controller::axis omnidirectionalY; //Y-axis of the omnidirectional analog stick

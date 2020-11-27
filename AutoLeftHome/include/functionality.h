@@ -18,17 +18,16 @@ extern double desired_angle;
 
 /* FOR WHEEL CORRECTION LINKED LIST IMPLEMENTATION */
 
-//intake
-const int IN = 1;
-const int STOPINTAKE = 0;
-const int OUT = -1;
+//Motor intake and lift actions
+enum motorActions {
+    intakein = 1,
+    intakeout = 2,
+    stop = 3,
+    liftup = 4,
+    liftdown = 5,
+};
 
-//Lift/shoot
-const int UP = 1;
-const int STOPLIFT = 0;
-const int DOWN = -1;
-
-const int SPEED = 200; //rpm
+const int MAX_SPEED = 200; //rpm
 
 const int MAX_AXIS_VALUE = 127;
 

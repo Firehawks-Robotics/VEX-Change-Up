@@ -76,10 +76,10 @@ void movement(double x, double y, double turnvalue) {
         
         // Speed derived from analog stick displacement * max rpm * angle
         
-        neWheel.velocity = (added_vectors/MAX_AXIS_VALUE)*SPEED*sin(M_PI/4-desired_angle); 
-        swWheel.velocity = -(added_vectors/MAX_AXIS_VALUE)*SPEED*sin(-3*M_PI/4-desired_angle);
-        nwWheel.velocity = (added_vectors/MAX_AXIS_VALUE)*SPEED*sin(3*M_PI/4-desired_angle);
-        seWheel.velocity = -(added_vectors/MAX_AXIS_VALUE)*SPEED*sin(-M_PI/4-desired_angle);
+        neWheel.velocity = (added_vectors/MAX_AXIS_VALUE)*MAX_SPEED*sin(M_PI/4-desired_angle); 
+        swWheel.velocity = -(added_vectors/MAX_AXIS_VALUE)*MAX_SPEED*sin(-3*M_PI/4-desired_angle);
+        nwWheel.velocity = (added_vectors/MAX_AXIS_VALUE)*MAX_SPEED*sin(3*M_PI/4-desired_angle);
+        seWheel.velocity = -(added_vectors/MAX_AXIS_VALUE)*MAX_SPEED*sin(-M_PI/4-desired_angle);
 
     }
 
@@ -87,7 +87,7 @@ void movement(double x, double y, double turnvalue) {
     //Simply add the velocity to the motors
     if(turnvalue < -10 || turnvalue > 10) { //Dont want tiny values to have any effect
         for(int i=0; i<4; i++) {
-            wheels[i]->velocity += SPEED*(turnvalue/MAX_AXIS_VALUE);
+            wheels[i]->velocity += MAX_SPEED*(turnvalue/MAX_AXIS_VALUE);
         }
     }
 
@@ -111,44 +111,36 @@ void movement(double x, double y, double turnvalue) {
     }
 
     numTicks++; //More ticks
-
-    debugMenuController();
 }
 
 /*
- * -1 = Out
- * 0 = Stop
- * 1 = In
+ * using values stored in enum `motorActions`
 */
 void intake(int inOrOut) {
-    if(inOrOut == -1) { //Out
-        intakeLeft.spin(forward);
-        intakeRight.spin(forward);
+    if(inOrOut == intakein) { //Out
+        intakeLeftMotor.spin(forward);
+        intakeRightMotor.spin(forward);
     } else if(inOrOut == 0) { //Stop
-        intakeLeft.stop(hold);
-        intakeRight.stop(hold);
-    } else if(inOrOut == 1) { //In
-        intakeLeft.spin(reverse);
-        intakeRight.spin(reverse);
+        intakeLeftMotor.stop(hold);
+        intakeRightMotor.stop(hold);
+    } else if(inOrOut == intakein) { //In
+        intakeLeftMotor.spin(reverse);
+        intakeRightMotor.spin(reverse);
     }  
-    debugMenuController();
 }
 
 /*
- * -1 = Down
- * 0 = Stop
- * 1 = Up
+ * Using values stored in enum `motorActions`
 */
 void lift(int upOrDown) {
-    if(upOrDown == -1) { //Down
-        liftLeft.spin(forward);
-        liftRight.spin(forward);
-    } else if(upOrDown == 0) { //Stop
-        liftLeft.stop(hold);
-        liftRight.stop(hold);
-    } else if(upOrDown == 1) { //Up
-        liftLeft.spin(reverse);
-        liftRight.spin(reverse);
+    if(upOrDown == liftdown) { //Down
+        liftLeftMotor.spin(forward);
+        liftRightMotor.spin(forward);
+    } else if(upOrDown == stop) { //Stop
+        liftLeftMotor.stop(hold);
+        liftRightMotor.stop(hold);
+    } else if(upOrDown == liftup) { //Up
+        liftLeftMotor.spin(reverse);
+        liftRightMotor.spin(reverse);
     }
-    debugMenuController();
 }
