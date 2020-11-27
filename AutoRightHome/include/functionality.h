@@ -18,12 +18,6 @@ extern double desired_angle;
 
 /* FOR WHEEL CORRECTION LINKED LIST IMPLEMENTATION */
 
-class Node {
-    public:
-        int vel = -128; //Cannot be -128 (means uninitialized)
-    Node * next;
-};
-
 //intake
 const int IN = 1;
 const int STOPINTAKE = 0;
