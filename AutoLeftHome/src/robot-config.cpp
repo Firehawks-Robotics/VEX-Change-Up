@@ -8,7 +8,7 @@
 /*----------------------------------------------------------------------------------*/
 
 #include "vex.h"
-#include "debugMenuTemp.h"
+#include "debugScreen.h"
 
 using namespace vex;
 using signature = vision::signature;
@@ -51,7 +51,6 @@ void Wheel::shiftVelocityRecords(int newVelocity) {
         }
     }
 }
-
 void Wheel::spin(directionType dir) {
     this->wheelMotor->setVelocity(this->velocity, rpm);
     this->wheelMotor->spin(dir);

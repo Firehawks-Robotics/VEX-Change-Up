@@ -60,6 +60,8 @@ int main() {
 
     driverMode = true;
 
+    driverMode = true;
+
     //Using lambdas here btw (learn more: https://en.cppreference.com/w/cpp/language/lambda)
     //Values of all axes are needed so that wheel velocity can be modified accordingly
     intakeIn.pressed([](){intake(intakeout);});

@@ -1,6 +1,6 @@
 /*----------------------------------------------------------------------------------*/
 /*                                                                                  */
-/*    Module:       debugMenuTemp.cpp                                               */
+/*    Module:       debugScreen.cpp                                                 */
 /*    Author:       Sean Johnson, Richard Wang, Luke Wittbrodt (Firehawks Robotics) */
 /*    Created:      Thu Oct 22 2020                                                 */
 /*    Description:  Robot Debug Screen Implementation                               */
@@ -16,6 +16,8 @@ brain vexBrain;
 #include "robot-config.h"
 #include "functionality.h"
 #include "debugScreen.h"
+
+temperatureUnits u = temperatureUnits::celsius;
 
 //Controllers
 controller mainCon;

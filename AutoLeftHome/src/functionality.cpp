@@ -89,6 +89,7 @@ void movement(double x, double y, double turnvalue) {
         }
     }
 
+    //Wheel drifting corrections
     if(driverMode) { //We only want wheel corrections to happen during driver mode
         for(int i = 0; i<4; i++) { //Iterate through all wheels to update velocity records
             Wheel *wheel = wheels[i];
@@ -100,7 +101,7 @@ void movement(double x, double y, double turnvalue) {
             }
         }
     }
-
+    
     //Brake if the wheel is not supposed to move (Make the motor go back if it moves)
     //Otherwise, spin
     for(int i=0; i<4; i++) {

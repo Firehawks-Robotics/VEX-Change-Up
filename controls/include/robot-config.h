@@ -62,6 +62,8 @@ class Wheel {
         void shiftVelocityRecords(int newVelocity);
 
         /*
+=======
+>>>>>>> develop
          * Spins the motor that controls this wheel at the velocity stored in `Wheel#velocity` (measured in rpm)
          * @param directionType dir   The direction defined by vex that you want (forward or backward)
         */

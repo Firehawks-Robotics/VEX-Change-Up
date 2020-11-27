@@ -21,6 +21,8 @@ extern brain vexBrain;
 
 extern double d_angle;
 
+extern temperatureUnits u;
+
 //Controllers
 extern controller mainCon;
 
@@ -37,8 +39,6 @@ void backButtons();
 void resetDebug();
 
 void movementAngle();
-
-temperatureUnits u = temperatureUnits::celsius;
 
 void temperature();
 
