@@ -36,19 +36,15 @@ void backButtons();
 
 void resetDebug();
 
-/*void vexBrainPrint(std::string toPrint, bool doNewLine){
-    if(doNewLine){
-      vexBrain.Screen.print(toPrint);
-      vexBrain.Screen.newLine();
-    }
-    else{
-      vexBrain.Screen.print(toPrint);
-    }
-}*/
+void movementAngle();
+
+temperatureUnits u = temperatureUnits::celsius;
+
+void temperature();
 
 /*
     Calls all the functions in order to display
-    the current values associated with the controller
+    the current values associated with the controller and motors
 */
 void debugMenuController();
 

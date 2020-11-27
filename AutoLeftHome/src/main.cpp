@@ -39,7 +39,7 @@ using namespace vex;
  * 1. Some of the motors are configured to be in reverse
 */
 
-#include "debugMenuTemp.h"
+#include "debugScreen.h"
 #include "functionality.h"
 #include "autonomous.h"
 
@@ -56,7 +56,9 @@ int main() {
         auton();
     }
 
-    //After autonomous, then we are free to go into driver control mode
+    //After autonomous, then we are free to go into driver control mode (and record the wheel velocities as well)
+
+    driverMode = true;
 
     //Using lambdas here btw (learn more: https://en.cppreference.com/w/cpp/language/lambda)
     //Values of all axes are needed so that wheel velocity can be modified accordingly
@@ -71,8 +73,7 @@ int main() {
     liftDown.released([](){lift(stop);});
 
     //Movement is handled by an infinite while loop to ensure that the movement gets updated like it should
-    //Sometimes the axis.changed event does not happen even if the axis value does change. Thus, our current solution:
-    driverMode = true;
+    //Sometimes the axis.changed event does not happen even if the axis value does change. Thus, our current solution.
     while(1) { //Each iteration of this loop is one tick (so each tick is about 20 ms)
         movement(omnidirectionalX.value(), omnidirectionalY.value(), turning.value());
         wait(20, timeUnits::msec); //Use less battery this way

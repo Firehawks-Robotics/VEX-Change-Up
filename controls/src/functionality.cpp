@@ -12,7 +12,7 @@
 using namespace vex;
 
 #include "functionality.h"
-#include "debugMenuTemp.h"
+#include "debugScreen.h"
 
 //If not driver mode, then autonomous mode
 bool driverMode = true; 

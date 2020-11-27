@@ -12,7 +12,7 @@
 using namespace vex;
 
 #include "functionality.h"
-#include "debugMenuTemp.h"
+#include "debugScreen.h"
 
 //If not driver mode, then autonomous mode
 bool driverMode = true; 
@@ -112,14 +112,14 @@ void movement(double x, double y, double turnvalue) {
 /*
  * using values stored in enum `motorActions`
 */
-void intake(int inOrOut) {
-    if(inOrOut == intakein) { //Out
+void intake(int dir) {
+    if(dir == intakein) { //Out
         intakeLeftMotor.spin(forward);
         intakeRightMotor.spin(forward);
-    } else if(inOrOut == 0) { //Stop
+    } else if(dir == 0) { //Stop
         intakeLeftMotor.stop(hold);
         intakeRightMotor.stop(hold);
-    } else if(inOrOut == intakein) { //In
+    } else if(dir == intakein) { //In
         intakeLeftMotor.spin(reverse);
         intakeRightMotor.spin(reverse);
     }  

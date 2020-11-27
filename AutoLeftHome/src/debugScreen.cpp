@@ -15,6 +15,7 @@ brain vexBrain;
 
 #include "robot-config.h"
 #include "functionality.h"
+#include "debugScreen.h"
 
 //Controllers
 controller mainCon;
@@ -66,27 +67,43 @@ void backButtons(){
     vexBrain.Screen.print(mainCon.ButtonR2.pressing());
 }
 
+void movementAngle() {
+    vexBrain.Screen.print(" | Angle | ");
+    vexBrain.Screen.print(desired_angle); //from functionality.h
+}
+
+//Temperature of all the motors
+void temperature() {
+    vexBrain.Screen.print("Motor Temperature:");
+    vexBrain.Screen.newLine();
+
+    //Wheels
+    vexBrain.Screen.print("nw | ");
+    vexBrain.Screen.print(nwWheelMotor.temperature(u));
+    vexBrain.Screen.print(" | ne | ");
+    vexBrain.Screen.print(nwWheelMotor.temperature(u));
+    vexBrain.Screen.print(" | sw | ");
+    vexBrain.Screen.print(nwWheelMotor.temperature(u));
+    vexBrain.Screen.print(" | sw | ");
+    vexBrain.Screen.print(nwWheelMotor.temperature(u));
+
+    //Function motors
+    vexBrain.Screen.print("liftleft | ");
+    vexBrain.Screen.print(liftLeftMotor.temperature(u));
+    vexBrain.Screen.print("| liftright | ");
+    vexBrain.Screen.print(liftRightMotor.temperature(u));
+    vexBrain.Screen.print("| intakeleft | ");
+    vexBrain.Screen.print(intakeLeftMotor.temperature(u));
+    vexBrain.Screen.print("| intakeright | ");
+    vexBrain.Screen.print(intakeRightMotor.temperature(u));
+}
+
 void resetDebug() {
     vex::task::sleep(100);
     vexBrain.Screen.clearLine();
     vexBrain.Screen.clearScreen();
     vexBrain.Screen.setOrigin(0, 0);
 }
-
-void desiredangle() {
-    vexBrain.Screen.print(" | Angle | ");
-    vexBrain.Screen.print(desired_angle);
-}
-
-/*void vexBrainPrint(std::string toPrint, bool doNewLine){
-    if(doNewLine){
-      vexBrain.Screen.print(toPrint);
-      vexBrain.Screen.newLine();
-    }
-    else{
-      vexBrain.Screen.print(toPrint);
-    }
-}*/
 
 void debugMenuController(){
     resetDebug();
@@ -106,6 +123,9 @@ void debugMenuController(){
     backButtons();
     vexBrain.Screen.newLine();
 
-    desiredangle();
+    movementAngle();
+    vexBrain.Screen.newLine();
+
+    temperature();
     vexBrain.Screen.newLine();
 }
