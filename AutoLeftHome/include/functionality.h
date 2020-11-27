@@ -16,17 +16,16 @@ using namespace vex;
 
 extern double desired_angle;
 
-//intake
-const int IN = 1;
-const int STOPINTAKE = 0;
-const int OUT = -1;
+//Motor intake and lift actions
+enum motorActions {
+    intakein = 1,
+    intakeout = 2,
+    stop = 3, //For both lift and intake
+    liftup = 4,
+    liftdown = 5,
+};
 
-//Lift/shoot
-const int UP = 1;
-const int STOPLIFT = 0;
-const int DOWN = -1;
-
-const int SPEED = 200; //rpm
+const int MAX_SPEED = 200; //rpm
 
 const int MAX_AXIS_VALUE = 127;
 
@@ -44,14 +43,14 @@ extern bool driverMode;
 void movement(double x, double y, double turnvalue);
 
 /*
- * Moves the liftLeft and liftRight motors according to desired direction.
- * @param upOrDown     Direction desired. 0 = In, 1 = Out.
+ * Moves the liftLeftMotor and liftRightMotor motors according to desired direction.
+ * @param upOrDown     Direction desired. Using values from `motorActions`
 */
 void intake(int inOrOut);
 
 /*
- * Moves the liftLeft and liftRight motors according to desired direction.
- * @param upOrDown     Direction desired. 0 = Up, 1 = Down.
+ * Moves the liftLeftMotor and liftRightMotor motors according to desired direction.
+ * @param upOrDown     Direction desired. Using values from `motorActions`
 */
 void lift(int upOrDown);
 

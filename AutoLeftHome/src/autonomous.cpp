@@ -26,15 +26,13 @@ using namespace vex;
  *  1: Right Side
 */
 
-timeUnits ms = timeUnits::msec; //Just to save a few keystrokes
-
 /* NOTES
  * - SIDE is used to change the direction of some actions that should change based on the side of the board the robot is placed
  * - All pausing times will need to be updated
 */
 
 //1000 milliseconds = 1 second
-void pause(int milliseconds) { wait(20, ms); }
+void pause(int milliseconds) { wait(20, timeUnits::msec); }
 
 //At prototype, this should take 7 seconds (lmao, yeah right)
 void auton() {
@@ -51,7 +49,7 @@ void auton() {
 
     //Move forwards and intake the two balls
     movement(MAX_AXIS_VALUE, 0, 0);
-    intake(IN);
+    intake(intakein);
 
     pause(200);
 
@@ -59,7 +57,7 @@ void auton() {
 
     pause(200); //Make this just enough to get them in the intake, but not the lift
 
-    intake(STOPINTAKE);
+    intake(stop);
 
     //Turn Around and put preload ball in goal
     movement(0, 0, SIDE*MAX_AXIS_VALUE);
@@ -68,11 +66,11 @@ void auton() {
 
     movement(0, 0, 0); //Stop turning
 
-    lift(UP); //Now put the preload ball in the goal
+    lift(liftup); //Now put the preload ball in the goal
 
     pause(200);
 
-    lift(STOPLIFT);
+    lift(liftup);
 
     //Go score one ball in the middle goal
     movement(0, 0, -1*SIDE*MAX_AXIS_VALUE); //Fix angle
@@ -85,11 +83,11 @@ void auton() {
 
     movement(0, 0, 0); //Stop once reached the middle goal
 
-    lift(UP); //Put the ball in the goal
+    lift(liftup); //Put the ball in the goal
 
     pause(200); //stop before we put the last ball in there (we dont want that)
 
-    lift(STOPLIFT);
+    lift(stop);
 
     //Go to the last goal on the home row
     movement(-1*SIDE*MAX_AXIS_VALUE, MAX_AXIS_VALUE, 0); //Give wide berth to other robot so it doesnt get in the way
@@ -102,11 +100,11 @@ void auton() {
 
     movement(0, 0, 0); //Stop in front of the goal
 
-    lift(UP); //Put the last ball in the last goal
+    lift(liftup); //Put the last ball in the last goal
 
     pause(200);
 
-    lift(STOPLIFT); //Stop everything
+    lift(stop); //Stop everything
 
     //IDEA: if there is still enough time at the end, then move somewhere that would give a strategic advantage
 

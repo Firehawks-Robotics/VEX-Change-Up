@@ -21,6 +21,8 @@ extern brain vexBrain;
 
 extern double d_angle;
 
+extern temperatureUnits u;
+
 //Controllers
 extern controller mainCon;
 
@@ -36,19 +38,13 @@ void backButtons();
 
 void resetDebug();
 
-/*void vexBrainPrint(std::string toPrint, bool doNewLine){
-    if(doNewLine){
-      vexBrain.Screen.print(toPrint);
-      vexBrain.Screen.newLine();
-    }
-    else{
-      vexBrain.Screen.print(toPrint);
-    }
-}*/
+void movementAngle();
+
+void temperature();
 
 /*
     Calls all the functions in order to display
-    the current values associated with the controller
+    the current values associated with the controller and motors
 */
 void debugMenuController();
 
