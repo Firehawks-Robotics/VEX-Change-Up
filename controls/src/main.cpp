@@ -74,6 +74,10 @@ int main() {
     liftUp.released([](){lift(stop);});
     liftDown.released([](){lift(stop);});
 
+    stopMotors.pressed(emergencyStop);
+
+
+
     //Movement is handled by an infinite while loop to ensure that the movement gets updated like it should
     //Sometimes the axis.changed event does not happen even if the axis value does change. Thus, our current solution.
     while(1) { //Each iteration of this loop is one tick (so each tick is about 20 ms)

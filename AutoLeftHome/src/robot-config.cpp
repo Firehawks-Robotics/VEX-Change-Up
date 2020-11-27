@@ -91,7 +91,7 @@ vex::controller::button intakeOut = mainCon.ButtonR2; //Back
 vex::controller::button liftUp = mainCon.ButtonL1; //Front
 vex::controller::button liftDown = mainCon.ButtonL2; //Back
 
-vex::controller::button toggleMode = mainCon.ButtonRight;
+vex::controller::button stopMotors = mainCon.ButtonDown;
 
 // VEXcode generated functions
 
