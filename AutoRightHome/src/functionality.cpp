@@ -110,3 +110,17 @@ void lift(int dir) {
         liftRightMotor.spin(reverse);
     }
 }
+
+/*
+ * Immediately stop all motors and brake them
+*/
+void emergencyStop() {
+    neWheelMotor.stop(brake);
+    nwWheelMotor.stop(brake);
+    seWheelMotor.stop(brake);
+    swWheelMotor.stop(brake);
+    liftLeftMotor.stop(brake);
+    liftRightMotor.stop(brake);
+    intakeLeftMotor.stop(brake);
+    intakeRightMotor.stop(brake);
+}

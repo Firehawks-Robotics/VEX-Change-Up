@@ -89,7 +89,7 @@ extern vex::controller::button intakeOut; //Intake out button (reverse intake)
 extern vex::controller::button liftUp; //Lift/shoot button
 extern vex::controller::button liftDown; //Lift/shoot button (reverse)
 
-extern vex::controller::button toggleMode; //toggle between driver control and autonomous
+extern vex::controller::button stopMotors; //Stop all motors and brake
 
 /**
  * Used to initialize code/tasks/devices added using tools in VEXcode Text.

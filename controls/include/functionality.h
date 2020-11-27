@@ -54,4 +54,10 @@ void intake(int dir);
 */
 void lift(int dir);
 
+
+/*
+ * Immediately stops all motor movement and brakes (using brakeType brake).
+*/
+void emergencyStop();
+
 #endif
