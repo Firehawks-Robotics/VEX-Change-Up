@@ -46,12 +46,12 @@ void movement(double x, double y, double turnvalue);
  * Moves the liftLeftMotor and liftRightMotor motors according to desired direction.
  * @param upOrDown     Direction desired. Using values from `motorActions`
 */
-void intake(int inOrOut);
+void intake(int dir);
 
 /*
  * Moves the liftLeftMotor and liftRightMotor motors according to desired direction.
  * @param upOrDown     Direction desired. Using values from `motorActions`
 */
-void lift(int upOrDown);
+void lift(int dir);
 
 #endif
