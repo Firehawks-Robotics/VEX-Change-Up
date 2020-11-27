@@ -37,8 +37,6 @@ double desired_angle = 0;
  * Note that this will not be used during autonomous.
 */
 
-int numTicks = 0;
-
 //We're gonna have to change the velocity of all the wheels by taking
 //the value of both left and right analog sticks.
 void movement(double x, double y, double turnvalue) {
@@ -109,21 +107,19 @@ void movement(double x, double y, double turnvalue) {
         if(wheels[i]->velocity == 0) { wheels[i]->wheelMotor->setBrake(hold); }
         else wheels[i]->spin(forward);
     }
-
-    numTicks++; //More ticks
 }
 
 /*
  * using values stored in enum `motorActions`
 */
-void intake(int inOrOut) {
-    if(inOrOut == intakein) { //Out
+void intake(int dir) {
+    if(dir == intakein) { //Out
         intakeLeftMotor.spin(forward);
         intakeRightMotor.spin(forward);
-    } else if(inOrOut == 0) { //Stop
+    } else if(dir == 0) { //Stop
         intakeLeftMotor.stop(hold);
         intakeRightMotor.stop(hold);
-    } else if(inOrOut == intakein) { //In
+    } else if(dir == intakein) { //In
         intakeLeftMotor.spin(reverse);
         intakeRightMotor.spin(reverse);
     }  
@@ -132,14 +128,14 @@ void intake(int inOrOut) {
 /*
  * Using values stored in enum `motorActions`
 */
-void lift(int upOrDown) {
-    if(upOrDown == liftdown) { //Down
+void lift(int dir) {
+    if(dir == liftdown) { //Down
         liftLeftMotor.spin(forward);
         liftRightMotor.spin(forward);
-    } else if(upOrDown == stop) { //Stop
+    } else if(dir == stop) { //Stop
         liftLeftMotor.stop(hold);
         liftRightMotor.stop(hold);
-    } else if(upOrDown == liftup) { //Up
+    } else if(dir == liftup) { //Up
         liftLeftMotor.spin(reverse);
         liftRightMotor.spin(reverse);
     }

@@ -22,7 +22,7 @@ extern double desired_angle;
 enum motorActions {
     intakein = 1,
     intakeout = 2,
-    stop = 3,
+    stop = 3, //For both lift and intake
     liftup = 4,
     liftdown = 5,
 };
@@ -38,6 +38,7 @@ extern bool driverMode;
  * Allows for omnidirectional movement by using the ratio between the y and x axes of the left analog stick.
  * Displacement of the analog stick is taken into account when determining relative speed.
  * Turning is dealt with here on every movement of both analog sticks to allow for movement and turning simulatneously.
+ * Drift correction is dealt with here. For a better understanding of how this works, see the comments at the implementation (functionality.cpp).
  * @param x            Value of the x axis of the movement analog stick. Can be aribitary value when used for autonomous.
  * @param y            Value of the y axis of the movement analog stick. Can be aribitary value when used for autonomous.
  * @param turnvalue    Value of the turn analog stick. Can be arbitrary value when used for autonomous.
@@ -45,14 +46,14 @@ extern bool driverMode;
 void movement(double x, double y, double turnvalue);
 
 /*
- * Moves the liftLeft and liftRight motors according to desired direction.
- * @param upOrDown     Direction desired. 0 = In, 1 = Out.
+ * Moves the liftLeftMotor and liftRightMotor motors according to desired direction.
+ * @param upOrDown     Direction desired. Using values from `motorActions`
 */
 void intake(int inOrOut);
 
 /*
- * Moves the liftLeft and liftRight motors according to desired direction.
- * @param upOrDown     Direction desired. 0 = Up, 1 = Down.
+ * Moves the liftLeftMotor and liftRightMotor motors according to desired direction.
+ * @param upOrDown     Direction desired. Using values from `motorActions`
 */
 void lift(int upOrDown);
 
