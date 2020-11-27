@@ -72,6 +72,7 @@ int main() {
 
     //Movement is handled by an infinite while loop to ensure that the movement gets updated like it should
     //Sometimes the axis.changed event does not happen even if the axis value does change. Thus, our current solution:
+    driverMode = true;
     while(1) { //Each iteration of this loop is one tick (so each tick is about 20 ms)
         movement(omnidirectionalX.value(), omnidirectionalY.value(), turning.value());
         wait(20, timeUnits::msec); //Use less battery this way

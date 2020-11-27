@@ -35,13 +35,6 @@ const int MAX_AXIS_VALUE = 127;
 extern bool driverMode; 
 
 /*
- * Gets the average of the values of all the nodes
- * @param head         The first node in this linked list
- * @return int         The average of the values
-*/
-int avgFromLinkedList(Node *head);
-
-/*
  * Allows for omnidirectional movement by using the ratio between the y and x axes of the left analog stick.
  * Displacement of the analog stick is taken into account when determining relative speed.
  * Turning is dealt with here on every movement of both analog sticks to allow for movement and turning simulatneously.
