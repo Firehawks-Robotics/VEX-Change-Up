@@ -32,7 +32,7 @@ using namespace vex;
 */
 
 //1000 milliseconds = 1 second
-void pause(int milliseconds) { wait(20, timeUnits::msec); }
+void pause(int milliseconds) { wait(milliseconds, timeUnits::msec); }
 
 //At prototype, this should take 7 seconds (lmao, yeah right)
 void auton() {

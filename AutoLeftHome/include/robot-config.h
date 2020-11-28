@@ -95,8 +95,16 @@ extern Wheel seWheel;
 extern Wheel swWheel;
 
 //Note that I am using pointers here to reference the wheels
-extern Wheel *wheels[4]; //Storage so we can use loops to easily modify all wheels without much code
+const int NUM_WHEELS = 4;
+extern Wheel *wheels[NUM_WHEELS]; //Storage so we can use loops to easily modify all wheels without much code
 
+const int MIN_MOVEMENT_AXIS_DISPLACEMENT = 10; //The value the axis needs to be (+ or -) the x and y movement axes need to be (combined) in order to move the robot
+//Same value for requirement to turn
+
+//How long each tick lasts
+//movement is called each tick during the driver control period
+//ticks have no effect during the autonomous period
+const int TICK_LENGTH = 20; //ms
 
 //Controls
 extern vex::controller::axis omnidirectionalY; //Y-axis of the omnidirectional analog stick
