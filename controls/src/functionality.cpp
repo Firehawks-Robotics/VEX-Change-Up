@@ -25,7 +25,7 @@ double desired_angle = 0;
 void movement(double x, double y, double turnvalue) {
 
     //Reset all wheel velocitys so they can be updated as we go through this function
-    for(int i = 0; NUM_WHEELS; i++) {
+    for(int i = 0; i<NUM_WHEELS; i++) {
         wheels[i]->velocity = 0;
     }
 
@@ -66,14 +66,14 @@ void movement(double x, double y, double turnvalue) {
     //Turning (Right analog stick)
     //Simply add the velocity to the motors
     if(abs(int(turnvalue)) > MIN_MOVEMENT_AXIS_DISPLACEMENT) { //Dont want tiny values to have any effect
-        for(int i=0; NUM_WHEELS; i++) {
+        for(int i=0; i<NUM_WHEELS; i++) {
             wheels[i]->velocity += MAX_SPEED*(turnvalue/MAX_AXIS_VALUE);
         }
     }
 
     //Brake if the wheel is not supposed to move (Make the motor go back if it moves)
     //Otherwise, spin
-    for(int i=0; NUM_WHEELS; i++) {
+    for(int i=0; i<NUM_WHEELS; i++) {
         if(wheels[i]->velocity == 0) { wheels[i]->wheelMotor->setBrake(hold); }
         else wheels[i]->spin(forward);
     }
