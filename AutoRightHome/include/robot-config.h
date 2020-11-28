@@ -22,16 +22,18 @@ class Node {
     Node * next;
 };
 
+const int MAX_VELOCITY_RECORDS = 10;
+
 /*
  * A wrapper for motor class that implements drift correction.
- * Drift correction includes velocity records for the last 10 ticks (approximately 1/5 of a second)
+ * Drift correction includes velocity records for the last MAX_VELOCITY_RECORDS ticks (approximately 1/5 of a second)
  * Note the use of 'velocity' instead of 'speed' because direction is also important.
 */
 class Wheel {
     protected:
         Node *velRecordsHead;
         Node *velRecordsTail; //The head and the tail should be the same node at first
-        int totalVelocityRecords = 0; //When at 10, then we should start deleting the head when new are added
+        int totalVelocityRecords = 0; //When at MAX_VELOCITY_RECORDS, then we should start deleting the head when new are added
 
     public:
         Wheel(motor &wheelMotor);
@@ -47,15 +49,15 @@ class Wheel {
         motor *wheelMotor;
 
         /*
-         * Calculates the average velocity over the last 10 ticks using the velocity records
+         * Calculates the average velocity over the last MAX_VELOCITY_RECORDS ticks using the velocity records
          * The velocity records and the average velocity do not include the velocity modifications made for the
          * drift correction.
-         * @returns int   The average velocity of this wheel over the last 10 ticks (about 1/5 of a second)
+         * @returns int   The average velocity of this wheel over the last MAX_VELOCITY_RECORDS ticks (about 1/5 of a second)
         */
         int avgVelocity(void);
 
         /*
-         * Adds a velocity record to the end of the linked list. If there are already 10 velocity records, then
+         * Adds a velocity record to the end of the linked list. If there are already MAX_VELOCITY_RECORDS velocity records, then
          * Remove the head as wheel (that is no longer needed because that was 11 ticks ago).
          * @param int newVelocity  The velocity to be added to the records
         */

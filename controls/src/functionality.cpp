@@ -24,6 +24,7 @@ double desired_angle = 0;
  *    When the wheels brake, they often slip a little bit (and often change the direction of the robot).
  * What if I could prevent the slipping? Well, maybe I can.
  * 
+ * The amount of ticks that are recorded could change (see robot-config.h -> MAX_VELOCITY_RECORDS to make sure this is right)
  * Get the average wheel velocity (of each wheel) over the last 10 ticks (each tick is 20 ms, and movement() is called once each tick).
  * If the average wheel velocity is at least double (or in the opposite direction of) the current wheel velocity, then
  * the robot is either slowing or attempting to move in the opposite direction, which could cause the robot to drift.
@@ -91,7 +92,7 @@ void movement(double x, double y, double turnvalue) {
 
     //Wheel drifting corrections
     if(driverMode) { //We only want wheel corrections to happen during driver mode
-        for(int i = 0; i<4; i++) { //Iterate through all wheels to update velocity records
+        for(int i = 0; i<NUM_WHEELS; i++) { //Iterate through all wheels to update velocity records
             Wheel *wheel = wheels[i];
             int velocity = int(wheel->velocity);
             wheel->shiftVelocityRecords(velocity); //Update velocity records (do not include the drifting correction in the velocity records)

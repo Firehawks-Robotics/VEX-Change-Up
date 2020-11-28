@@ -42,7 +42,7 @@ void Wheel::shiftVelocityRecords(int newVelocity) {
         this->velRecordsTail->next = new Node; //Add new node on end
         this->velRecordsTail->next->vel = newVelocity;
         this->velRecordsTail = velRecordsTail->next;
-        if(totalVelocityRecords >= 10) { //Then we need to remove the head
+        if(totalVelocityRecords >= MAX_VELOCITY_RECORDS) { //Then we need to remove the head
             Node *temp = velRecordsHead;
             velRecordsHead = velRecordsHead->next; //Dispose of old head by changing the pointer's memory reference to the second record
             delete temp; temp = NULL; //Free the old node from memory
