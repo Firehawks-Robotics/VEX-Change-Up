@@ -24,8 +24,7 @@ double desired_angle = 0;
  *    When the wheels brake, they often slip a little bit (and often change the direction of the robot).
  * What if I could prevent the slipping? Well, maybe I can.
  * 
- * The amount of ticks that are recorded could change (see robot-config.h -> MAX_VELOCITY_RECORDS to make sure this is right)
- * Get the average wheel velocity (of each wheel) over the last 10 ticks (each tick is 20 ms, and movement() is called once each tick).
+ * Get the average wheel velocity (of each wheel) over the last MAX_VELOCITY_RECORDS ticks (each tick is 20 ms, and movement() is called once each tick).
  * If the average wheel velocity is at least double (or in the opposite direction of) the current wheel velocity, then
  * the robot is either slowing or attempting to move in the opposite direction, which could cause the robot to drift.
  * Using the average wheel velocity, the robot should automatically correct for this to do more against slippage than
@@ -33,8 +32,8 @@ double desired_angle = 0;
  * 
  * The robot needs to change the wheels' velocity opposite of the average wheel velocity. If the robot is slowing, 
  * which happens when the robot's new velocity from the analog sticks is less than half the average velocity over the last
- * 10 ticks, then we need our wheel correction. Additionally, if the robot is supposed to move opposite the average velocity
- * of the last 10 ticks, then correction. Note that correction for each wheel is independent of the other wheels (dont happen together).
+ * MAX_VELOCITY_RECORDS ticks, then we need our wheel correction. Additionally, if the robot is supposed to move opposite the average velocity
+ * of the last MAX_VELOCITY_RECORDS ticks, then correction. Note that correction for each wheel is independent of the other wheels (dont happen together).
  *
  * Note that this will not be used during autonomous.
 */
