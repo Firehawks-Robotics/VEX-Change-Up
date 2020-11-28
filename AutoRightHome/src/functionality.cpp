@@ -8,6 +8,7 @@
 /*----------------------------------------------------------------------------------*/
 
 #include "vex.h"
+#include <cmath>
 
 using namespace vex;
 
@@ -24,17 +25,16 @@ double desired_angle = 0;
 void movement(double x, double y, double turnvalue) {
 
     //Reset all wheel velocitys so they can be updated as we go through this function
-    for(int i = 0; i<4; i++) {
+    for(int i = 0; NUM_WHEELS; i++) {
         wheels[i]->velocity = 0;
     }
 
     double added_vectors = sqrt(pow(x, 2) + pow(y, 2));
-    if (added_vectors >= 10) {  //We dont want to have the robot move when the analog stick is barely displaced, but really shouldnt be.
+    if (added_vectors >= MIN_MOVEMENT_AXIS_DISPLACEMENT) {  //We dont want to have the robot move when the analog stick is barely displaced, but really shouldnt be.
 
         //Omnidirectional (Left analog stick)
 
         //Prevent dividing by 0 (while still maintaining direction)
-        //At large numbers like 100/0.0001, arctan(x) changes very little with each decimal place
         if (x == 0) {
             if (y > 0) {
                 desired_angle = M_PI/2;
@@ -65,15 +65,15 @@ void movement(double x, double y, double turnvalue) {
 
     //Turning (Right analog stick)
     //Simply add the velocity to the motors
-    if(turnvalue < -10 || turnvalue > 10) { //Dont want tiny values to have any effect
-        for(int i=0; i<4; i++) {
+    if(abs(int(turnvalue)) > MIN_MOVEMENT_AXIS_DISPLACEMENT) { //Dont want tiny values to have any effect
+        for(int i=0; NUM_WHEELS; i++) {
             wheels[i]->velocity += MAX_SPEED*(turnvalue/MAX_AXIS_VALUE);
         }
     }
 
     //Brake if the wheel is not supposed to move (Make the motor go back if it moves)
     //Otherwise, spin
-    for(int i=0; i<4; i++) {
+    for(int i=0; NUM_WHEELS; i++) {
         if(wheels[i]->velocity == 0) { wheels[i]->wheelMotor->setBrake(hold); }
         else wheels[i]->spin(forward);
     }
@@ -86,7 +86,7 @@ void intake(int dir) {
     if(dir == intakein) { //Out
         intakeLeftMotor.spin(forward);
         intakeRightMotor.spin(forward);
-    } else if(dir == 0) { //Stop
+    } else if(dir == stop) { //Stop
         intakeLeftMotor.stop(hold);
         intakeRightMotor.stop(hold);
     } else if(dir == intakein) { //In
