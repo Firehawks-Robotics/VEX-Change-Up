@@ -67,7 +67,7 @@ void movement(double x, double y, double turnValue) {
     //Simply add the velocity to the motors
     if(abs(int(turnValue)) > MIN_MOVEMENT_AXIS_DISPLACEMENT) { //Dont want tiny values to have any effect
         for(int i=0; i<NUM_WHEELS; i++) {
-            wheels[i]->velocity += MAX_SPEED*(-turnValue/MAX_AXIS_VALUE);
+            wheels[i]->velocity += MAX_SPEED*(turnValue/MAX_AXIS_VALUE);
         }
     }
 

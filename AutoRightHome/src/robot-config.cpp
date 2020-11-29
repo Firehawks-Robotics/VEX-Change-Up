@@ -33,8 +33,8 @@ void Wheel::spin(double velocity, directionType dir) {
 }
 
 // VEXcode device constructors
-motor neWheelMotor = motor(PORT11, ratio36_1, false);
-motor nwWheelMotor = motor(PORT20, ratio36_1, false);
+motor neWheelMotor = motor(PORT11, ratio36_1, true);
+motor nwWheelMotor = motor(PORT20, ratio36_1, true);
 motor seWheelMotor = motor(PORT10, ratio36_1, true);
 motor swWheelMotor = motor(PORT9, ratio36_1, true);
 motor intakeLeftMotor = motor(PORT1, ratio36_1, false);
