@@ -28,6 +28,6 @@ using namespace vex;
  * 6. Robot scores the third home zone goal with the last ball it is still
  *        holding
 */
-void auton();
+void autonomous();
 
 #endif

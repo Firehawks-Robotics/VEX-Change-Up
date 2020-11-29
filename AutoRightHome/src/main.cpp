@@ -48,17 +48,13 @@ using namespace vex;
 //All the side constant does is reverse directions of some things.
 #include "side.h"
 
-int main() {
+competition comp;
 
+void pre_auton() {
     vexcodeInit();
+}
 
-    if(SIDE != 0) { //If this is the controls program, then DONT do autonomous
-        auton();
-    }
-
-    //After autonomous, then we are free to go into driver control mode (and record the wheel velocities as well)
-
-    driverMode = true;
+void usercontrol() {
 
     driverMode = true;
 
@@ -83,4 +79,26 @@ int main() {
         wait(TICK_LENGTH, timeUnits::msec); //Use less battery this way
         debugMenuController(); //Debug screen is updated every tick
     }
+
+}
+
+int main() {
+
+    //If this is one of the autonomous programs, then we need to wait until something happens
+    if(SIDE != 0) { 
+
+        pre_auton();
+
+        comp.autonomous(autonomous);
+        comp.drivercontrol(usercontrol);
+
+        // prevent main from exiting with an infinite
+        // loop while we wait for instructions from the field switch
+        while(1) wait(100, msec);
+        
+    } else { //If this is the controls testing, then go directly to the drivercontrols
+        vexcodeInit();
+        usercontrol();
+    }
+
 }
