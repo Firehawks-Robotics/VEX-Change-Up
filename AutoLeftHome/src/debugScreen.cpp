@@ -17,9 +17,6 @@ using namespace vex;
 /** The temperature units used to report the temperature on the debug screen */
 temperatureUnits u = temperatureUnits::celsius;
 
-/**
- * Displays the current value of the axes of the left analog stick.
-*/
 void leftAnalogStick() {
     vexBrain.Screen.print("Axis 1 | ");
     vexBrain.Screen.print(mainCon.Axis1.value());
@@ -27,9 +24,6 @@ void leftAnalogStick() {
     vexBrain.Screen.print(mainCon.Axis2.value());
 }
 
-/**
- * Displays the current value of the axes of the right analog stick.
-*/
 void rightAnalogStick() {
     vexBrain.Screen.print("Axis 4 | ");
     vexBrain.Screen.print(mainCon.Axis3.value());
@@ -37,9 +31,6 @@ void rightAnalogStick() {
     vexBrain.Screen.print(mainCon.Axis4.value());
 }
 
-/**
- * Displays whether or not the A/B/X/Y buttons are being pressed.
-*/
 void buttons() {
     vexBrain.Screen.print("A | ");
     vexBrain.Screen.print(mainCon.ButtonA.pressing());
@@ -51,9 +42,6 @@ void buttons() {
     vexBrain.Screen.print(mainCon.ButtonY.pressing());
 }
 
-/**
- * Displays whether or not each arrow button is being pressed.
-*/
 void arrows() {
     vexBrain.Screen.print("v | ");
     vexBrain.Screen.print(mainCon.ButtonDown.pressing());
@@ -65,9 +53,7 @@ void arrows() {
     vexBrain.Screen.print(mainCon.ButtonLeft.pressing());
 }
 
-/**
- * Displays whether or not each bumper is being pressed (the back/top buttons).
-*/
+
 void bumpers() {
     vexBrain.Screen.print("L1 | ");
     vexBrain.Screen.print(mainCon.ButtonL1.pressing());
@@ -79,25 +65,15 @@ void bumpers() {
     vexBrain.Screen.print(mainCon.ButtonR2.pressing());
 }
 
-/**
- * Displays the angle relative to the positive x-axis that is created if a line
- * were drawn between the left analog stick's natural position and its current
- * position.
-*/
+
 void movementAngle() {
     vexBrain.Screen.print(" | Angle | ");
     vexBrain.Screen.print(desiredAngle); //from functionality.h
 }
 
-/**
- * Displays the temperature of all motors like so:
- *
- * Motor Temperature:
- * ne : 20 | nw : 20 | se : 20 | sw : 20
- * liftleft : 20 | liftright : 20 | intakeleft : 20 | intakeright : 20
-*/
 void temperature() {
-    vexBrain.Screen.print("Motor Temperature:");
+    if(u == temperatureUnits::celsius) { vexBrain.Screen.print("Motor Temperature: (celcius)"); }
+    if(u == temperatureUnits::celsius) { vexBrain.Screen.print("Motor Temperature: (fahrenheit)"); }
     vexBrain.Screen.newLine();
 
     //Wheels
@@ -123,10 +99,7 @@ void temperature() {
     vexBrain.Screen.print(intakeRightMotor.temperature(u));
 }
 
-/**
- * Wipes the debug info from the brain's screen and places the cursor at the
- * origin.
-*/
+
 void resetDebug() {
     vex::task::sleep(100);
     vexBrain.Screen.clearLine();
@@ -134,10 +107,6 @@ void resetDebug() {
     vexBrain.Screen.setOrigin(0, 0);
 }
 
-/**
- * Main function for displaying all the debug information on the screen.
- * Calls the above functions.
-*/
 void debugMenuController(){
     resetDebug();
 
