@@ -35,7 +35,7 @@ using namespace vex;
 void pause(int milliseconds) { wait(milliseconds, timeUnits::msec); }
 
 //At prototype, this should take 7 seconds (lmao, yeah right)
-void auton() {
+void autonomous() {
     //Move NE to get in front of goal
     movement(MAX_AXIS_VALUE, SIDE*MAX_AXIS_VALUE, 0);
     pause(500);
