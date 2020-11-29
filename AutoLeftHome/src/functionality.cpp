@@ -18,14 +18,13 @@ using namespace vex;
 //If not driver mode, then autonomous mode
 bool driverMode = true; 
 
-double desired_angle = 0;
+double desiredAngle = 0;
 
 /* WHEEL SELF-CORRECTION
  *    When the wheels brake, they often slip a little bit (and often change the direction of the robot).
  * What if I could prevent the slipping? Well, maybe I can.
  * 
- * The amount of ticks that are recorded could change (see robot-config.h -> MAX_VELOCITY_RECORDS to make sure this is right)
- * Get the average wheel velocity (of each wheel) over the last 10 ticks (each tick is 20 ms, and movement() is called once each tick).
+ * Get the average wheel velocity (of each wheel) over the last MAX_VELOCITY_RECORDS ticks (each tick is 20 ms, and movement() is called once each tick).
  * If the average wheel velocity is at least double (or in the opposite direction of) the current wheel velocity, then
  * the robot is either slowing or attempting to move in the opposite direction, which could cause the robot to drift.
  * Using the average wheel velocity, the robot should automatically correct for this to do more against slippage than
@@ -33,60 +32,60 @@ double desired_angle = 0;
  * 
  * The robot needs to change the wheels' velocity opposite of the average wheel velocity. If the robot is slowing, 
  * which happens when the robot's new velocity from the analog sticks is less than half the average velocity over the last
- * 10 ticks, then we need our wheel correction. Additionally, if the robot is supposed to move opposite the average velocity
- * of the last 10 ticks, then correction. Note that correction for each wheel is independent of the other wheels (dont happen together).
+ * MAX_VELOCITY_RECORDS ticks, then we need our wheel correction. Additionally, if the robot is supposed to move opposite the average velocity
+ * of the last MAX_VELOCITY_RECORDS ticks, then correction. Note that correction for each wheel is independent of the other wheels (dont happen together).
  *
  * Note that this will not be used during autonomous.
 */
 
 //We're gonna have to change the velocity of all the wheels by taking
 //the value of both left and right analog sticks.
-void movement(double x, double y, double turnvalue) {
+void movement(double x, double y, double turnValue) {
 
     //Reset all wheel velocitys so they can be updated as we go through this function
     for(int i = 0; i<NUM_WHEELS; i++) {
         wheels[i]->velocity = 0;
     }
 
-    double added_vectors = sqrt(pow(x, 2) + pow(y, 2));
-    if (added_vectors >= MIN_MOVEMENT_AXIS_DISPLACEMENT) {  //We dont want to have the robot move when the analog stick is barely displaced, but really shouldnt be.
+    double addedVectors = sqrt(pow(x, 2) + pow(y, 2));
+    if (addedVectors >= MIN_MOVEMENT_AXIS_DISPLACEMENT) {  //We dont want to have the robot move when the analog stick is barely displaced, but really shouldnt be.
 
         //Omnidirectional (Left analog stick)
 
         //Prevent dividing by 0 (while still maintaining direction)
         if (x == 0) {
             if (y > 0) {
-                desired_angle = M_PI/2;
+                desiredAngle = M_PI/2;
             } else if (y < 0) {
-                desired_angle = -M_PI/2;
+                desiredAngle = -M_PI/2;
             } //y cant be 0 here
         } else {
-            desired_angle = atan(y/x);
+            desiredAngle = atan(y/x);
         }
 
         //We need to have a 360 angle
         if(x < 0 && y < 0) {
-            desired_angle = desired_angle - M_PI;
+            desiredAngle = desiredAngle - M_PI;
         } else if(x < 0 && y > 0) {
-            desired_angle = desired_angle + M_PI;
+            desiredAngle = desiredAngle + M_PI;
         } else if(x < 0 && y == 0) {
-            desired_angle = M_PI;
+            desiredAngle = M_PI;
         }
         
         // Speed derived from analog stick displacement * max rpm * angle
         
-        neWheel.velocity = (added_vectors/MAX_AXIS_VALUE)*MAX_SPEED*sin(M_PI/4-desired_angle); 
-        swWheel.velocity = -(added_vectors/MAX_AXIS_VALUE)*MAX_SPEED*sin(-3*M_PI/4-desired_angle);
-        nwWheel.velocity = (added_vectors/MAX_AXIS_VALUE)*MAX_SPEED*sin(3*M_PI/4-desired_angle);
-        seWheel.velocity = -(added_vectors/MAX_AXIS_VALUE)*MAX_SPEED*sin(-M_PI/4-desired_angle);
+        neWheel.velocity = (addedVectors/MAX_AXIS_VALUE)*MAX_SPEED*sin(M_PI/4-desiredAngle); 
+        swWheel.velocity = (addedVectors/MAX_AXIS_VALUE)*MAX_SPEED*sin(-3*M_PI/4-desiredAngle);
+        nwWheel.velocity = (addedVectors/MAX_AXIS_VALUE)*MAX_SPEED*sin(3*M_PI/4-desiredAngle);
+        seWheel.velocity = (addedVectors/MAX_AXIS_VALUE)*MAX_SPEED*sin(-M_PI/4-desiredAngle);
 
     }
 
     //Turning (Right analog stick)
     //Simply add the velocity to the motors
-    if(abs(int(turnvalue)) > MIN_MOVEMENT_AXIS_DISPLACEMENT) { //Dont want tiny values to have any effect
+    if(abs(int(turnValue)) > MIN_MOVEMENT_AXIS_DISPLACEMENT) { //Dont want tiny values to have any effect
         for(int i=0; i<NUM_WHEELS; i++) {
-            wheels[i]->velocity += MAX_SPEED*(turnvalue/MAX_AXIS_VALUE);
+            wheels[i]->velocity += MAX_SPEED*(-turnValue/MAX_AXIS_VALUE);
         }
     }
 

@@ -15,7 +15,8 @@ using signature = vision::signature;
 using code = vision::code;
 
 // A global instance of brain used for printing to the V5 Brain screen
-brain Brain;
+brain vexBrain;
+controller mainCon;
 
 Wheel::Wheel(motor &wheelMotor) {
     this->wheelMotor = &wheelMotor;
@@ -62,10 +63,10 @@ void Wheel::spin(double velocity, directionType dir) {
 }
 
 // VEXcode device constructors
-motor neWheelMotor = motor(PORT11, ratio36_1, true);
-motor nwWheelMotor = motor(PORT20, ratio36_1, true);
-motor seWheelMotor = motor(PORT10, ratio36_1, true);
-motor swWheelMotor = motor(PORT9, ratio36_1, true);
+motor neWheelMotor = motor(PORT11, ratio36_1, false);
+motor nwWheelMotor = motor(PORT20, ratio36_1, false);
+motor seWheelMotor = motor(PORT10, ratio36_1, false);
+motor swWheelMotor = motor(PORT9, ratio36_1, false);
 motor intakeLeftMotor = motor(PORT1, ratio36_1, false);
 motor intakeRightMotor = motor(PORT8, ratio36_1, true);
 motor liftLeftMotor = motor(PORT5, ratio36_1, false);
