@@ -75,9 +75,9 @@ void movement(double x, double y, double turnValue) {
         // Speed derived from analog stick displacement * max rpm * angle
         
         neWheel.velocity = (addedVectors/MAX_AXIS_VALUE)*MAX_SPEED*sin(M_PI/4-desiredAngle); 
-        swWheel.velocity = (addedVectors/MAX_AXIS_VALUE)*MAX_SPEED*sin(-3*M_PI/4-desiredAngle);
+        swWheel.velocity = -swWheel.velocity;
         nwWheel.velocity = (addedVectors/MAX_AXIS_VALUE)*MAX_SPEED*sin(3*M_PI/4-desiredAngle);
-        seWheel.velocity = (addedVectors/MAX_AXIS_VALUE)*MAX_SPEED*sin(-M_PI/4-desiredAngle);
+        seWheel.velocity = -nwWheel.velocity;
 
     }
 
