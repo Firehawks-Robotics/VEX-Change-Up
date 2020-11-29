@@ -13,7 +13,7 @@
 using namespace vex;
 
 /** The brain of our VEX Robot. */
-extern brain Brain;
+extern brain vexBrain;
 
 /** The one controller we have connected. */
 extern controller mainCon;
@@ -154,7 +154,7 @@ extern Wheel swWheel; /** Represents the southwest wheel */
 /**
  * Stores the wheels so that we can easily iterate over them.
 */
-const extern Wheel *wheels[NUM_WHEELS]; 
+extern Wheel *wheels[NUM_WHEELS]; 
 
 /**
  * The following are all the controls on the controller. The axes represent
@@ -162,22 +162,22 @@ const extern Wheel *wheels[NUM_WHEELS];
 */
 
 /** The vertical axis of the left (movement) analog stick */
-const extern vex::controller::axis omnidirectionalY; 
+extern vex::controller::axis omnidirectionalY; 
 /** The horizontal axis of the left (movement) analog stick */
-const extern vex::controller::axis omnidirectionalX;
+extern vex::controller::axis omnidirectionalX;
 
 /** The horizontal axis of the right (turning) analog stick (vertical unused) */
-const extern vex::controller::axis turning;
+extern vex::controller::axis turning;
 
 /** Button that causes the intake motors to intake objects. */
-const extern vex::controller::button intakeIn;
+extern vex::controller::button intakeIn;
 /** Button that causes the intake motors to expel objects. */
-const extern vex::controller::button intakeOut;
+extern vex::controller::button intakeOut;
 
 /** Button that causes the lift motors to lift objects. */
-const extern vex::controller::button liftUp;
+extern vex::controller::button liftUp;
 /** Button that causes the lift motors to make objects go down. */
-const extern vex::controller::button liftDown;
+extern vex::controller::button liftDown;
 
 /**
  * Button that immediately stops all motors and makes them brake (using
@@ -188,7 +188,7 @@ const extern vex::controller::button liftDown;
  * happen during a match, this could cause problems. If the robot starts to run
  * away, then hit this button to immediately stop it from moving. 
 */
-const extern vex::controller::button stopMotors;
+extern vex::controller::button stopMotors;
 
 /**
  * Used to initialize code/tasks/devices added using tools in VEXcode Text.

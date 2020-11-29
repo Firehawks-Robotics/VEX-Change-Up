@@ -14,27 +14,17 @@
 
 using namespace vex;
 
-extern brain vexBrain;
-
-// A global instance of vex::vexBrain used for printing to the V5 vexBrain screen
-//vex::brain vexBrain;
-
-extern double d_angle;
-
 extern temperatureUnits u;
 
-//Controllers
-extern controller mainCon;
+void leftAnalogStick();
 
-void rightTrigger();
-
-void leftTrigger();
+void rightAnalogStick();
 
 void buttons();
 
 void arrows();
 
-void backButtons();
+void bumpers();
 
 void resetDebug();
 

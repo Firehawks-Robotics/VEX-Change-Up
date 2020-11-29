@@ -17,7 +17,7 @@ using namespace vex;
 /**
  * The angle that the displacement along the horizontal and vertical axes make.
 */
-extern double desired_angle;
+extern double desiredAngle;
 
 /**
  * Enumerates the actions that the intake and lift motors can take. The stop

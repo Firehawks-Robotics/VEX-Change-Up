@@ -1,6 +1,6 @@
 /*----------------------------------------------------------------------------------*/
 /*                                                                                  */
-/*    Module:       debugScreen.cpp                                               */
+/*    Module:       debugScreen.cpp                                                 */
 /*    Author:       Sean Johnson, Richard Wang, Luke Wittbrodt (Firehawks Robotics) */
 /*    Created:      Thu Oct 22 2020                                                 */
 /*    Description:  Robot Debug Screen Implementation                               */
@@ -20,7 +20,7 @@ temperatureUnits u = temperatureUnits::celsius;
 /**
  * Displays the current value of the axes of the left analog stick.
 */
-void left_analog_stick() {
+void leftAnalogStick() {
     vexBrain.Screen.print("Axis 1 | ");
     vexBrain.Screen.print(mainCon.Axis1.value());
     vexBrain.Screen.print(" | Axis 2 | ");
@@ -30,7 +30,7 @@ void left_analog_stick() {
 /**
  * Displays the current value of the axes of the right analog stick.
 */
-void right_analog_stick() {
+void rightAnalogStick() {
     vexBrain.Screen.print("Axis 4 | ");
     vexBrain.Screen.print(mainCon.Axis3.value());
     vexBrain.Screen.print(" | Axis 3 | ");
@@ -86,7 +86,7 @@ void bumpers() {
 */
 void movementAngle() {
     vexBrain.Screen.print(" | Angle | ");
-    vexBrain.Screen.print(desired_angle); //from functionality.h
+    vexBrain.Screen.print(desiredAngle); //from functionality.h
 }
 
 /**
@@ -141,10 +141,10 @@ void resetDebug() {
 void debugMenuController(){
     resetDebug();
 
-    rightTrigger();
+    leftAnalogStick();
     vexBrain.Screen.newLine();
 
-    leftTrigger();
+    rightAnalogStick();
     vexBrain.Screen.newLine();
     
     buttons();
@@ -153,7 +153,7 @@ void debugMenuController(){
     arrows();
     vexBrain.Screen.newLine();
 
-    backButtons();
+    bumpers();
     vexBrain.Screen.newLine();
 
     movementAngle();
