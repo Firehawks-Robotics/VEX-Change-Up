@@ -110,6 +110,11 @@ void resetDebug() {
 void debugMenuController(){
     resetDebug();
 
+    vexBrain.Screen.print(swWheel.velocity);
+    vexBrain.Screen.print(seWheel.velocity);
+    vexBrain.Screen.print(neWheel.velocity);
+    vexBrain.Screen.print(nwWheel.velocity);
+
     leftAnalogStick();
     vexBrain.Screen.newLine();
 
