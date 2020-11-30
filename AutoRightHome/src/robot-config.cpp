@@ -22,6 +22,36 @@ Wheel::Wheel(motor &wheelMotor) {
     this->wheelMotor = &wheelMotor;
 }
 
+int Wheel::avgVelocity() {
+    int sum = 0;
+    Node *current = this->velRecordsHead;
+    while(current->next != 0) {
+        sum+=current->vel;
+        current = current->next;
+    }
+
+    return sum/totalVelocityRecords;
+}
+
+void Wheel::shiftVelocityRecords(int newVelocity) {
+    if(this->totalVelocityRecords == 0) { //We currently have no records
+        this->velRecordsHead = new Node;
+        this->velRecordsHead->vel = newVelocity;
+        this->velRecordsTail = velRecordsHead;
+        this->totalVelocityRecords++;
+    } else { //We have some records of the wheel's velocity
+        this->velRecordsTail->next = new Node; //Add new node on end
+        this->velRecordsTail->next->vel = newVelocity;
+        this->velRecordsTail = velRecordsTail->next;
+        if(totalVelocityRecords >= MAX_VELOCITY_RECORDS) { //Then we need to remove the head
+            Node *temp = velRecordsHead;
+            velRecordsHead = velRecordsHead->next; //Dispose of old head by changing the pointer's memory reference to the second record
+            delete temp; temp = NULL; //Free the old node from memory
+        } else { //Since we have not deleted a record if we get here, then increase the record count
+            this->totalVelocityRecords++;
+        }
+    }
+}
 void Wheel::spin(directionType dir) {
     this->wheelMotor->setVelocity(this->velocity, rpm);
     this->wheelMotor->spin(dir);

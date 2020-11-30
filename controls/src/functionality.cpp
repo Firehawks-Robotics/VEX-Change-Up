@@ -20,6 +20,24 @@ bool driverMode = true;
 
 double desiredAngle = 0;
 
+/* WHEEL SELF-CORRECTION
+ *    When the wheels brake, they often slip a little bit (and often change the direction of the robot).
+ * What if I could prevent the slipping? Well, maybe I can.
+ * 
+ * Get the average wheel velocity (of each wheel) over the last MAX_VELOCITY_RECORDS ticks (each tick is 20 ms, and movement() is called once each tick).
+ * If the average wheel velocity is at least double (or in the opposite direction of) the current wheel velocity, then
+ * the robot is either slowing or attempting to move in the opposite direction, which could cause the robot to drift.
+ * Using the average wheel velocity, the robot should automatically correct for this to do more against slippage than
+ * just friction. This can be thought of as anti-lock braking on your car (ABS).
+ * 
+ * The robot needs to change the wheels' velocity opposite of the average wheel velocity. If the robot is slowing, 
+ * which happens when the robot's new velocity from the analog sticks is less than half the average velocity over the last
+ * MAX_VELOCITY_RECORDS ticks, then we need our wheel correction. Additionally, if the robot is supposed to move opposite the average velocity
+ * of the last MAX_VELOCITY_RECORDS ticks, then correction. Note that correction for each wheel is independent of the other wheels (dont happen together).
+ *
+ * Note that this will not be used during autonomous.
+*/
+
 //We're gonna have to change the velocity of all the wheels by taking
 //the value of both left and right analog sticks.
 void movement(double x, double y, double turnValue) {
@@ -71,6 +89,19 @@ void movement(double x, double y, double turnValue) {
         }
     }
 
+    //Wheel drifting corrections
+    if(driverMode) { //We only want wheel corrections to happen during driver mode
+        for(int i = 0; i<NUM_WHEELS; i++) { //Iterate through all wheels to update velocity records
+            Wheel *wheel = wheels[i];
+            int velocity = int(wheel->velocity);
+            wheel->shiftVelocityRecords(velocity); //Update velocity records (do not include the drifting correction in the velocity records)
+            int avg = wheel->avgVelocity(); //We also want to know if they are in the opposite direction (in which case, going to drift)
+            if(((velocity<0) != (avg<0)) || abs(int(velocity)) < abs(avg)/2) { //We are slowing or going in the opposite direction (GOING TO DRIFT)
+                wheel->velocity -= avg; //remember this this happens for only about 1/5 of a second
+            }
+        }
+    }
+    
     //Brake if the wheel is not supposed to move (Make the motor go back if it moves)
     //Otherwise, spin
     for(int i=0; i<NUM_WHEELS; i++) {
