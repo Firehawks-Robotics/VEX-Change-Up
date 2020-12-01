@@ -48,8 +48,32 @@ const int NUM_WHEELS = 4;
 /**
  * The number of velocity records we want to hold. These records are used for
  * determining average wheel velocity so we can correct drift.
-*/
+/
 const int MAX_VELOCITY_RECORDS = 10;
+*/
+
+/*
+ * The rate at which the velocity of the robot's wheels moves toward their
+ * respective goal velocities. Should be constant so that we have a constant
+ * change in the velocity (a linear model).
+ *
+ * Proportional to the acceleration of the wheels.
+ *
+ * Should be between 0 and 1. An accelerational constant of 1 means that the
+ * wheel's velocity will immediately go up to the goalVelocity (which means
+ * there is no gradual acceleration). An accelerational constant of 0 means
+ * that the wheel's velocity will never change.
+ *
+ * A good rule for determining the accelerational constant is using this:
+ * ANGULAR_ACCELERATIONAL_CONSTANT = 1/(ticks), where ticks is the number of
+ * ticks that should pass between the time the wheel starts accelerating
+ * and when it reaches its goalVelocity. 
+ *
+ * For example, an accelerational constant of 1/20 would result in the wheel
+ * accelerating to its goal velocity over 20 ticks (approximately 400 ms or
+ * 2/5 of a second when the ticklength is 20 ms).
+*/
+const int ANGULAR_ACCELERATIONAL_CONSTANT = 1/20; 
 
 /**
  * Node of a linked list that stores the velocity records.
@@ -80,10 +104,11 @@ class Node {
 */
 class Wheel {
     protected:
+        /*
         Node *velRecordsHead;
         Node *velRecordsTail; //The head and the tail should be the same node at first
         int totalVelocityRecords = 0; //When at MAX_VELOCITY_RECORDS, then we should start deleting the head when new are added
-
+        */
     public:
         /**
          * The default constructor for the Wheel class. It takes the motor it 
@@ -98,24 +123,70 @@ class Wheel {
         double velocity = 0;
 
         /*
+         * double   The velcoity at which we want the motor to be turning soon
+         * (measured in rpm). Used for implementing gradual acceleration.
+         * To prevent the robot from slipping initially.
+        */
+        double goalVelocity = 0;
+
+        /*
+         * double   The velocity at which the robot was moving when the analog
+         * stick was moved (which gave us our goalVelocity). This is used in
+         * the calculation for the velocity from gradual acceleration.
+        */
+        double initialForGoalVelocity = 0;
+
+        /*
+         * double   The rate at which the robot's velocity is changing in order
+         * to reach the goalVelocity. Proportional to the
+         * ANGULAR_ACCELERATIONAL_CONSTANT.
+        */
+        double acceleration = 0;
+
+        /*
          * motor    The motor that this wheel is controlled by.
         */
         motor *wheelMotor;
 
-        /*
+        /* Implementation for wheel correction (likely not needed now)
+
+        /
          * Calculates the average velocity over the last MAX_VELOCITY_RECORDS ticks using the velocity records
          * The velocity records and the average velocity do not include the velocity modifications made for the
          * drift correction.
          * @returns int   The average velocity of this wheel over the last MAX_VELOCITY_RECORDS ticks (about 1/5 of a second)
-        */
+        /
         int avgVelocity(void);
 
-        /*
+        /
          * Adds a velocity record to the end of the linked list. If there are already MAX_VELOCITY_RECORDS velocity records, then
          * Remove the head as wheel (that is no longer needed because that was 11 ticks ago).
          * @param int newVelocity  The velocity to be added to the records
-        */
+        /
         void shiftVelocityRecords(int newVelocity);
+        */
+
+        /*
+         * A method to control drifting and changing of direction when the
+         * robot first starts to move. This allows us to gradually change the
+         * velocity of the robot so that we do not have kinetic friction
+         * between the robot's wheels and the floor.
+         *
+         * The model for the increase in acceleration should be linear. It
+         * should slope up in the case that the desired velocity is positive.
+         * The slope will be negative when 
+         * This gives us a constant acceleration.
+         *
+         * The rate at which this occurs is proportional to the 
+         * ACCELERATIONAL_CONSTANT, which will allow us to adjust the rate of
+         * acceleration so that the driver has the most control over the
+         * robot's movement.
+         *
+         * This will be called once per tick.
+         *
+         * V = initialV + (acceleration)(time)
+        */
+        void calculateAcceleratingVelocity();
 
         /*
          * Spins the motor that controls this wheel at the velocity stored in

@@ -84,9 +84,8 @@ void usercontrol() {
 
 int main() {
 
-    vexcodeInit();
-    usercontrol();
-    /*
+    //vexcodeInit();
+    //autonomous();
 
     //If this is one of the autonomous programs, then we need to wait until something happens
     if(SIDE != 0) { 
@@ -103,6 +102,6 @@ int main() {
     } else { //If this is the controls testing, then go directly to the drivercontrols
         vexcodeInit();
         usercontrol();
-    }*/
+    }
 
 }

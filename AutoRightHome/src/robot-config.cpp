@@ -22,6 +22,19 @@ Wheel::Wheel(motor &wheelMotor) {
     this->wheelMotor = &wheelMotor;
 }
 
+void Wheel::calculateAcceleratingVelocity() {
+    if(velocity > goalVelocity) { //We don't want it to continue accelerating if its already at its goal.
+        velocity = goalVelocity;
+        return; 
+    } else if (velocity == goalVelocity) { return; }
+
+    this->acceleration = (goalVelocity - initialForGoalVelocity) * ANGULAR_ACCELERATIONAL_CONSTANT;
+
+    this->velocity += this->acceleration;
+}
+
+/* drift correction (may not be needed anymore)
+
 int Wheel::avgVelocity() {
     int sum = 0;
     Node *current = this->velRecordsHead;
@@ -51,7 +64,7 @@ void Wheel::shiftVelocityRecords(int newVelocity) {
             this->totalVelocityRecords++;
         }
     }
-}
+}*/
 void Wheel::spin(directionType dir) {
     this->wheelMotor->setVelocity(this->velocity, rpm);
     this->wheelMotor->spin(dir);
@@ -64,11 +77,11 @@ void Wheel::spin(double velocity, directionType dir) {
 
 // VEXcode device constructors
 motor neWheelMotor = motor(PORT11, ratio36_1, true);
-motor nwWheelMotor = motor(PORT20, ratio36_1, false);
+motor nwWheelMotor = motor(PORT20, ratio36_1, true); //revert this to false if reversed
 motor seWheelMotor = motor(PORT10, ratio36_1, false);
 motor swWheelMotor = motor(PORT9, ratio36_1, false);
-motor intakeLeftMotor = motor(PORT1, ratio36_1, false);
-motor intakeRightMotor = motor(PORT8, ratio36_1, true);
+motor intakeLeftMotor = motor(PORT1, ratio36_1, true);
+motor intakeRightMotor = motor(PORT8, ratio36_1, false);
 motor liftLeftMotor = motor(PORT5, ratio36_1, false);
 motor liftRightMotor = motor(PORT7, ratio36_1, true);
 
