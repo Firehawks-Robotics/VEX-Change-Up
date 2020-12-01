@@ -28,7 +28,7 @@ void Wheel::calculateAcceleratingVelocity() {
         return; 
     } else if (velocity == goalVelocity) { return; } //Just dont bother doing anything (no acceleration needed)
 
-    this->acceleration = (goalVelocity - velocity) * ANGULAR_ACCELERATIONAL_CONSTANT;
+    this->acceleration = (goalVelocity - initialVelocity) * ANGULAR_ACCELERATIONAL_CONSTANT;
 
     this->velocity += this->acceleration;
 }

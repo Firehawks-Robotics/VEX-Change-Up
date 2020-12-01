@@ -17,7 +17,9 @@ using namespace vex;
 
 double desiredAngle = 0;
 
-/* WHEEL GRADUAL ACCELERATION
+double lastAddedVectors = 0;
+
+/* WHEEL GRADUAL ACCELERATION (Acceleration constant, velocity increasing to desired speed)
  *    When the robot is first supposed to move (when the analog stick is moved),
  * the robot's wheels immediately go to an extremely high velocity (upwards of
  * 200 rpm). Just like in a car, if you try to accelerate too fast, this can
@@ -104,13 +106,23 @@ void movement(double x, double y, double turnValue) {
         Wheel *wheel = wheels[i];
         if(wheel->getVelocity() == 0) {
             wheel->wheelMotor->stop(hold);
-        } else if(wheel->getGoalVelocity() == 0) { //If goal velocity is 0, then immediately stop.
+        } else if(wheel->getGoalVelocity() == 0) { //If goal velocity is 0, then immediately stop (no skidding here).
             wheel->setVelocity(0);
             wheel->wheelMotor->stop(hold);
         } else {
             wheel->spin(forward);
         }
     }
+
+    //Update the initial velocity of the wheels for the acceleration if necessary
+    if (addedVectors != lastAddedVectors) { //Means that the driver now wants to move in a different direction.
+        for(int i=0; i<NUM_WHEELS; i++) { //Now the thing should start accounting for new goal (new acceleration as well).
+            wheels[i]->setInitialVelocity(wheels[i]->getVelocity());
+        }
+    }
+
+    //Update the lastAddedVectors to the new value for the latest tick.
+    lastAddedVectors = addedVectors;
 }
 
 /*

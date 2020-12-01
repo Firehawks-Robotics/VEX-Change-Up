@@ -101,6 +101,11 @@ class Wheel {
         double goalVelocity = 0;
 
         /*
+         * double   The velocity the wheel was moving at when the analog stick moved.
+        */
+        double initialVelocity = 0;
+
+        /*
          * double   The rate at which the robot's velocity is changing in order
          * to reach the goalVelocity. Proportional to the
          * ANGULAR_ACCELERATIONAL_CONSTANT.
@@ -167,7 +172,22 @@ class Wheel {
                 // (final-initial) * accelerational_constant
                 this->acceleration = (goalVelocity - velocity) * ANGULAR_ACCELERATIONAL_CONSTANT;
                 this->goalVelocity = goalVelocity;
+                this->initialVelocity = velocity;
             }
+        }
+
+        /**
+         * @return double   The initial velocity.
+        */
+        double getInitialVelocity() {
+            return initialVelocity;
+        }
+
+        /**
+         * @param double   The initial velocity.
+        */
+        void setInitialVelocity(double initialVelocity) {
+            this->initialVelocity = initialVelocity;
         }
 
         /*
