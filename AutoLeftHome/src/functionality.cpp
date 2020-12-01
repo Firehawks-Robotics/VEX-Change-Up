@@ -37,9 +37,9 @@ double lastAddedVectors = 0;
 void movement(double x, double y, double turnValue) {
 
     //Reset all wheel velocitys so they can be updated as we go through this function
-    for(int i = 0; i<NUM_WHEELS; i++) {
-        wheels[i]->setVelocity(0);
-    }
+    //for(int i = 0; i<NUM_WHEELS; i++) {
+        //wheels[i]->setVelocity(0);
+    //}
 
     double addedVectors = sqrt(pow(x, 2) + pow(y, 2));
     if (addedVectors >= MIN_MOVEMENT_AXIS_DISPLACEMENT) {  //We dont want to have the robot move when the analog stick is barely displaced, but really shouldnt be.
@@ -86,24 +86,11 @@ void movement(double x, double y, double turnValue) {
         seWheel.setGoalVelocity(seWheel.getGoalVelocity() + MAX_SPEED*(turnValue/MAX_AXIS_VALUE));
     }
 
-    //Wheel drifting corrections
-    /*
-    if(driverMode) { //We only want wheel corrections to happen during driver mode
-        for(int i = 0; i<NUM_WHEELS; i++) { //Iterate through all wheels to update velocity records
-            Wheel *wheel = wheels[i];
-            int velocity = int(wheel->velocity);
-            wheel->shiftVelocityRecords(velocity); //Update velocity records (do not include the drifting correction in the velocity records)
-            int avg = wheel->avgVelocity(); //We also want to know if they are in the opposite direction (in which case, going to drift)
-            if(((velocity<0) != (avg<0)) || abs(int(velocity)) < abs(avg)/2) { //We are slowing or going in the opposite direction (GOING TO DRIFT)
-                wheel->velocity -= avg; //remember this this happens for only about 1/5 of a second
-            }
-        }
-    }*/
-
     //Brake if the wheel is not supposed to move (Make the motor go back if it moves)
     //Otherwise, spin
     for(int i=0; i<NUM_WHEELS; i++) {
         Wheel *wheel = wheels[i];
+        acc = wheel->getVelocity();
         if(wheel->getVelocity() == 0) {
             wheel->wheelMotor->stop(hold);
         } else if(wheel->getGoalVelocity() == 0) { //If goal velocity is 0, then immediately stop (no skidding here).
@@ -162,9 +149,13 @@ void lift(int dir) {
 */
 void emergencyStop() {
     neWheelMotor.stop(brake);
+    neWheel.setVelocity(0);
     nwWheelMotor.stop(brake);
+    nwWheel.setVelocity(0);
     seWheelMotor.stop(brake);
+    seWheel.setVelocity(0);
     swWheelMotor.stop(brake);
+    swWheel.setVelocity(0);
     liftLeftMotor.stop(brake);
     liftRightMotor.stop(brake);
     intakeLeftMotor.stop(brake);

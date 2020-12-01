@@ -135,4 +135,29 @@ void debugMenuController(){
 
     temperature();
     vexBrain.Screen.newLine();
+
+    vexBrain.Screen.print(acc);
+    vexBrain.Screen.newLine();
+
+    for(int i=0; i<NUM_WHEELS; i++) {
+        vexBrain.Screen.print(wheels[i]->getAcceleration());
+        vexBrain.Screen.print(" ");
+        vexBrain.Screen.print(wheels[i]->getInitialVelocity());
+        vexBrain.Screen.print(" ");
+        vexBrain.Screen.print(wheels[i]->getGoalVelocity());
+        vexBrain.Screen.print(" ");
+        vexBrain.Screen.print(wheels[i]->getGoalVelocity() - wheels[i]->getInitialVelocity());
+        vexBrain.Screen.newLine();
+    }
+}
+
+void number() {
+    vexBrain.Screen.clearScreen();
+    vexBrain.Screen.setOrigin(0,0);
+    for(int i=0; i<NUM_WHEELS; i++) {
+        vexBrain.Screen.print(wheels[i]->getGoalVelocity());
+        vexBrain.Screen.newLine();
+        vexBrain.Screen.print(wheels[i]->getVelocity());
+        vexBrain.Screen.newLine();
+    }
 }

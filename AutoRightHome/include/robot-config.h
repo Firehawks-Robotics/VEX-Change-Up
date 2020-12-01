@@ -18,6 +18,8 @@ extern brain vexBrain;
 /** The one controller we have connected. */
 extern controller mainCon;
 
+extern double acc;
+
 /**
  * The net displacement (x and y combined using vector addition) from the
  * initial analog position required to have the robot move. Also used for the
@@ -164,15 +166,14 @@ class Wheel {
          * Updates the acceleration of the wheel accordingly.
          * @param double    The new goal velocity we want.
         */
-        void setGoalVelocity(double goalVelocity) {
-            //Only have change in acceleration if there is a change in goal velocity
+        void setGoalVelocity(double goalVel) {
+            // Only have change in acceleration if there is a change in goal velocity
             // (We don't want to have the acceleration decrease unnecessarily,
             // particularly in autonomous).
-            if(this->goalVelocity != goalVelocity) { 
+            if(this->goalVelocity != goalVel) { 
                 // (final-initial) * accelerational_constant
-                this->acceleration = (goalVelocity - velocity) * ANGULAR_ACCELERATIONAL_CONSTANT;
-                this->goalVelocity = goalVelocity;
-                this->initialVelocity = velocity;
+                this->goalVelocity = goalVel;
+                this->initialVelocity = this->velocity;
             }
         }
 
@@ -188,6 +189,10 @@ class Wheel {
         */
         void setInitialVelocity(double initialVelocity) {
             this->initialVelocity = initialVelocity;
+        }
+
+        double getAcceleration() {
+            return acceleration;
         }
 
         /*

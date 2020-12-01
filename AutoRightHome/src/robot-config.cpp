@@ -14,6 +14,8 @@ using namespace vex;
 using signature = vision::signature;
 using code = vision::code;
 
+double acc = 0;
+
 // A global instance of brain used for printing to the V5 Brain screen
 brain vexBrain;
 controller mainCon;
@@ -23,14 +25,20 @@ Wheel::Wheel(motor &wheelMotor) {
 }
 
 void Wheel::calculateAcceleratingVelocity() {
-    if(velocity > goalVelocity) { //We don't want it to continue accelerating if its already at its goal.
+    bool overNegative = velocity < 0 && goalVelocity < 0 && velocity < goalVelocity; //both (-) and vel < goal
+    bool overPositive = velocity > 0 && goalVelocity > 0 && velocity > goalVelocity; //Both (+) and vel > goal
+    //velocity > goalVelocity
+    if(overNegative || overPositive) { //We don't want it to continue accelerating if its already at its goal.
         velocity = goalVelocity;
         return; 
-    } else if (velocity == goalVelocity) { return; } //Just dont bother doing anything (no acceleration needed)
+    } else if (velocity == goalVelocity) { //Just dont bother doing anything (no acceleration needed)
+        return;
+    } else {
+        this->acceleration = (this->goalVelocity - this->initialVelocity) * ANGULAR_ACCELERATIONAL_CONSTANT;
 
-    this->acceleration = (goalVelocity - initialVelocity) * ANGULAR_ACCELERATIONAL_CONSTANT;
-
-    this->velocity += this->acceleration;
+        this->velocity = this->velocity + this->acceleration;
+        number();
+    }
 }
 
 /* drift correction (may not be needed anymore)
