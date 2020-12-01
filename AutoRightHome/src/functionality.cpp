@@ -74,22 +74,24 @@ void movement(double x, double y, double turnValue) {
         
         // Speed derived from analog stick displacement * max rpm * angle
         
-        neWheel.velocity = (addedVectors/MAX_AXIS_VALUE)*MAX_SPEED*sin(M_PI/4-desiredAngle); 
-        swWheel.velocity = -swWheel.velocity;
-        nwWheel.velocity = (addedVectors/MAX_AXIS_VALUE)*MAX_SPEED*sin(3*M_PI/4-desiredAngle);
-        seWheel.velocity = -nwWheel.velocity;
+        neWheel.velocity = (addedVectors/MAX_AXIS_VALUE)*MAX_SPEED*sin((M_PI/4)-desiredAngle); 
+        swWheel.velocity = (addedVectors/MAX_AXIS_VALUE)*MAX_SPEED*sin((3*M_PI/4)-desiredAngle);
+        nwWheel.velocity = -(addedVectors/MAX_AXIS_VALUE)*MAX_SPEED*sin((-3*M_PI/4)-desiredAngle);
+        seWheel.velocity = (addedVectors/MAX_AXIS_VALUE)*MAX_SPEED*sin((-M_PI/4)-desiredAngle);
 
     }
 
     //Turning (Right analog stick)
     //Simply add the velocity to the motors
-    if(abs(int(turnValue)) > MIN_MOVEMENT_AXIS_DISPLACEMENT) { //Dont want tiny values to have any effect
-        for(int i=0; i<NUM_WHEELS; i++) {
-            wheels[i]->velocity += MAX_SPEED*(turnValue/MAX_AXIS_VALUE);
-        }
+    if(turnValue < -MIN_MOVEMENT_AXIS_DISPLACEMENT || turnValue > MIN_MOVEMENT_AXIS_DISPLACEMENT) { //Dont want tiny values to have any effect
+        neWheel.velocity += -MAX_SPEED*(turnValue/MAX_AXIS_VALUE);
+        swWheel.velocity += MAX_SPEED*(turnValue/MAX_AXIS_VALUE);
+        nwWheel.velocity += MAX_SPEED*(turnValue/MAX_AXIS_VALUE);
+        seWheel.velocity += MAX_SPEED*(turnValue/MAX_AXIS_VALUE);
     }
 
     //Wheel drifting corrections
+    /*
     if(driverMode) { //We only want wheel corrections to happen during driver mode
         for(int i = 0; i<NUM_WHEELS; i++) { //Iterate through all wheels to update velocity records
             Wheel *wheel = wheels[i];
@@ -100,12 +102,12 @@ void movement(double x, double y, double turnValue) {
                 wheel->velocity -= avg; //remember this this happens for only about 1/5 of a second
             }
         }
-    }
+    }*/
     
     //Brake if the wheel is not supposed to move (Make the motor go back if it moves)
     //Otherwise, spin
     for(int i=0; i<NUM_WHEELS; i++) {
-        if(wheels[i]->velocity == 0) { wheels[i]->wheelMotor->setBrake(hold); }
+        if(wheels[i]->velocity == 0) { wheels[i]->wheelMotor->stop(hold); }
         else wheels[i]->spin(forward);
     }
 }

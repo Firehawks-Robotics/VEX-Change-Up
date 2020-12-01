@@ -31,7 +31,7 @@ extern controller mainCon;
  * position, however big enough so we don't have this problem.
  * 
 */
-const int MIN_MOVEMENT_AXIS_DISPLACEMENT = 10;
+const int MIN_MOVEMENT_AXIS_DISPLACEMENT = 30;
 
 /**
  * The amount of time that passes during each tick, in milliseconds.
