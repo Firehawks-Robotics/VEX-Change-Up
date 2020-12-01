@@ -15,9 +15,6 @@ using namespace vex;
 #include "functionality.h"
 #include "debugScreen.h"
 
-//If not driver mode, then autonomous mode
-bool driverMode = true; 
-
 double desiredAngle = 0;
 
 /* WHEEL GRADUAL ACCELERATION
@@ -39,7 +36,7 @@ void movement(double x, double y, double turnValue) {
 
     //Reset all wheel velocitys so they can be updated as we go through this function
     for(int i = 0; i<NUM_WHEELS; i++) {
-        wheels[i]->velocity = 0;
+        wheels[i]->setVelocity(0);
     }
 
     double addedVectors = sqrt(pow(x, 2) + pow(y, 2));
@@ -69,22 +66,22 @@ void movement(double x, double y, double turnValue) {
         
         // Speed derived from analog stick displacement * max rpm * angle
         
-        neWheel.goalVelocity = (addedVectors/MAX_AXIS_VALUE)*MAX_SPEED*sin((M_PI/4)-desiredAngle); 
-        swWheel.goalVelocity = (addedVectors/MAX_AXIS_VALUE)*MAX_SPEED*sin((3*M_PI/4)-desiredAngle);
-        nwWheel.goalVelocity = (addedVectors/MAX_AXIS_VALUE)*MAX_SPEED*sin((-3*M_PI/4)-desiredAngle);
+        neWheel.setGoalVelocity((addedVectors/MAX_AXIS_VALUE)*MAX_SPEED*sin((M_PI/4)-desiredAngle)); 
+        swWheel.setGoalVelocity((addedVectors/MAX_AXIS_VALUE)*MAX_SPEED*sin((3*M_PI/4)-desiredAngle));
+        nwWheel.setGoalVelocity((addedVectors/MAX_AXIS_VALUE)*MAX_SPEED*sin((-3*M_PI/4)-desiredAngle));
         //revert nwWheel goal velocity to negative if reversed
-        seWheel.goalVelocity = (addedVectors/MAX_AXIS_VALUE)*MAX_SPEED*sin((-M_PI/4)-desiredAngle);
+        seWheel.setGoalVelocity((addedVectors/MAX_AXIS_VALUE)*MAX_SPEED*sin((-M_PI/4)-desiredAngle));
 
     }
 
     //Turning (Right analog stick)
     //Simply add the velocity to the motors
     if(turnValue < -MIN_MOVEMENT_AXIS_DISPLACEMENT || turnValue > MIN_MOVEMENT_AXIS_DISPLACEMENT) { //Dont want tiny values to have any effect
-        neWheel.goalVelocity += -MAX_SPEED*(turnValue/MAX_AXIS_VALUE);
-        swWheel.goalVelocity += MAX_SPEED*(turnValue/MAX_AXIS_VALUE);
-        nwWheel.goalVelocity += -MAX_SPEED*(turnValue/MAX_AXIS_VALUE);
+        neWheel.setGoalVelocity(neWheel.getGoalVelocity() + -MAX_SPEED*(turnValue/MAX_AXIS_VALUE));
+        swWheel.setGoalVelocity(swWheel.getGoalVelocity() + MAX_SPEED*(turnValue/MAX_AXIS_VALUE));
+        nwWheel.setGoalVelocity(nwWheel.getGoalVelocity() + -MAX_SPEED*(turnValue/MAX_AXIS_VALUE));
         //Revert nwWheel goal velocity back to positive if reversed
-        seWheel.goalVelocity += MAX_SPEED*(turnValue/MAX_AXIS_VALUE);
+        seWheel.setGoalVelocity(seWheel.getGoalVelocity() + MAX_SPEED*(turnValue/MAX_AXIS_VALUE));
     }
 
     //Wheel drifting corrections
@@ -101,16 +98,18 @@ void movement(double x, double y, double turnValue) {
         }
     }*/
 
-    //Make the wheels accelerate at the constant rate they should
-    for(int i=0; i<NUM_WHEELS; i++) {
-        wheels[i]->calculateAcceleratingVelocity();
-    }
-    
     //Brake if the wheel is not supposed to move (Make the motor go back if it moves)
     //Otherwise, spin
     for(int i=0; i<NUM_WHEELS; i++) {
-        if(wheels[i]->velocity == 0) { wheels[i]->wheelMotor->stop(hold); }
-        else wheels[i]->spin(forward);
+        Wheel *wheel = wheels[i];
+        if(wheel->getVelocity() == 0) {
+            wheel->wheelMotor->stop(hold);
+        } else if(wheel->getGoalVelocity() == 0) { //If goal velocity is 0, then immediately stop.
+            wheel->setVelocity(0);
+            wheel->wheelMotor->stop(hold);
+        } else {
+            wheel->spin(forward);
+        }
     }
 }
 

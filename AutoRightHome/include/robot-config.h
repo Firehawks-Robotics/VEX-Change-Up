@@ -52,30 +52,7 @@ const int NUM_WHEELS = 4;
 const int MAX_VELOCITY_RECORDS = 10;
 */
 
-/*
- * The rate at which the velocity of the robot's wheels moves toward their
- * respective goal velocities. Should be constant so that we have a constant
- * change in the velocity (a linear model).
- *
- * Proportional to the acceleration of the wheels.
- *
- * Should be between 0 and 1. An accelerational constant of 1 means that the
- * wheel's velocity will immediately go up to the goalVelocity (which means
- * there is no gradual acceleration). An accelerational constant of 0 means
- * that the wheel's velocity will never change.
- *
- * A good rule for determining the accelerational constant is using this:
- * ANGULAR_ACCELERATIONAL_CONSTANT = 1/(ticks), where ticks is the number of
- * ticks that should pass between the time the wheel starts accelerating
- * and when it reaches its goalVelocity. 
- *
- * For example, an accelerational constant of 1/20 would result in the wheel
- * accelerating to its goal velocity over 20 ticks (approximately 400 ms or
- * 2/5 of a second when the ticklength is 20 ms).
-*/
-const int ANGULAR_ACCELERATIONAL_CONSTANT = 1/20; 
-
-/**
+/** MAY NOT NEED THIS
  * Node of a linked list that stores the velocity records.
  * (linked lists: https://www.cprogramming.com/tutorial/lesson15.html)
  * 
@@ -90,12 +67,12 @@ const int ANGULAR_ACCELERATIONAL_CONSTANT = 1/20;
  * battery). I'm more concerned about draining the battery than using CPU power
  * because, if the robot runs out of battery in the middle of a match, then we
  * pretty much lose the match.
-*/
+* /
 class Node {
     public:
         int vel = -201; //Cannot be less than -200 (means uninitialized)
     Node * next;
-};
+};*/
 
 /**
  * A wrapper for motor class that implements drift correction.
@@ -104,18 +81,12 @@ class Node {
 */
 class Wheel {
     protected:
-        /*
+        /* MAY NOT NEED THIS
         Node *velRecordsHead;
         Node *velRecordsTail; //The head and the tail should be the same node at first
         int totalVelocityRecords = 0; //When at MAX_VELOCITY_RECORDS, then we should start deleting the head when new are added
         */
-    public:
-        /**
-         * The default constructor for the Wheel class. It takes the motor it 
-         * is intended to wrap, and stores that motor.
-        */
-        Wheel(motor &wheelMotor);
-        
+    private:
         /*
          * double   The velocity at which the motor will be turning (not
          * necessarily at this moment) (measured in rpm).
@@ -130,18 +101,74 @@ class Wheel {
         double goalVelocity = 0;
 
         /*
-         * double   The velocity at which the robot was moving when the analog
-         * stick was moved (which gave us our goalVelocity). This is used in
-         * the calculation for the velocity from gradual acceleration.
-        */
-        double initialForGoalVelocity = 0;
-
-        /*
          * double   The rate at which the robot's velocity is changing in order
          * to reach the goalVelocity. Proportional to the
          * ANGULAR_ACCELERATIONAL_CONSTANT.
         */
         double acceleration = 0;
+
+    public:
+        /*
+         * The rate at which the velocity of the robot's wheels moves toward their
+         * respective goal velocities. Should be constant so that we have a constant
+         * change in the velocity (a linear model).
+         *
+         * Proportional to the acceleration of the wheels.
+         *
+         * Should be between 0 and 1. An accelerational constant of 1 means that the
+         * wheel's velocity will immediately go up to the goalVelocity (which means
+         * there is no gradual acceleration). An accelerational constant of 0 means
+         * that the wheel's velocity will never change.
+         *
+         * A good rule for determining the accelerational constant is using this:
+         * ANGULAR_ACCELERATIONAL_CONSTANT = 1/(ticks), where ticks is the number of
+         * ticks that should pass between the time the wheel starts accelerating
+         * and when it reaches its goalVelocity. 
+         *
+         * For example, an accelerational constant of 1/20 would result in the wheel
+         * accelerating to its goal velocity over 20 ticks (approximately 400 ms or
+         * 2/5 of a second when the ticklength is 20 ms).
+        */
+        static const int ANGULAR_ACCELERATIONAL_CONSTANT = 1/20; 
+
+        /**
+         * The default constructor for the Wheel class. It takes the motor it 
+         * is intended to wrap, and stores that motor.
+        */
+        Wheel(motor &wheelMotor);
+
+        /**
+         * @returns int   The wheel's current velocity.
+        */
+        double getVelocity() { return velocity; }
+
+        /**
+         * @param double  The new velocity of the wheel.
+        */
+        void setVelocity(double velocity) {
+            this->velocity = velocity;
+        }
+
+        /**
+         * @returns double    The wheel's goal velocity we want.
+        */
+        double getGoalVelocity() { return goalVelocity; }
+
+        /**
+         * Sets the goal velocity. 
+         * Updates the acceleration of the wheel accordingly.
+         * @param double    The new goal velocity we want.
+        */
+        void setGoalVelocity(double goalVelocity) {
+            //Only have change in acceleration if there is a change in goal velocity
+            // (We don't want to have the acceleration decrease unnecessarily,
+            // particularly in autonomous).
+            if(this->goalVelocity != goalVelocity) { 
+                // (final-initial) * accelerational_constant
+                this->acceleration = (goalVelocity - velocity) * ANGULAR_ACCELERATIONAL_CONSTANT;
+                this->goalVelocity = goalVelocity;
+            }
+        }
 
         /*
          * motor    The motor that this wheel is controlled by.
