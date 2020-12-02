@@ -25,20 +25,18 @@ Wheel::Wheel(motor &wheelMotor) {
 }
 
 void Wheel::calculateAcceleratingVelocity() {
-    bool overNegative = velocity < 0 && goalVelocity < 0 && velocity < goalVelocity; //both (-) and vel < goal
-    bool overPositive = velocity > 0 && goalVelocity > 0 && velocity > goalVelocity; //Both (+) and vel > goal
     //velocity > goalVelocity
-    if(overNegative || overPositive) { //We don't want it to continue accelerating if its already at its goal.
+    if(abs(int(goalVelocity))-abs(int(velocity)) < 5) { //If the acceleration is close, then just go there now
         velocity = goalVelocity;
         return; 
     } else if (velocity == goalVelocity) { //Just dont bother doing anything (no acceleration needed)
         return;
-    } else {
-        this->acceleration = (this->goalVelocity - this->initialVelocity) * ANGULAR_ACCELERATIONAL_CONSTANT;
-
-        this->velocity = this->velocity + this->acceleration;
-        number();
     }
+    
+    this->acceleration = (this->goalVelocity - this->initialVelocity) * (1.0*ANGULAR_ACCELERATIONAL_CONSTANT);
+    number();
+
+    this->velocity = this->velocity + double(this->acceleration);
 }
 
 /* drift correction (may not be needed anymore)
@@ -88,8 +86,8 @@ motor neWheelMotor = motor(PORT11, ratio36_1, true);
 motor nwWheelMotor = motor(PORT20, ratio36_1, true); //revert this to false if reversed
 motor seWheelMotor = motor(PORT10, ratio36_1, false);
 motor swWheelMotor = motor(PORT9, ratio36_1, false);
-motor intakeLeftMotor = motor(PORT1, ratio36_1, true);
-motor intakeRightMotor = motor(PORT8, ratio36_1, false);
+motor intakeLeftMotor = motor(PORT1, ratio36_1, false);
+motor intakeRightMotor = motor(PORT8, ratio36_1, true);
 motor liftLeftMotor = motor(PORT5, ratio36_1, false);
 motor liftRightMotor = motor(PORT7, ratio36_1, true);
 

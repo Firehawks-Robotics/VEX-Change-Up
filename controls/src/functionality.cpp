@@ -32,6 +32,8 @@ double lastAddedVectors = 0;
  * the robot will move in a direction we do not want.
 */
 
+double num = 0;
+
 //We're gonna have to change the velocity of all the wheels by taking
 //the value of both left and right analog sticks.
 void movement(double x, double y, double turnValue) {
@@ -74,8 +76,12 @@ void movement(double x, double y, double turnValue) {
         //revert nwWheel goal velocity to negative if reversed
         seWheel.setGoalVelocity((addedVectors/MAX_AXIS_VALUE)*MAX_SPEED*sin((-M_PI/4)-desiredAngle));
 
+    } else {
+        for(int i=0; i<NUM_WHEELS; i++) {
+            wheels[i]->setGoalVelocity(0.0);
+        }
     }
-
+  
     //Turning (Right analog stick)
     //Simply add the velocity to the motors
     if(turnValue < -MIN_MOVEMENT_AXIS_DISPLACEMENT || turnValue > MIN_MOVEMENT_AXIS_DISPLACEMENT) { //Dont want tiny values to have any effect
@@ -92,10 +98,7 @@ void movement(double x, double y, double turnValue) {
         Wheel *wheel = wheels[i];
         acc = wheel->getVelocity();
         if(wheel->getVelocity() == 0) {
-            wheel->wheelMotor->stop(hold);
-        } else if(wheel->getGoalVelocity() == 0) { //If goal velocity is 0, then immediately stop (no skidding here).
-            wheel->setVelocity(0);
-            wheel->wheelMotor->stop(hold);
+            wheel->wheelMotor->stop(coast);
         } else {
             wheel->spin(forward);
         }

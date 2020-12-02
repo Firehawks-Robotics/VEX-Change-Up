@@ -80,7 +80,7 @@ void usercontrol() {
             wheels[i]->calculateAcceleratingVelocity();
         }
         wait(TICK_LENGTH, msec); //Use less battery this way
-        //debugMenuController(); //Debug screen is updated every tick
+        debugMenuController(); //Debug screen is updated every tick
     }
 
 }
