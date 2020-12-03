@@ -33,7 +33,7 @@ extern double acc;
  * position, however big enough so we don't have this problem.
  * 
 */
-const int MIN_MOVEMENT_AXIS_DISPLACEMENT = 30;
+const int MIN_MOVEMENT_AXIS_DISPLACEMENT = 10;
 
 /**
  * The amount of time that passes during each tick, in milliseconds.
@@ -82,12 +82,6 @@ class Node {
  * Note the use of 'velocity' instead of 'speed' because direction is also important.
 */
 class Wheel {
-    protected:
-        /* MAY NOT NEED THIS
-        Node *velRecordsHead;
-        Node *velRecordsTail; //The head and the tail should be the same node at first
-        int totalVelocityRecords = 0; //When at MAX_VELOCITY_RECORDS, then we should start deleting the head when new are added
-        */
     private:
         /*
          * double   The velocity at which the motor will be turning (not
@@ -101,6 +95,11 @@ class Wheel {
          * To prevent the robot from slipping initially.
         */
         double goalVelocity = 0;
+
+        /*
+         * double   The goal velocity as it is being updated in the movement function
+        */
+        double intermediateGoalVelocity = 0;
 
         /*
          * double   The velocity the wheel was moving at when the analog stick moved.
@@ -136,7 +135,7 @@ class Wheel {
          * accelerating to its goal velocity over 20 ticks (approximately 400 ms or
          * 2/5 of a second when the ticklength is 20 ms).
         */
-        static double constexpr ANGULAR_ACCELERATIONAL_CONSTANT = 0.25; 
+        static double constexpr ANGULAR_ACCELERATIONAL_CONSTANT = (1/3); 
 
         /**
          * The default constructor for the Wheel class. It takes the motor it 
@@ -178,6 +177,21 @@ class Wheel {
         }
 
         /**
+         * @returns double    The wheel's intermediate goal velocity we want.
+        */
+        double getIntermediateVelocity() { return goalVelocity; }
+
+        /**
+         * Sets the intermediate goal velocity. 
+         * Updates the in progress goal velocity accordingly (as in we are
+         * currently changing this in the movement function).
+         * @param double    The new intermediate goal velocity we want.
+        */
+        void setIntermediateGoalVelocity(double intermediateGoalVelocity) {
+            this->intermediateGoalVelocity = intermediateGoalVelocity;
+        }
+
+        /**
          * @return double   The initial velocity.
         */
         double getInitialVelocity() {
@@ -199,24 +213,6 @@ class Wheel {
          * motor    The motor that this wheel is controlled by.
         */
         motor *wheelMotor;
-
-        /* Implementation for wheel correction (likely not needed now)
-
-        /
-         * Calculates the average velocity over the last MAX_VELOCITY_RECORDS ticks using the velocity records
-         * The velocity records and the average velocity do not include the velocity modifications made for the
-         * drift correction.
-         * @returns int   The average velocity of this wheel over the last MAX_VELOCITY_RECORDS ticks (about 1/5 of a second)
-        /
-        int avgVelocity(void);
-
-        /
-         * Adds a velocity record to the end of the linked list. If there are already MAX_VELOCITY_RECORDS velocity records, then
-         * Remove the head as wheel (that is no longer needed because that was 11 ticks ago).
-         * @param int newVelocity  The velocity to be added to the records
-        /
-        void shiftVelocityRecords(int newVelocity);
-        */
 
         /*
          * A method to control drifting and changing of direction when the

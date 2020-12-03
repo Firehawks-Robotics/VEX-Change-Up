@@ -32,16 +32,14 @@ double lastAddedVectors = 0;
  * the robot will move in a direction we do not want.
 */
 
-double num = 0;
-
 //We're gonna have to change the velocity of all the wheels by taking
 //the value of both left and right analog sticks.
 void movement(double x, double y, double turnValue) {
 
-    //Reset all wheel velocitys so they can be updated as we go through this function
-    //for(int i = 0; i<NUM_WHEELS; i++) {
-        //wheels[i]->setVelocity(0);
-    //}
+    //Reset all wheel velocities so they can be updated as we go through this function
+    for(int i = 0; i<NUM_WHEELS; i++) {
+        wheels[i]->setIntermediateGoalVelocity(0);
+    }
 
     double addedVectors = sqrt(pow(x, 2) + pow(y, 2));
     if (addedVectors >= MIN_MOVEMENT_AXIS_DISPLACEMENT) {  //We dont want to have the robot move when the analog stick is barely displaced, but really shouldnt be.
@@ -70,26 +68,32 @@ void movement(double x, double y, double turnValue) {
         
         // Speed derived from analog stick displacement * max rpm * angle
         
-        neWheel.setGoalVelocity((addedVectors/MAX_AXIS_VALUE)*MAX_SPEED*sin((M_PI/4)-desiredAngle)); 
-        swWheel.setGoalVelocity((addedVectors/MAX_AXIS_VALUE)*MAX_SPEED*sin((3*M_PI/4)-desiredAngle));
-        nwWheel.setGoalVelocity((addedVectors/MAX_AXIS_VALUE)*MAX_SPEED*sin((-3*M_PI/4)-desiredAngle));
-        //revert nwWheel goal velocity to negative if reversed
-        seWheel.setGoalVelocity((addedVectors/MAX_AXIS_VALUE)*MAX_SPEED*sin((-M_PI/4)-desiredAngle));
+        neWheel.setIntermediateGoalVelocity((addedVectors/MAX_AXIS_VALUE)*MAX_SPEED*sin((M_PI/4)-desiredAngle)); 
+        swWheel.setIntermediateGoalVelocity((addedVectors/MAX_AXIS_VALUE)*MAX_SPEED*sin((3*M_PI/4)-desiredAngle));
+        nwWheel.setIntermediateGoalVelocity((addedVectors/MAX_AXIS_VALUE)*MAX_SPEED*sin((-3*M_PI/4)-desiredAngle));
+        seWheel.setIntermediateGoalVelocity((addedVectors/MAX_AXIS_VALUE)*MAX_SPEED*sin((-M_PI/4)-desiredAngle));
 
-    } else {
-        for(int i=0; i<NUM_WHEELS; i++) {
-            wheels[i]->setGoalVelocity(0.0);
-        }
     }
   
     //Turning (Right analog stick)
     //Simply add the velocity to the motors
     if(turnValue < -MIN_MOVEMENT_AXIS_DISPLACEMENT || turnValue > MIN_MOVEMENT_AXIS_DISPLACEMENT) { //Dont want tiny values to have any effect
-        neWheel.setGoalVelocity(neWheel.getGoalVelocity() + -MAX_SPEED*(turnValue/MAX_AXIS_VALUE));
-        swWheel.setGoalVelocity(swWheel.getGoalVelocity() + MAX_SPEED*(turnValue/MAX_AXIS_VALUE));
-        nwWheel.setGoalVelocity(nwWheel.getGoalVelocity() + -MAX_SPEED*(turnValue/MAX_AXIS_VALUE));
-        //Revert nwWheel goal velocity back to positive if reversed
-        seWheel.setGoalVelocity(seWheel.getGoalVelocity() + MAX_SPEED*(turnValue/MAX_AXIS_VALUE));
+        neWheel.setIntermediateGoalVelocity(neWheel.getGoalVelocity() + -MAX_SPEED*(turnValue/MAX_AXIS_VALUE));
+        swWheel.setIntermediateGoalVelocity(swWheel.getGoalVelocity() + MAX_SPEED*(turnValue/MAX_AXIS_VALUE));
+        nwWheel.setIntermediateGoalVelocity(nwWheel.getGoalVelocity() + -MAX_SPEED*(turnValue/MAX_AXIS_VALUE));
+        seWheel.setIntermediateGoalVelocity(seWheel.getGoalVelocity() + MAX_SPEED*(turnValue/MAX_AXIS_VALUE));
+    }
+
+    //Update the initial velocity of the wheels for the acceleration if necessary
+    if (addedVectors != lastAddedVectors) { //Means that the driver now wants to move in a different direction.
+        for(int i=0; i<NUM_WHEELS; i++) { //Now the thing should start accounting for new goal (new acceleration as well).
+            wheels[i]->setInitialVelocity(wheels[i]->getVelocity());
+        }
+    }
+
+    //Update the goal velocity that we just created within this function
+    for(int i=0; i<NUM_WHEELS; i++) {
+        wheels[i]->setGoalVelocity(wheels[i]->getIntermediateVelocity());
     }
 
     //Brake if the wheel is not supposed to move (Make the motor go back if it moves)
@@ -98,16 +102,13 @@ void movement(double x, double y, double turnValue) {
         Wheel *wheel = wheels[i];
         acc = wheel->getVelocity();
         if(wheel->getVelocity() == 0) {
-            wheel->wheelMotor->stop(coast);
+            if(addedVectors > MIN_MOVEMENT_AXIS_DISPLACEMENT) { //Lock this wheel to prevent drifting
+                wheel->wheelMotor->stop(hold);
+            } else { //Otherwise, then coast, because we dont want abrupt stopping
+                wheel->wheelMotor->stop(coast);
+            }
         } else {
             wheel->spin(forward);
-        }
-    }
-
-    //Update the initial velocity of the wheels for the acceleration if necessary
-    if (addedVectors != lastAddedVectors) { //Means that the driver now wants to move in a different direction.
-        for(int i=0; i<NUM_WHEELS; i++) { //Now the thing should start accounting for new goal (new acceleration as well).
-            wheels[i]->setInitialVelocity(wheels[i]->getVelocity());
         }
     }
 
