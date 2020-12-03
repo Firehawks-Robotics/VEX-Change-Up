@@ -20,6 +20,12 @@ using namespace vex;
 extern double desiredAngle;
 
 /**
+ * The value you get when you add the x and y vectors from the movement analog
+ * stick that happened during the last tick.
+*/
+extern double lastAddedVectors;
+
+/**
  * Enumerates the actions that the intake and lift motors can take. The stop
  * action is used for both lift and intake.
 */
@@ -40,12 +46,6 @@ const int MAX_SPEED = 200;
  * int      The maximum value that an axis of an analog stick can have.
 */
 const int MAX_AXIS_VALUE = 127;
-
-/**
- * bool     Whether or not the robot is in driver mode. Is set to true once
- *              autonomous mode has ended.
-*/
-extern bool driverMode; 
 
 /*
  * Allows for omnidirectional movement by using the ratio between the y and x

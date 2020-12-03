@@ -15,37 +15,33 @@ using namespace vex;
 #include "functionality.h"
 #include "debugScreen.h"
 
-//If not driver mode, then autonomous mode
-bool driverMode = true; 
-
 double desiredAngle = 0;
 
-/* WHEEL SELF-CORRECTION
- *    When the wheels brake, they often slip a little bit (and often change the direction of the robot).
- * What if I could prevent the slipping? Well, maybe I can.
- * 
- * Get the average wheel velocity (of each wheel) over the last MAX_VELOCITY_RECORDS ticks (each tick is 20 ms, and movement() is called once each tick).
- * If the average wheel velocity is at least double (or in the opposite direction of) the current wheel velocity, then
- * the robot is either slowing or attempting to move in the opposite direction, which could cause the robot to drift.
- * Using the average wheel velocity, the robot should automatically correct for this to do more against slippage than
- * just friction. This can be thought of as anti-lock braking on your car (ABS).
- * 
- * The robot needs to change the wheels' velocity opposite of the average wheel velocity. If the robot is slowing, 
- * which happens when the robot's new velocity from the analog sticks is less than half the average velocity over the last
- * MAX_VELOCITY_RECORDS ticks, then we need our wheel correction. Additionally, if the robot is supposed to move opposite the average velocity
- * of the last MAX_VELOCITY_RECORDS ticks, then correction. Note that correction for each wheel is independent of the other wheels (dont happen together).
+double lastAddedVectors = 0;
+
+/* WHEEL GRADUAL ACCELERATION (Acceleration constant, velocity increasing to desired speed)
+ *    When the robot is first supposed to move (when the analog stick is moved),
+ * the robot's wheels immediately go to an extremely high velocity (upwards of
+ * 200 rpm). Just like in a car, if you try to accelerate too fast, this can
+ * cause a lot of sliding (we have kinetic friction but want static friction
+ * between the wheels and the ground).
  *
- * Note that this will not be used during autonomous.
+ *    To fix this, we may be able to "gradually" accelerate to the desired speed
+ * (the jerk would still be very high). We must use a linear model so that the
+ * ratio between the wheel's velocity remains the same. If it does not, then
+ * the robot will move in a direction we do not want.
 */
+
+double num = 0;
 
 //We're gonna have to change the velocity of all the wheels by taking
 //the value of both left and right analog sticks.
 void movement(double x, double y, double turnValue) {
 
     //Reset all wheel velocitys so they can be updated as we go through this function
-    for(int i = 0; i<NUM_WHEELS; i++) {
-        wheels[i]->velocity = 0;
-    }
+    //for(int i = 0; i<NUM_WHEELS; i++) {
+        //wheels[i]->setVelocity(0);
+    //}
 
     double addedVectors = sqrt(pow(x, 2) + pow(y, 2));
     if (addedVectors >= MIN_MOVEMENT_AXIS_DISPLACEMENT) {  //We dont want to have the robot move when the analog stick is barely displaced, but really shouldnt be.
@@ -74,49 +70,56 @@ void movement(double x, double y, double turnValue) {
         
         // Speed derived from analog stick displacement * max rpm * angle
         
-        neWheel.velocity = (addedVectors/MAX_AXIS_VALUE)*MAX_SPEED*sin((M_PI/4)-desiredAngle); 
-        swWheel.velocity = (addedVectors/MAX_AXIS_VALUE)*MAX_SPEED*sin((3*M_PI/4)-desiredAngle);
-        nwWheel.velocity = -(addedVectors/MAX_AXIS_VALUE)*MAX_SPEED*sin((-3*M_PI/4)-desiredAngle);
-        seWheel.velocity = (addedVectors/MAX_AXIS_VALUE)*MAX_SPEED*sin((-M_PI/4)-desiredAngle);
+        neWheel.setGoalVelocity((addedVectors/MAX_AXIS_VALUE)*MAX_SPEED*sin((M_PI/4)-desiredAngle)); 
+        swWheel.setGoalVelocity((addedVectors/MAX_AXIS_VALUE)*MAX_SPEED*sin((3*M_PI/4)-desiredAngle));
+        nwWheel.setGoalVelocity((addedVectors/MAX_AXIS_VALUE)*MAX_SPEED*sin((-3*M_PI/4)-desiredAngle));
+        //revert nwWheel goal velocity to negative if reversed
+        seWheel.setGoalVelocity((addedVectors/MAX_AXIS_VALUE)*MAX_SPEED*sin((-M_PI/4)-desiredAngle));
 
+    } else {
+        for(int i=0; i<NUM_WHEELS; i++) {
+            wheels[i]->setGoalVelocity(0.0);
+        }
     }
-
+  
     //Turning (Right analog stick)
     //Simply add the velocity to the motors
     if(turnValue < -MIN_MOVEMENT_AXIS_DISPLACEMENT || turnValue > MIN_MOVEMENT_AXIS_DISPLACEMENT) { //Dont want tiny values to have any effect
-        neWheel.velocity += -MAX_SPEED*(turnValue/MAX_AXIS_VALUE);
-        swWheel.velocity += MAX_SPEED*(turnValue/MAX_AXIS_VALUE);
-        nwWheel.velocity += MAX_SPEED*(turnValue/MAX_AXIS_VALUE);
-        seWheel.velocity += MAX_SPEED*(turnValue/MAX_AXIS_VALUE);
+        neWheel.setGoalVelocity(neWheel.getGoalVelocity() + -MAX_SPEED*(turnValue/MAX_AXIS_VALUE));
+        swWheel.setGoalVelocity(swWheel.getGoalVelocity() + MAX_SPEED*(turnValue/MAX_AXIS_VALUE));
+        nwWheel.setGoalVelocity(nwWheel.getGoalVelocity() + -MAX_SPEED*(turnValue/MAX_AXIS_VALUE));
+        //Revert nwWheel goal velocity back to positive if reversed
+        seWheel.setGoalVelocity(seWheel.getGoalVelocity() + MAX_SPEED*(turnValue/MAX_AXIS_VALUE));
     }
 
-    //Wheel drifting corrections
-    /*
-    if(driverMode) { //We only want wheel corrections to happen during driver mode
-        for(int i = 0; i<NUM_WHEELS; i++) { //Iterate through all wheels to update velocity records
-            Wheel *wheel = wheels[i];
-            int velocity = int(wheel->velocity);
-            wheel->shiftVelocityRecords(velocity); //Update velocity records (do not include the drifting correction in the velocity records)
-            int avg = wheel->avgVelocity(); //We also want to know if they are in the opposite direction (in which case, going to drift)
-            if(((velocity<0) != (avg<0)) || abs(int(velocity)) < abs(avg)/2) { //We are slowing or going in the opposite direction (GOING TO DRIFT)
-                wheel->velocity -= avg; //remember this this happens for only about 1/5 of a second
-            }
-        }
-    }*/
-    
     //Brake if the wheel is not supposed to move (Make the motor go back if it moves)
     //Otherwise, spin
     for(int i=0; i<NUM_WHEELS; i++) {
-        if(wheels[i]->velocity == 0) { wheels[i]->wheelMotor->stop(hold); }
-        else wheels[i]->spin(forward);
+        Wheel *wheel = wheels[i];
+        acc = wheel->getVelocity();
+        if(wheel->getVelocity() == 0) {
+            wheel->wheelMotor->stop(coast);
+        } else {
+            wheel->spin(forward);
+        }
     }
+
+    //Update the initial velocity of the wheels for the acceleration if necessary
+    if (addedVectors != lastAddedVectors) { //Means that the driver now wants to move in a different direction.
+        for(int i=0; i<NUM_WHEELS; i++) { //Now the thing should start accounting for new goal (new acceleration as well).
+            wheels[i]->setInitialVelocity(wheels[i]->getVelocity());
+        }
+    }
+
+    //Update the lastAddedVectors to the new value for the latest tick.
+    lastAddedVectors = addedVectors;
 }
 
 /*
  * using values stored in enum `motorActions`
 */
 void intake(int dir) {
-    if(dir == intakein) { //Out
+    if(dir == intakeout) { //Out
         intakeLeftMotor.spin(forward);
         intakeRightMotor.spin(forward);
     } else if(dir == stop) { //Stop
@@ -149,9 +152,13 @@ void lift(int dir) {
 */
 void emergencyStop() {
     neWheelMotor.stop(brake);
+    neWheel.setVelocity(0);
     nwWheelMotor.stop(brake);
+    nwWheel.setVelocity(0);
     seWheelMotor.stop(brake);
+    seWheel.setVelocity(0);
     swWheelMotor.stop(brake);
+    swWheel.setVelocity(0);
     liftLeftMotor.stop(brake);
     liftRightMotor.stop(brake);
     intakeLeftMotor.stop(brake);

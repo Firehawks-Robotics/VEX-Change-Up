@@ -110,10 +110,10 @@ void resetDebug() {
 void debugMenuController(){
     resetDebug();
 
-    vexBrain.Screen.print(swWheel.velocity);
-    vexBrain.Screen.print(seWheel.velocity);
-    vexBrain.Screen.print(neWheel.velocity);
-    vexBrain.Screen.print(nwWheel.velocity);
+    vexBrain.Screen.print(swWheel.getVelocity());
+    vexBrain.Screen.print(seWheel.getVelocity());
+    vexBrain.Screen.print(neWheel.getVelocity());
+    vexBrain.Screen.print(nwWheel.getVelocity());
 
     leftAnalogStick();
     vexBrain.Screen.newLine();
@@ -135,4 +135,21 @@ void debugMenuController(){
 
     temperature();
     vexBrain.Screen.newLine();
+
+    vexBrain.Screen.print(acc);
+    vexBrain.Screen.newLine();
+
+    for(int i=0; i<NUM_WHEELS; i++) {
+        vexBrain.Screen.print(wheels[i]->getAcceleration());
+        vexBrain.Screen.print(" ");
+        vexBrain.Screen.print(wheels[i]->getInitialVelocity());
+        vexBrain.Screen.print(" ");
+        vexBrain.Screen.print(wheels[i]->getGoalVelocity());
+        vexBrain.Screen.print(" ");
+        vexBrain.Screen.print(wheels[i]->getGoalVelocity() - wheels[i]->getInitialVelocity());
+        vexBrain.Screen.newLine();
+    }
+}
+
+void number() { //Use this to get numbers
 }

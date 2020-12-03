@@ -56,8 +56,6 @@ void pre_auton() {
 
 void usercontrol() {
 
-    driverMode = true;
-
     //Using lambdas here btw (learn more: https://en.cppreference.com/w/cpp/language/lambda)
     //Values of all axes are needed so that wheel velocity can be modified accordingly
     intakeIn.pressed([](){intake(intakeout);});
@@ -76,7 +74,12 @@ void usercontrol() {
     //Sometimes the axis.changed event does not happen even if the axis value does change. Thus, our current solution.
     while(1) { //Each iteration of this loop is one tick
         movement(omnidirectionalX.value(), omnidirectionalY.value(), turning.value());
-        wait(TICK_LENGTH, timeUnits::msec); //Use less battery this way
+        //Now account for initial skidding by gradually increasing velocity with a constant acceleration
+        //until the desired velocity is reached.
+        for(int i=0; i<NUM_WHEELS; i++) {
+            wheels[i]->calculateAcceleratingVelocity();
+        }
+        wait(TICK_LENGTH, msec); //Use less battery this way
         debugMenuController(); //Debug screen is updated every tick
     }
 
@@ -84,9 +87,12 @@ void usercontrol() {
 
 int main() {
 
-    vexcodeInit();
-    usercontrol();
     /*
+     * If testing autonomous, then uncomment the below lines and comment out
+     * the rest of the code in this function
+    */
+    //vexcodeInit();
+    //autonomous();
 
     //If this is one of the autonomous programs, then we need to wait until something happens
     if(SIDE != 0) { 
@@ -96,13 +102,20 @@ int main() {
         comp.autonomous(autonomous);
         comp.drivercontrol(usercontrol);
 
-        // prevent main from exiting with an infinite
-        // loop while we wait for instructions from the field switch
-        while(1) wait(100, msec);
+        /*
+         * prevent main from exiting with an infinite
+         * loop while we wait for instructions from the field switch
+         *
+         * Additionally, when in autonomous, we want the wheels to not skid,
+         * so we need to account for that every tick.
+        */
+        while(1) {
+            wait(20, msec);
+        }
         
     } else { //If this is the controls testing, then go directly to the drivercontrols
         vexcodeInit();
         usercontrol();
-    }*/
+    }
 
 }
