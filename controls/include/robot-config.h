@@ -18,6 +18,8 @@ extern brain vexBrain;
 /** The one controller we have connected. */
 extern controller mainCon;
 
+extern double acc;
+
 /**
  * The net displacement (x and y combined using vector addition) from the
  * initial analog position required to have the robot move. Also used for the
@@ -46,6 +48,13 @@ const int TICK_LENGTH = 20;
 const int NUM_WHEELS = 4;
 
 /**
+ * The number of velocity records we want to hold. These records are used for
+ * determining average wheel velocity so we can correct drift.
+/
+const int MAX_VELOCITY_RECORDS = 10;
+*/
+
+/** MAY NOT NEED THIS
  * Node of a linked list that stores the velocity records.
  * (linked lists: https://www.cprogramming.com/tutorial/lesson15.html)
  * 
@@ -60,27 +69,20 @@ const int NUM_WHEELS = 4;
  * battery). I'm more concerned about draining the battery than using CPU power
  * because, if the robot runs out of battery in the middle of a match, then we
  * pretty much lose the match.
-*/
+* /
 class Node {
     public:
         int vel = -201; //Cannot be less than -200 (means uninitialized)
     Node * next;
-};
+};*/
 
 /**
  * A wrapper for motor class that implements drift correction.
- * Drift correction includes velocity records for the last 10 ticks (approximately 1/5 of a second)
+ * Drift correction includes velocity records for the last MAX_VELOCITY_RECORDS ticks (approximately 1/5 of a second)
  * Note the use of 'velocity' instead of 'speed' because direction is also important.
 */
 class Wheel {
-
-    public:
-        /**
-         * The default constructor for the Wheel class. It takes the motor it 
-         * is intended to wrap, and stores that motor.
-        */
-        Wheel(motor &wheelMotor);
-        
+    private:
         /*
          * double   The velocity at which the motor will be turning (not
          * necessarily at this moment) (measured in rpm).
@@ -88,9 +90,151 @@ class Wheel {
         double velocity = 0;
 
         /*
+         * double   The velcoity at which we want the motor to be turning soon
+         * (measured in rpm). Used for implementing gradual acceleration.
+         * To prevent the robot from slipping initially.
+        */
+        double goalVelocity = 0;
+
+        /*
+         * double   The goal velocity as it is being updated in the movement function
+        */
+        double intermediateGoalVelocity = 0;
+
+        /*
+         * double   The velocity the wheel was moving at when the analog stick moved.
+        */
+        double initialVelocity = 0;
+
+        /*
+         * double   The rate at which the robot's velocity is changing in order
+         * to reach the goalVelocity. Proportional to the
+         * ANGULAR_ACCELERATIONAL_CONSTANT.
+        */
+        double acceleration = 0;
+
+    public:
+        /*
+         * The rate at which the velocity of the robot's wheels moves toward their
+         * respective goal velocities. Should be constant so that we have a constant
+         * change in the velocity (a linear model).
+         *
+         * Proportional to the acceleration of the wheels.
+         *
+         * Should be between 0 and 1. An accelerational constant of 1 means that the
+         * wheel's velocity will immediately go up to the goalVelocity (which means
+         * there is no gradual acceleration). An accelerational constant of 0 means
+         * that the wheel's velocity will never change.
+         *
+         * A good rule for determining the accelerational constant is using this:
+         * ANGULAR_ACCELERATIONAL_CONSTANT = 1/(ticks), where ticks is the number of
+         * ticks that should pass between the time the wheel starts accelerating
+         * and when it reaches its goalVelocity. 
+         *
+         * For example, an accelerational constant of 1/20 would result in the wheel
+         * accelerating to its goal velocity over 20 ticks (approximately 400 ms or
+         * 2/5 of a second when the ticklength is 20 ms).
+        */
+        static double constexpr ANGULAR_ACCELERATIONAL_CONSTANT = (1/3); 
+
+        /**
+         * The default constructor for the Wheel class. It takes the motor it 
+         * is intended to wrap, and stores that motor.
+        */
+        Wheel(motor &wheelMotor);
+
+        /**
+         * @returns int   The wheel's current velocity.
+        */
+        double getVelocity() { return velocity; }
+
+        /**
+         * @param double  The new velocity of the wheel.
+        */
+        void setVelocity(double velocity) {
+            this->velocity = velocity;
+        }
+
+        /**
+         * @returns double    The wheel's goal velocity we want.
+        */
+        double getGoalVelocity() { return goalVelocity; }
+
+        /**
+         * Sets the goal velocity. 
+         * Updates the acceleration of the wheel accordingly.
+         * @param double    The new goal velocity we want.
+        */
+        void setGoalVelocity(double goalVel) {
+            // Only have change in acceleration if there is a change in goal velocity
+            // (We don't want to have the acceleration decrease unnecessarily,
+            // particularly in autonomous).
+            if(this->goalVelocity != goalVel) { 
+                // (final-initial) * accelerational_constant
+                this->goalVelocity = goalVel;
+                this->initialVelocity = this->velocity;
+            }
+        }
+
+        /**
+         * @returns double    The wheel's intermediate goal velocity we want.
+        */
+        double getIntermediateVelocity() { return goalVelocity; }
+
+        /**
+         * Sets the intermediate goal velocity. 
+         * Updates the in progress goal velocity accordingly (as in we are
+         * currently changing this in the movement function).
+         * @param double    The new intermediate goal velocity we want.
+        */
+        void setIntermediateGoalVelocity(double intermediateGoalVelocity) {
+            this->intermediateGoalVelocity = intermediateGoalVelocity;
+        }
+
+        /**
+         * @return double   The initial velocity.
+        */
+        double getInitialVelocity() {
+            return initialVelocity;
+        }
+
+        /**
+         * @param double   The initial velocity.
+        */
+        void setInitialVelocity(double initialVelocity) {
+            this->initialVelocity = initialVelocity;
+        }
+
+        double getAcceleration() {
+            return acceleration;
+        }
+
+        /*
          * motor    The motor that this wheel is controlled by.
         */
         motor *wheelMotor;
+
+        /*
+         * A method to control drifting and changing of direction when the
+         * robot first starts to move. This allows us to gradually change the
+         * velocity of the robot so that we do not have kinetic friction
+         * between the robot's wheels and the floor.
+         *
+         * The model for the increase in acceleration should be linear. It
+         * should slope up in the case that the desired velocity is positive.
+         * The slope will be negative when 
+         * This gives us a constant acceleration.
+         *
+         * The rate at which this occurs is proportional to the 
+         * ACCELERATIONAL_CONSTANT, which will allow us to adjust the rate of
+         * acceleration so that the driver has the most control over the
+         * robot's movement.
+         *
+         * This will be called once per tick.
+         *
+         * V = initialV + (acceleration)(time)
+        */
+        void calculateAcceleratingVelocity();
 
         /*
          * Spins the motor that controls this wheel at the velocity stored in
