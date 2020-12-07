@@ -136,7 +136,7 @@ class Wheel {
          * accelerating to its goal velocity over 20 ticks (approximately 400 ms or
          * 2/5 of a second when the ticklength is 20 ms).
         */
-        static double constexpr ANGULAR_ACCELERATIONAL_CONSTANT = 0.25; 
+        static double constexpr ANGULAR_ACCELERATIONAL_CONSTANT = 0.5; 
 
         /**
          * The default constructor for the Wheel class. It takes the motor it 
