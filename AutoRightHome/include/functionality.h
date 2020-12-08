@@ -40,7 +40,7 @@ enum motorActions {
 /**
  * int      The maximum speed, in rpm, that the robot's motors will spin.
 */
-const int MAX_SPEED = 200;
+const int MAX_SPEED = 100;
 
 /*
  * int      The maximum value that an axis of an analog stick can have.

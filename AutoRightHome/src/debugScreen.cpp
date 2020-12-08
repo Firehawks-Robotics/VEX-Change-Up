@@ -99,6 +99,21 @@ void temperature() {
     vexBrain.Screen.print(intakeRightMotor.temperature(u));
 }
 
+void rpm() {
+    vexBrain.Screen.newLine();
+    vexBrain.Screen.print("Motor RPM: ");
+    vexBrain.Screen.newLine();
+    vexBrain.Screen.print("ne : ");
+    vexBrain.Screen.print(neWheel.getVelocity());
+    vexBrain.Screen.print(" | nw : ");
+    vexBrain.Screen.print(nwWheel.getVelocity());
+    vexBrain.Screen.print(" | se | ");
+    vexBrain.Screen.print(seWheel.getVelocity());
+    vexBrain.Screen.print(" | sw : ");
+    vexBrain.Screen.print(swWheel.getVelocity());
+    vexBrain.Screen.newLine();
+}
+
 
 void resetDebug() {
     vex::task::sleep(100);

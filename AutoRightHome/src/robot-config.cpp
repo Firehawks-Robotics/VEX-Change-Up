@@ -115,6 +115,8 @@ vex::controller::button stopMotors = mainCon.ButtonDown;
 
 // VEXcode generated functions
 
+const int FUNCTION_MOTOR_SPEED = 50; //rpm
+
 /**
  * Used to initialize code/tasks/devices added using tools in VEXcode Text.
  * 
@@ -122,11 +124,11 @@ vex::controller::button stopMotors = mainCon.ButtonDown;
  */
 void vexcodeInit( void ) {
     //Inititalize the default velocity for motors with unchanging velocities
-    intakeLeftMotor.setVelocity(200, rpm);
-    intakeRightMotor.setVelocity(200, rpm);
+    intakeLeftMotor.setVelocity(FUNCTION_MOTOR_SPEED, rpm);
+    intakeRightMotor.setVelocity(FUNCTION_MOTOR_SPEED, rpm);
 
-    liftLeftMotor.setVelocity(200, rpm);
-    liftRightMotor.setVelocity(200, rpm);
+    liftLeftMotor.setVelocity(FUNCTION_MOTOR_SPEED, rpm);
+    liftRightMotor.setVelocity(FUNCTION_MOTOR_SPEED, rpm);
 
     //Create wheel objects
 

@@ -70,8 +70,8 @@ void movement(double x, double y, double turnValue) {
         
         // Speed derived from analog stick displacement * max rpm * angle
         
-        neWheel.setGoalVelocity((addedVectors/MAX_AXIS_VALUE)*MAX_SPEED*sin((M_PI/4)-desiredAngle)); 
-        swWheel.setGoalVelocity((addedVectors/MAX_AXIS_VALUE)*MAX_SPEED*sin((3*M_PI/4)-desiredAngle));
+        neWheel.setGoalVelocity((addedVectors/MAX_AXIS_VALUE)*MAX_SPEED*sin((-M_PI/4)-desiredAngle)); 
+        swWheel.setGoalVelocity((addedVectors/MAX_AXIS_VALUE)*MAX_SPEED*sin((-3*M_PI/4)-desiredAngle));
         nwWheel.setGoalVelocity((addedVectors/MAX_AXIS_VALUE)*MAX_SPEED*sin((-3*M_PI/4)-desiredAngle));
         //revert nwWheel goal velocity to negative if reversed
         seWheel.setGoalVelocity((addedVectors/MAX_AXIS_VALUE)*MAX_SPEED*sin((-M_PI/4)-desiredAngle));
@@ -84,7 +84,7 @@ void movement(double x, double y, double turnValue) {
   
     //Turning (Right analog stick)
     //Simply add the velocity to the motors
-    if(turnValue < -MIN_MOVEMENT_AXIS_DISPLACEMENT || turnValue > MIN_MOVEMENT_AXIS_DISPLACEMENT) { //Dont want tiny values to have any effect
+    if(turnValue < -MIN_TURNING_AXIS_DISPLACEMENT || turnValue > MIN_TURNING_AXIS_DISPLACEMENT) { //Dont want tiny values to have any effect
         neWheel.setGoalVelocity(neWheel.getGoalVelocity() + -MAX_SPEED*(turnValue/MAX_AXIS_VALUE));
         swWheel.setGoalVelocity(swWheel.getGoalVelocity() + MAX_SPEED*(turnValue/MAX_AXIS_VALUE));
         nwWheel.setGoalVelocity(nwWheel.getGoalVelocity() + -MAX_SPEED*(turnValue/MAX_AXIS_VALUE));
