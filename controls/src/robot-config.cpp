@@ -39,38 +39,6 @@ void Wheel::calculateAcceleratingVelocity() {
     this->velocity = this->velocity + double(this->acceleration);
 }
 
-/* drift correction (may not be needed anymore)
-
-int Wheel::avgVelocity() {
-    int sum = 0;
-    Node *current = this->velRecordsHead;
-    while(current->next != 0) {
-        sum+=current->vel;
-        current = current->next;
-    }
-
-    return sum/totalVelocityRecords;
-}
-
-void Wheel::shiftVelocityRecords(int newVelocity) {
-    if(this->totalVelocityRecords == 0) { //We currently have no records
-        this->velRecordsHead = new Node;
-        this->velRecordsHead->vel = newVelocity;
-        this->velRecordsTail = velRecordsHead;
-        this->totalVelocityRecords++;
-    } else { //We have some records of the wheel's velocity
-        this->velRecordsTail->next = new Node; //Add new node on end
-        this->velRecordsTail->next->vel = newVelocity;
-        this->velRecordsTail = velRecordsTail->next;
-        if(totalVelocityRecords >= MAX_VELOCITY_RECORDS) { //Then we need to remove the head
-            Node *temp = velRecordsHead;
-            velRecordsHead = velRecordsHead->next; //Dispose of old head by changing the pointer's memory reference to the second record
-            delete temp; temp = NULL; //Free the old node from memory
-        } else { //Since we have not deleted a record if we get here, then increase the record count
-            this->totalVelocityRecords++;
-        }
-    }
-}*/
 void Wheel::spin(directionType dir) {
     this->wheelMotor->setVelocity(this->velocity, rpm);
     this->wheelMotor->spin(dir);
@@ -83,7 +51,7 @@ void Wheel::spin(double velocity, directionType dir) {
 
 // VEXcode device constructors
 motor neWheelMotor = motor(PORT11, ratio36_1, true);
-motor nwWheelMotor = motor(PORT20, ratio36_1, true); //revert this to false if reversed
+motor nwWheelMotor = motor(PORT20, ratio36_1, true);
 motor seWheelMotor = motor(PORT10, ratio36_1, false);
 motor swWheelMotor = motor(PORT9, ratio36_1, false);
 motor intakeLeftMotor = motor(PORT1, ratio36_1, false);
@@ -105,11 +73,8 @@ vex::controller::axis omnidirectionalX = mainCon.Axis4;
 
 vex::controller::axis turning = mainCon.Axis1;
 
-vex::controller::button intakeIn = mainCon.ButtonR1; //Front
-vex::controller::button intakeOut = mainCon.ButtonR2; //Back
-
-vex::controller::button liftUp = mainCon.ButtonL1; //Front
-vex::controller::button liftDown = mainCon.ButtonL2; //Back
+vex::controller::button functionUp = mainCon.ButtonR1; //Front
+vex::controller::button functionDown = mainCon.ButtonR2; //Back
 
 vex::controller::button stopMotors = mainCon.ButtonDown;
 

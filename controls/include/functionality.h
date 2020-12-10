@@ -30,11 +30,9 @@ extern double lastAddedVectors;
  * action is used for both lift and intake.
 */
 enum motorActions {
-    intakein = 1,
-    intakeout = 2,
-    stop = 3, //For both lift and intake
-    liftup = 4,
-    liftdown = 5,
+    down = -1,
+    stop = 0,
+    up = 1
 };
 
 /**
@@ -59,18 +57,11 @@ const int MAX_AXIS_VALUE = 127;
 void movement(double x, double y, double turnvalue);
 
 /*
- * Moves the liftLeftMotor and liftRightMotor motors according to desired 
- * direction.
+ * Moves the liftLeftMotor, liftRightMotor, intakeRightMotor, and 
+ * intakeLeftMotor motors according to desired  direction.
  * @param upOrDown     Direction desired. Using values from `motorActions`.
 */
-void intake(int dir);
-
-/*
- * Moves the liftLeftMotor and liftRightMotor motors according to desired
- * direction.
- * @param upOrDown     Direction desired. Using values from `motorActions`.
-*/
-void lift(int dir);
+void ballFunction(int dir);
 
 
 /*

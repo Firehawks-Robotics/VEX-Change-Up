@@ -23,8 +23,8 @@ double lastAddedVectors = 0;
  *    When the robot is first supposed to move (when the analog stick is moved),
  * the robot's wheels immediately go to an extremely high velocity (upwards of
  * 200 rpm). Just like in a car, if you try to accelerate too fast, this can
- * cause a lot of sliding (we have kinetic friction but want static friction
- * between the wheels and the ground).
+ * cause unwanted drifting (more like skidding). We have kinetic friction but
+ * want static friction between the wheels and the ground.
  *
  *    To fix this, we may be able to "gradually" accelerate to the desired speed
  * (the jerk would still be very high). We must use a linear model so that the
@@ -37,11 +37,6 @@ double num = 0;
 //We're gonna have to change the velocity of all the wheels by taking
 //the value of both left and right analog sticks.
 void movement(double x, double y, double turnValue) {
-
-    //Reset all wheel velocitys so they can be updated as we go through this function
-    //for(int i = 0; i<NUM_WHEELS; i++) {
-        //wheels[i]->setVelocity(0);
-    //}
 
     double addedVectors = sqrt(pow(x, 2) + pow(y, 2));
     if (addedVectors >= MIN_MOVEMENT_AXIS_DISPLACEMENT) {  //We dont want to have the robot move when the analog stick is barely displaced, but really shouldnt be.
@@ -73,7 +68,6 @@ void movement(double x, double y, double turnValue) {
         neWheel.setGoalVelocity((addedVectors/MAX_AXIS_VALUE)*MAX_SPEED*sin((-M_PI/4)-desiredAngle)); 
         swWheel.setGoalVelocity((addedVectors/MAX_AXIS_VALUE)*MAX_SPEED*sin((-3*M_PI/4)-desiredAngle));
         nwWheel.setGoalVelocity((addedVectors/MAX_AXIS_VALUE)*MAX_SPEED*sin((-3*M_PI/4)-desiredAngle));
-        //revert nwWheel goal velocity to negative if reversed
         seWheel.setGoalVelocity((addedVectors/MAX_AXIS_VALUE)*MAX_SPEED*sin((-M_PI/4)-desiredAngle));
 
     } else {
@@ -88,7 +82,6 @@ void movement(double x, double y, double turnValue) {
         neWheel.setGoalVelocity(neWheel.getGoalVelocity() + -MAX_SPEED*(turnValue/MAX_AXIS_VALUE));
         swWheel.setGoalVelocity(swWheel.getGoalVelocity() + MAX_SPEED*(turnValue/MAX_AXIS_VALUE));
         nwWheel.setGoalVelocity(nwWheel.getGoalVelocity() + -MAX_SPEED*(turnValue/MAX_AXIS_VALUE));
-        //Revert nwWheel goal velocity back to positive if reversed
         seWheel.setGoalVelocity(seWheel.getGoalVelocity() + MAX_SPEED*(turnValue/MAX_AXIS_VALUE));
     }
 
@@ -116,34 +109,24 @@ void movement(double x, double y, double turnValue) {
 }
 
 /*
- * using values stored in enum `motorActions`
+ * Using values stored in enum `motorActions`
 */
-void intake(int dir) {
-    if(dir == intakeout) { //Out
+void ballFunction(int dir) {
+    if(dir == down) { //Down
+        liftLeftMotor.spin(forward);
+        liftRightMotor.spin(forward);
         intakeLeftMotor.spin(forward);
         intakeRightMotor.spin(forward);
     } else if(dir == stop) { //Stop
-        intakeLeftMotor.stop(hold);
-        intakeRightMotor.stop(hold);
-    } else if(dir == intakein) { //In
-        intakeLeftMotor.spin(reverse);
-        intakeRightMotor.spin(reverse);
-    }  
-}
-
-/*
- * Using values stored in enum `motorActions`
-*/
-void lift(int dir) {
-    if(dir == liftdown) { //Down
-        liftLeftMotor.spin(forward);
-        liftRightMotor.spin(forward);
-    } else if(dir == stop) { //Stop
         liftLeftMotor.stop(hold);
         liftRightMotor.stop(hold);
-    } else if(dir == liftup) { //Up
+        intakeLeftMotor.stop(hold);
+        intakeRightMotor.stop(hold);
+    } else if(dir == up) { //Up
         liftLeftMotor.spin(reverse);
         liftRightMotor.spin(reverse);
+        intakeLeftMotor.spin(reverse);
+        intakeRightMotor.spin(reverse);
     }
 }
 

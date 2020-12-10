@@ -29,10 +29,8 @@ using namespace vex;
 /* CONTROLS MAPPING:
  * Omnidirectional Movement - Left Analog Stick
  * Turn Left/Right - Right Analog Stick
- * Intake In - Front Right Bumper (R1)
- * Intake Out - Back Right Bumper (R2)
- * Lift/Shoot Up - Front Left Bumper (L1)
- * Lift/Shoot Down - Back Left Bumper (L2)
+ * Lift/Intake - Front Right Bumper (R1)
+ * Down/Expel - Back Right Bumper (R2)
 */
 
 /* Notes:
@@ -58,15 +56,10 @@ void usercontrol() {
 
     //Using lambdas here btw (learn more: https://en.cppreference.com/w/cpp/language/lambda)
     //Values of all axes are needed so that wheel velocity can be modified accordingly
-    intakeIn.pressed([](){intake(intakeout);});
-    intakeOut.pressed([](){intake(intakein);});
-    intakeIn.released([](){intake(stop);});
-    intakeOut.released([](){intake(stop);});
-
-    liftUp.pressed([](){lift(liftup);});
-    liftDown.pressed([](){lift(liftdown);});
-    liftUp.released([](){lift(stop);});
-    liftDown.released([](){lift(stop);});
+    functionUp.pressed([](){ballFunction(up);});
+    functionDown.pressed([](){ballFunction(down);});
+    functionUp.released([](){ballFunction(stop);});
+    functionDown.released([](){ballFunction(stop);});
 
     stopMotors.pressed(emergencyStop);
 
@@ -74,7 +67,6 @@ void usercontrol() {
     //Sometimes the axis.changed event does not happen even if the axis value does change. Thus, our current solution.
     while(1) { //Each iteration of this loop is one tick
         movement(omnidirectionalX.value()/(1.5), omnidirectionalY.value()/(1.5), turning.value()/3);
-        //Note that turning value is divided by 4 because we dont want it to turn too fast
         //Now account for initial skidding by gradually increasing velocity with a constant acceleration
         //until the desired velocity is reached.
         for(int i=0; i<NUM_WHEELS; i++) {

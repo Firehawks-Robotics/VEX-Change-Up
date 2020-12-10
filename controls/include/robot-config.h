@@ -49,46 +49,11 @@ const int TICK_LENGTH = 20;
 const int NUM_WHEELS = 4;
 
 /**
- * The number of velocity records we want to hold. These records are used for
- * determining average wheel velocity so we can correct drift.
-/
-const int MAX_VELOCITY_RECORDS = 10;
-*/
-
-/** MAY NOT NEED THIS
- * Node of a linked list that stores the velocity records.
- * (linked lists: https://www.cprogramming.com/tutorial/lesson15.html)
- * 
- * Linked Lists are more efficient than arrays in this case. We want to be able
- * to shift the list 'to the left' when we add a new velocity record. In other
- * words, we want to move all values to one index less than their current
- * index. By using linked lists, there are no indexes, and all we have to do is
- * add a node on the end and delete the node on the front ('head' or 'root').
- * 
- * If we were to do this with lists, we would have to change the value of each
- * index of the list (which is going to take up cpu and drain the robot's
- * battery). I'm more concerned about draining the battery than using CPU power
- * because, if the robot runs out of battery in the middle of a match, then we
- * pretty much lose the match.
-* /
-class Node {
-    public:
-        int vel = -201; //Cannot be less than -200 (means uninitialized)
-    Node * next;
-};*/
-
-/**
  * A wrapper for motor class that implements drift correction.
  * Drift correction includes velocity records for the last MAX_VELOCITY_RECORDS ticks (approximately 1/5 of a second)
  * Note the use of 'velocity' instead of 'speed' because direction is also important.
 */
 class Wheel {
-    protected:
-        /* MAY NOT NEED THIS
-        Node *velRecordsHead;
-        Node *velRecordsTail; //The head and the tail should be the same node at first
-        int totalVelocityRecords = 0; //When at MAX_VELOCITY_RECORDS, then we should start deleting the head when new are added
-        */
     private:
         /*
          * double   The velocity at which the motor will be turning (not
@@ -201,24 +166,6 @@ class Wheel {
         */
         motor *wheelMotor;
 
-        /* Implementation for wheel correction (likely not needed now)
-
-        /
-         * Calculates the average velocity over the last MAX_VELOCITY_RECORDS ticks using the velocity records
-         * The velocity records and the average velocity do not include the velocity modifications made for the
-         * drift correction.
-         * @returns int   The average velocity of this wheel over the last MAX_VELOCITY_RECORDS ticks (about 1/5 of a second)
-        /
-        int avgVelocity(void);
-
-        /
-         * Adds a velocity record to the end of the linked list. If there are already MAX_VELOCITY_RECORDS velocity records, then
-         * Remove the head as wheel (that is no longer needed because that was 11 ticks ago).
-         * @param int newVelocity  The velocity to be added to the records
-        /
-        void shiftVelocityRecords(int newVelocity);
-        */
-
         /*
          * A method to control drifting and changing of direction when the
          * robot first starts to move. This allows us to gradually change the
@@ -318,15 +265,10 @@ extern vex::controller::axis omnidirectionalX;
 /** The horizontal axis of the right (turning) analog stick (vertical unused) */
 extern vex::controller::axis turning;
 
-/** Button that causes the intake motors to intake objects. */
-extern vex::controller::button intakeIn;
-/** Button that causes the intake motors to expel objects. */
-extern vex::controller::button intakeOut;
-
-/** Button that causes the lift motors to lift objects. */
-extern vex::controller::button liftUp;
-/** Button that causes the lift motors to make objects go down. */
-extern vex::controller::button liftDown;
+/** Button that causes the intake motors to intake and lift balls. */
+extern vex::controller::button functionUp;
+/** Button that causes the intake motors to expel and bring balls down. */
+extern vex::controller::button functionDown;
 
 /**
  * Button that immediately stops all motors and makes them brake (using

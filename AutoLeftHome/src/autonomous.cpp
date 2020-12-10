@@ -61,21 +61,21 @@ void autonomous() {
     timedMovement(0, 0, SIDE*MAX_AXIS_VALUE, 500);
 
     //Move forwards and intake the two balls
-    intake(intakein); //Will continue for an entire second (Account for the 500 ms in timedMovement() as well)
+    ballFunction(up); //Will continue for an entire second (Account for the 500 ms in timedMovement() as well)
     timedMovement(MAX_AXIS_VALUE, 0, 0, 500);
 
     pause(500); //Make this just enough to get them in the intake, but not the lift
 
-    intake(stop);
+    ballFunction(stop);
 
     //Turn Around and put preload ball in goal
     timedMovement(0, 0, SIDE*MAX_AXIS_VALUE, 500);
 
-    lift(liftup); //Now put the preload ball in the goal
+    ballFunction(up); //Now put the preload ball in the goal
 
     pause(500);
 
-    lift(liftup);
+    ballFunction(stop);
 
     //Go score one ball in the middle goal
     timedMovement(0, 0, -1*SIDE*MAX_AXIS_VALUE, 200); //Fix angle
@@ -83,22 +83,22 @@ void autonomous() {
     timedMovement(-1*SIDE*MAX_AXIS_VALUE, 0, 0, 2000); //Stop turning and start moving
     //Stop once reaches goal
 
-    lift(liftup); //Put the ball in the goal
+    ballFunction(up); //Put the ball in the goal
 
     pause(500); //stop before we put the last ball in there (we dont want that)
 
-    lift(stop);
+    ballFunction(stop);
 
     //Go to the last goal on the home row
     timedMovement(-1*SIDE*MAX_AXIS_VALUE, MAX_AXIS_VALUE, 0, 1500); //Give wide berth to other robot so it doesnt get in the way (going out)
 
     timedMovement(-1*SIDE*MAX_AXIS_VALUE, -MAX_AXIS_VALUE, 0, 1500); //Give wide berth to other robot so it doesnt get in the way (going towards goal)
 
-    lift(liftup); //Put the last ball in the last goal
+    ballFunction(up); //Put the last ball in the last goal
 
     pause(500);
 
-    lift(stop); //Stop everything
+    ballFunction(stop); //Stop everything
 
     //IDEA: if there is still enough time at the end, then move somewhere that would give a strategic advantage
 
