@@ -115,7 +115,7 @@ vex::controller::button stopMotors = mainCon.ButtonDown;
 
 // VEXcode generated functions
 
-const int FUNCTION_MOTOR_SPEED = 50; //rpm
+const int FUNCTION_MOTOR_SPEED = 100; //rpm
 
 /**
  * Used to initialize code/tasks/devices added using tools in VEXcode Text.

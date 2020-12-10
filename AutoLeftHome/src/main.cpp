@@ -73,7 +73,7 @@ void usercontrol() {
     //Movement is handled by an infinite while loop to ensure that the movement gets updated like it should
     //Sometimes the axis.changed event does not happen even if the axis value does change. Thus, our current solution.
     while(1) { //Each iteration of this loop is one tick
-        movement(omnidirectionalX.value()/2, omnidirectionalY.value()/2, turning.value()/4);
+        movement(omnidirectionalX.value()/(1.5), omnidirectionalY.value()/(1.5), turning.value()/3);
         //Note that turning value is divided by 4 because we dont want it to turn too fast
         //Now account for initial skidding by gradually increasing velocity with a constant acceleration
         //until the desired velocity is reached.
