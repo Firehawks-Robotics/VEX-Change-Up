@@ -66,13 +66,24 @@ void usercontrol() {
     //Movement is handled by an infinite while loop to ensure that the movement gets updated like it should
     //Sometimes the axis.changed event does not happen even if the axis value does change. Thus, our current solution.
     while(1) { //Each iteration of this loop is one tick
-        movement(omnidirectionalX.value()/(1.5), omnidirectionalY.value()/(1.5), turning.value()/3);
+        movement(omnidirectionalX.value()*(percentOfMaxSpeed), omnidirectionalY.value()*(percentOfMaxSpeed), turning.value()/3);
         //Now account for initial skidding by gradually increasing velocity with a constant acceleration
         //until the desired velocity is reached.
         for(int i=0; i<NUM_WHEELS; i++) {
             wheels[i]->calculateAcceleratingVelocity();
         }
         wait(TICK_LENGTH, msec); //Use less battery this way
+
+        //Speed control using left bumper
+        //If both up and down are pressed, then nothing changess
+        if (speedUp.pressing()) {
+            percentOfMaxSpeed += PERCENTOFMAXSPEEDSTEP;
+            if (percentOfMaxSpeed > 100) percentOfMaxSpeed = 100;
+        } if (speedDown.pressing()) {
+            percentOfMaxSpeed -= PERCENTOFMAXSPEEDSTEP;
+            if (percentOfMaxSpeed < 0) percentOfMaxSpeed = 0;
+        }
+
         debugMenuController(); //Debug screen is updated every tick
     }
 

@@ -20,6 +20,8 @@ double acc = 0;
 brain vexBrain;
 controller mainCon;
 
+double percentOfMaxSpeed = 0.75; //default is 75%
+
 Wheel::Wheel(motor &wheelMotor) {
     this->wheelMotor = &wheelMotor;
 }
@@ -73,6 +75,9 @@ vex::controller::axis omnidirectionalX = mainCon.Axis4;
 
 vex::controller::axis turning = mainCon.Axis1;
 
+vex::controller::button speedUp = mainCon.ButtonL1;
+vex::controller::button speedDown = mainCon.ButtonL2;
+
 vex::controller::button functionUp = mainCon.ButtonR1; //Front
 vex::controller::button functionDown = mainCon.ButtonR2; //Back
 
@@ -94,6 +99,8 @@ void vexcodeInit( void ) {
 
     liftLeftMotor.setVelocity(FUNCTION_MOTOR_SPEED, rpm);
     liftRightMotor.setVelocity(FUNCTION_MOTOR_SPEED, rpm);
+
+    percentOfMaxSpeed = 0.75;
 
     //Create wheel objects
 

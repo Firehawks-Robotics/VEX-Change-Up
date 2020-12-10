@@ -49,6 +49,18 @@ const int TICK_LENGTH = 20;
 const int NUM_WHEELS = 4;
 
 /**
+ * The amount that the percentOfMaxSpeed should change per tick when the
+ * appropriate control is held down. Is 1% per tick.
+*/
+double constexpr PERCENTOFMAXSPEEDSTEP = 0.01; 
+
+/**
+ * The percentage of the max speed (200 rpm) that the wheels should move
+ * when at full speed. Defaults to 75%.
+*/
+extern double percentOfMaxSpeed;
+
+/**
  * A wrapper for motor class that implements drift correction.
  * Drift correction includes velocity records for the last MAX_VELOCITY_RECORDS ticks (approximately 1/5 of a second)
  * Note the use of 'velocity' instead of 'speed' because direction is also important.
@@ -264,6 +276,11 @@ extern vex::controller::axis omnidirectionalX;
 
 /** The horizontal axis of the right (turning) analog stick (vertical unused) */
 extern vex::controller::axis turning;
+
+/** Button that causes the wheel motor percentOfMaxSpeed to increase. */
+extern vex::controller::button speedUp;
+/** Button that causes the wheel motor percentOfMaxSpeed to increase. */
+extern vex::controller::button speedDown;
 
 /** Button that causes the intake motors to intake and lift balls. */
 extern vex::controller::button functionUp;
