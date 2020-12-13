@@ -64,11 +64,12 @@ void movement(double x, double y, double turnValue) {
         }
         
         // Speed derived from analog stick displacement * max rpm * angle
-        
-        neWheel.setGoalVelocity((addedVectors/MAX_AXIS_VALUE)*MAX_SPEED*sin((-M_PI/4)-desiredAngle)); 
-        swWheel.setGoalVelocity((addedVectors/MAX_AXIS_VALUE)*MAX_SPEED*sin((-3*M_PI/4)-desiredAngle));
-        nwWheel.setGoalVelocity((addedVectors/MAX_AXIS_VALUE)*MAX_SPEED*sin((-3*M_PI/4)-desiredAngle));
-        seWheel.setGoalVelocity((addedVectors/MAX_AXIS_VALUE)*MAX_SPEED*sin((-M_PI/4)-desiredAngle));
+        double nwsw = (addedVectors/MAX_AXIS_VALUE)*MAX_SPEED*sin((-3*M_PI/4)-desiredAngle);
+        double nese = (addedVectors/MAX_AXIS_VALUE)*MAX_SPEED*sin((-M_PI/4)-desiredAngle);
+        neWheel.setGoalVelocity(nese); 
+        swWheel.setGoalVelocity(nwsw);
+        nwWheel.setGoalVelocity(nwsw);
+        seWheel.setGoalVelocity(nese);
 
     } else {
         for(int i=0; i<NUM_WHEELS; i++) {
@@ -79,10 +80,11 @@ void movement(double x, double y, double turnValue) {
     //Turning (Right analog stick)
     //Simply add the velocity to the motors
     if(turnValue < -MIN_TURNING_AXIS_DISPLACEMENT || turnValue > MIN_TURNING_AXIS_DISPLACEMENT) { //Dont want tiny values to have any effect
-        neWheel.setGoalVelocity(neWheel.getGoalVelocity() + -MAX_SPEED*(turnValue/MAX_AXIS_VALUE));
-        swWheel.setGoalVelocity(swWheel.getGoalVelocity() + MAX_SPEED*(turnValue/MAX_AXIS_VALUE));
-        nwWheel.setGoalVelocity(nwWheel.getGoalVelocity() + -MAX_SPEED*(turnValue/MAX_AXIS_VALUE));
-        seWheel.setGoalVelocity(seWheel.getGoalVelocity() + MAX_SPEED*(turnValue/MAX_AXIS_VALUE));
+        double speed = MAX_SPEED*(turnValue/MAX_AXIS_VALUE);
+        neWheel.setGoalVelocity(neWheel.getGoalVelocity() + -speed);
+        swWheel.setGoalVelocity(swWheel.getGoalVelocity() + speed);
+        nwWheel.setGoalVelocity(nwWheel.getGoalVelocity() + -speed);
+        seWheel.setGoalVelocity(seWheel.getGoalVelocity() + speed);
     }
 
     //Brake if the wheel is not supposed to move (Make the motor go back if it moves)
