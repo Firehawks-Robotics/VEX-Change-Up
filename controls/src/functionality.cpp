@@ -91,7 +91,6 @@ void movement(double x, double y, double turnValue) {
     //Otherwise, spin
     for(int i=0; i<NUM_WHEELS; i++) {
         Wheel *wheel = wheels[i];
-        acc = wheel->getVelocity();
         if(wheel->getVelocity() == 0) {
             wheel->wheelMotor->stop(coast);
         } else {
