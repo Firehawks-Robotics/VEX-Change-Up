@@ -116,8 +116,8 @@ void ballFunction(int dir) {
     if(dir == down) { //Down
         liftLeftMotor.spin(forward);
         liftRightMotor.spin(forward);
-        intakeLeftMotor.spin(forward);
-        intakeRightMotor.spin(forward);
+        intakeLeftMotor.spin(reverse);
+        intakeRightMotor.spin(reverse);
     } else if(dir == stop) { //Stop
         liftLeftMotor.stop(hold);
         liftRightMotor.stop(hold);
@@ -126,8 +126,8 @@ void ballFunction(int dir) {
     } else if(dir == up) { //Up
         liftLeftMotor.spin(reverse);
         liftRightMotor.spin(reverse);
-        intakeLeftMotor.spin(reverse);
-        intakeRightMotor.spin(reverse);
+        intakeLeftMotor.spin(forward);
+        intakeRightMotor.spin(forward);
     }
 }
 

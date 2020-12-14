@@ -52,7 +52,7 @@ const int NUM_WHEELS = 4;
  * The amount that the percentOfMaxSpeed should change per tick when the
  * appropriate control is held down. Is 1% per tick.
 */
-double constexpr PERCENTOFMAXSPEEDSTEP = 0.01; 
+double constexpr PERCENTOFMAXSPEEDSTEP = 0.05; 
 
 /**
  * The percentage of the max speed (200 rpm) that the wheels should move
