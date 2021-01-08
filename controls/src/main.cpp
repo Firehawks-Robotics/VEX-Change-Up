@@ -52,7 +52,7 @@ void pre_auton() {
     vexcodeInit();
 }
 
-void usercontrol() {
+void userControl() {
 
     //Using lambdas here btw (learn more: https://en.cppreference.com/w/cpp/language/lambda)
     //Values of all axes are needed so that wheel velocity can be modified accordingly
@@ -104,7 +104,7 @@ int main() {
         pre_auton();
 
         comp.autonomous(autonomous);
-        comp.drivercontrol(usercontrol);
+        comp.drivercontrol(userControl);
 
         /*
          * prevent main from exiting with an infinite
@@ -119,7 +119,7 @@ int main() {
         
     } else { //If this is the controls testing, then go directly to the drivercontrols
         vexcodeInit();
-        usercontrol();
+        userControl();
     }
 
 }
