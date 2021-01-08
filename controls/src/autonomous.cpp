@@ -18,6 +18,7 @@ using namespace vex;
 
 #include "functionality.h"
 #include "autonomous.h"
+#include "debugScreen.h"
 
 /* Using these values, all that is needed is to multiply some values by the side, thus making some negative and some positive
  * Sides:
@@ -38,14 +39,17 @@ void pause(int milliseconds) { wait(milliseconds, timeUnits::msec); }
  * Adjusts for acceleration every tick. Automatically stops moving at end.
 */
 void timedMovement(double right, double forward, double turnValue, int ms) {
-    movement(right, forward, turnValue);
+    
+    movement(right, forward, turnValue); //This is the issue (not the timing)
+
     while(ms > 0) { //Break if time is up
+
         for(int i=0; i<NUM_WHEELS; i++) {
             wheels[i]->calculateAcceleratingVelocity();
         }
         
         pause(TICK_LENGTH);
-        ms-=TICK_LENGTH;
+        ms = ms - TICK_LENGTH;
     }
 
     //We want the robot to stop moving now

@@ -35,6 +35,8 @@ enum motorActions {
     up = 1
 };
 
+extern double num;
+
 /**
  * int      The maximum speed, in rpm, that the robot's motors will spin.
 */

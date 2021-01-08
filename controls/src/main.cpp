@@ -52,7 +52,7 @@ void pre_auton() {
     vexcodeInit();
 }
 
-void usercontrol() {
+void userControl() {
 
     //Using lambdas here btw (learn more: https://en.cppreference.com/w/cpp/language/lambda)
     //Values of all axes are needed so that wheel velocity can be modified accordingly
@@ -84,7 +84,7 @@ void usercontrol() {
             if (percentOfMaxSpeed < 0) percentOfMaxSpeed = 0;
         }
 
-        debugMenuController(); //Debug screen is updated every tick
+        //debugMenuController(); //Debug screen is updated every tick
     }
 
 }
@@ -95,31 +95,33 @@ int main() {
      * If testing autonomous, then uncomment the below lines and comment out
      * the rest of the code in this function
     */
-    //vexcodeInit();
-    //autonomous();
+    ///*
+    vexcodeInit();
+    autonomous();
+    //*/
+    
 
+    /*
     //If this is one of the autonomous programs, then we need to wait until something happens
     if(SIDE != 0) { 
 
         pre_auton();
 
         comp.autonomous(autonomous);
-        comp.drivercontrol(usercontrol);
+        comp.drivercontrol(userControl);
 
-        /*
-         * prevent main from exiting with an infinite
-         * loop while we wait for instructions from the field switch
-         *
-         * Additionally, when in autonomous, we want the wheels to not skid,
-         * so we need to account for that every tick.
-        */
+        //prevent main from exiting with an infinite
+        // loop while we wait for instructions from the field switch
+        // Additionally, when in autonomous, we want the wheels to not skid,
+        // so we need to account for that every tick.
+        
         while(1) {
             wait(20, msec);
         }
         
     } else { //If this is the controls testing, then go directly to the drivercontrols
         vexcodeInit();
-        usercontrol();
-    }
+        userControl();
+    } // */
 
 }
