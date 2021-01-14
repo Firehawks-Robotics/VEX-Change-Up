@@ -28,7 +28,7 @@ Wheel::Wheel(motor &wheelMotor) {
 
 void Wheel::calculateAcceleratingVelocity() {
     //velocity > goalVelocity
-    if(abs(int(goalVelocity))-abs(int(velocity)) < 5) { //If the acceleration is close, then just go there now
+    if(abs(int(goalVelocity))-abs(int(velocity)) < acceleration) { //If the acceleration is close, then just go there now
         velocity = goalVelocity;
         return; 
     } else if (velocity == goalVelocity) { //Just dont bother doing anything (no acceleration needed)
@@ -36,7 +36,6 @@ void Wheel::calculateAcceleratingVelocity() {
     }
     
     this->acceleration = (this->goalVelocity - this->initialVelocity) * (1.0*ANGULAR_ACCELERATIONAL_CONSTANT);
-    number();
 
     this->velocity = this->velocity + double(this->acceleration);
 }

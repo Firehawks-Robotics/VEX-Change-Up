@@ -13,6 +13,7 @@ using namespace vex;
 #include "robot-config.h"
 #include "functionality.h"
 #include "debugScreen.h"
+#include "autonomous.h"
 
 /** The temperature units used to report the temperature on the debug screen. */
 temperatureUnits u = temperatureUnits::celsius;
@@ -152,5 +153,12 @@ void debugMenuController(){
     vexBrain.Screen.newLine();
 }
 
-void number() { //Use this to get numbers
+void number(int numb) { //Use this to get numbers
+    //vexBrain.Screen.clearScreen();
+    vexBrain.Screen.print(numb);
+    vexBrain.Screen.print(" ");
+    /*for(int i=0; i<NUM_WHEELS; i++) {
+        vexBrain.Screen.newLine();
+        vexBrain.Screen.print(wheels[i]->getGoalVelocity());
+    }*/
 }
