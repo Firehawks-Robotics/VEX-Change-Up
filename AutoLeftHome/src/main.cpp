@@ -95,9 +95,12 @@ int main() {
      * If testing autonomous, then uncomment the below lines and comment out
      * the rest of the code in this function
     */
-    //vexcodeInit();
-    //autonomous();
+    /*
+    vexcodeInit();
+    autonomous();
+    //*/
 
+    ///*
     //If this is one of the autonomous programs, then we need to wait until something happens
     if(SIDE != 0) { 
 
@@ -121,5 +124,6 @@ int main() {
         vexcodeInit();
         userControl();
     }
+    //*/
 
 }

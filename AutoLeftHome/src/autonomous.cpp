@@ -39,6 +39,7 @@ void pause(int milliseconds) { wait(milliseconds, timeUnits::msec); }
 */
 void timedMovement(double right, double forward, double turnValue, int ms) {
     movement(right, forward, turnValue);
+    
     while(ms > 0) { //Break if time is up
         for(int i=0; i<NUM_WHEELS; i++) {
             wheels[i]->calculateAcceleratingVelocity();
@@ -54,6 +55,9 @@ void timedMovement(double right, double forward, double turnValue, int ms) {
 
 //At prototype, this should take 7 seconds (lmao, yeah right)
 void autonomous() {
+    //KEEP THE FIRST timedMovement CALL HERE
+    //THIS MAKES IT WORK BY CALLING THE movement FUNCTION AT ONCE BEFORE EVERYTHING ELSE
+    timedMovement(101, 101, 101, 1); 
     //Move NE to get in front of goal
     timedMovement(MAX_AXIS_VALUE, SIDE*MAX_AXIS_VALUE, 0, 1000);
 
