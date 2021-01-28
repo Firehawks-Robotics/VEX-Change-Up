@@ -14,8 +14,6 @@ using namespace vex;
 using signature = vision::signature;
 using code = vision::code;
 
-double acc = 0;
-
 // A global instance of brain used for printing to the V5 Brain screen
 brain vexBrain;
 controller mainCon;
@@ -28,16 +26,16 @@ Wheel::Wheel(motor &wheelMotor) {
 
 void Wheel::calculateAcceleratingVelocity() {
     //velocity > goalVelocity
-    if(abs(int(goalVelocity))-abs(int(velocity)) < acceleration) { //If the acceleration is close, then just go there now
+    if(abs(goalVelocity-velocity) < abs(acceleration)) { //If the acceleration is close, then just go there now
         velocity = goalVelocity;
         return; 
     } else if (velocity == goalVelocity) { //Just dont bother doing anything (no acceleration needed)
         return;
     }
     
-    this->acceleration = (this->goalVelocity - this->initialVelocity) * (1.0*ANGULAR_ACCELERATIONAL_CONSTANT);
+    this->acceleration = (int)floor((this->goalVelocity - this->initialVelocity) * (1.0*ANGULAR_ACCELERATIONAL_CONSTANT));
 
-    this->velocity = this->velocity + double(this->acceleration);
+    this->velocity = this->velocity + this->acceleration;
 }
 
 void Wheel::spin(directionType dir) {
@@ -45,7 +43,7 @@ void Wheel::spin(directionType dir) {
     this->wheelMotor->spin(dir);
 }
 
-void Wheel::spin(double velocity, directionType dir) {
+void Wheel::spin(int velocity, directionType dir) {
     this->wheelMotor->setVelocity(velocity, rpm);
     this->wheelMotor->spin(dir);
 }

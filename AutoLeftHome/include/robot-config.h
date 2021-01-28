@@ -71,26 +71,26 @@ class Wheel {
          * double   The velocity at which the motor will be turning (not
          * necessarily at this moment) (measured in rpm).
         */
-        double velocity = 0;
+        int velocity = 0;
 
         /*
          * double   The velcoity at which we want the motor to be turning soon
          * (measured in rpm). Used for implementing gradual acceleration.
          * To prevent the robot from slipping initially.
         */
-        double goalVelocity = 0;
+        int goalVelocity = 0;
 
         /*
          * double   The velocity the wheel was moving at when the analog stick moved.
         */
-        double initialVelocity = 0;
+        int initialVelocity = 0;
 
         /*
          * double   The rate at which the robot's velocity is changing in order
          * to reach the goalVelocity. Proportional to the
          * ANGULAR_ACCELERATIONAL_CONSTANT.
         */
-        double acceleration = 0;
+        int acceleration = 0;
 
     public:
         /*
@@ -125,26 +125,26 @@ class Wheel {
         /**
          * @returns int   The wheel's current velocity.
         */
-        double getVelocity() { return velocity; }
+        int getVelocity() { return velocity; }
 
         /**
          * @param double  The new velocity of the wheel.
         */
-        void setVelocity(double velocity) {
+        void setVelocity(int velocity) {
             this->velocity = velocity;
         }
 
         /**
          * @returns double    The wheel's goal velocity we want.
         */
-        double getGoalVelocity() { return goalVelocity; }
+        int getGoalVelocity() { return goalVelocity; }
 
         /**
          * Sets the goal velocity. 
          * Updates the acceleration of the wheel accordingly.
          * @param double    The new goal velocity we want.
         */
-        void setGoalVelocity(double goalVel) {
+        void setGoalVelocity(int goalVel) {
             // Only have change in acceleration if there is a change in goal velocity
             // (We don't want to have the acceleration decrease unnecessarily,
             // particularly in autonomous).
@@ -158,18 +158,18 @@ class Wheel {
         /**
          * @return double   The initial velocity.
         */
-        double getInitialVelocity() {
+        int getInitialVelocity() {
             return initialVelocity;
         }
 
         /**
          * @param double   The initial velocity.
         */
-        void setInitialVelocity(double initialVelocity) {
+        void setInitialVelocity(int initialVelocity) {
             this->initialVelocity = initialVelocity;
         }
 
-        double getAcceleration() {
+        int getAcceleration() {
             return acceleration;
         }
 
@@ -218,7 +218,7 @@ class Wheel {
          * @param directionType dir   The direction defined by vex that you
          *                                want (forward or backward)
         */
-        void spin(double velocity, directionType dir);
+        void spin(int velocity, directionType dir);
 };
 
 /**
