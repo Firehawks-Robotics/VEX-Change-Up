@@ -41,7 +41,7 @@ const int MIN_TURNING_AXIS_DISPLACEMENT = 5;
  * Movement() is called each tick during the driver control period
  * Ticks have no effect during the autonomous period
 */
-const int TICK_LENGTH = 20;
+const int TICK_LENGTH = 50;
 
 /**
  * Constant for the number of wheels on the robot. There are 4 wheels.

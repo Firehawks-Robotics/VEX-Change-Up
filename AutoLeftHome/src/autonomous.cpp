@@ -39,14 +39,9 @@ void pause(int milliseconds) { wait(milliseconds, timeUnits::msec); }
  * Adjusts for acceleration every tick. Automatically stops moving at end.
 */
 void timedMovement(double right, double forward, double turnValue, int ms) {
-<<<<<<< HEAD
-    movement(right, forward, turnValue);
-    
-=======
-    
-    movement(right, forward, turnValue); //This is the issue (not the timing)
 
->>>>>>> aa32ebbfa31a66869ea30196bb7e99f9a368b178
+    movement(right, forward, turnValue);
+
     while(ms > 0) { //Break if time is up
 
         for(int i=0; i<NUM_WHEELS; i++) {
