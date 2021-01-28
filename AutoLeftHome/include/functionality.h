@@ -15,7 +15,7 @@
 using namespace vex;
 
 /**
- * The angle that the displacement along the horizontal and vertical axes make.
+ * The angle that the displacement along the horizontal and vertical axes make in radians.
 */
 extern double desiredAngle;
 
@@ -23,7 +23,7 @@ extern double desiredAngle;
  * The value you get when you add the x and y vectors from the movement analog
  * stick that happened during the last tick.
 */
-extern double lastAddedVectors;
+extern int lastAddedVectors;
 
 /**
  * Enumerates the actions that the intake and lift motors can take. The stop
@@ -34,6 +34,8 @@ enum motorActions {
     stop = 0,
     up = 1
 };
+
+extern double num;
 
 /**
  * int      The maximum speed, in rpm, that the robot's motors will spin.

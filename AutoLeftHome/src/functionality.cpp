@@ -17,7 +17,7 @@ using namespace vex;
 
 double desiredAngle = 0;
 
-double lastAddedVectors = 0;
+int lastAddedVectors = 0;
 
 /* WHEEL GRADUAL ACCELERATION (Acceleration constant, velocity increasing to desired speed)
  *    When the robot is first supposed to move (when the analog stick is moved),
@@ -34,11 +34,17 @@ double lastAddedVectors = 0;
 
 double num = 0;
 
+//Defined constants with reduced decimals in hopes of reducing the power usage
+constexpr double PI = 3.14;
+constexpr double PI_2 = 1.57;
+constexpr double PI_4 = 0.79;
+constexpr double THREE_PI_4 = 2.37;
+
 //We're gonna have to change the velocity of all the wheels by taking
 //the value of both left and right analog sticks.
-void movement(double x, double y, double turnValue) {
+void movement(int x, int y, int turnValue) {
 
-    double addedVectors = sqrt(pow(x, 2) + pow(y, 2));
+    int addedVectors = (int)floor(sqrt(pow(x, 2) + pow(y, 2)));
     if (addedVectors >= MIN_MOVEMENT_AXIS_DISPLACEMENT) {  //We dont want to have the robot move when the analog stick is barely displaced, but really shouldnt be.
 
         //Omnidirectional (Left analog stick)
@@ -46,26 +52,26 @@ void movement(double x, double y, double turnValue) {
         //Prevent dividing by 0 (while still maintaining direction)
         if (x == 0) {
             if (y > 0) {
-                desiredAngle = M_PI/2;
+                desiredAngle = PI_2;
             } else if (y < 0) {
-                desiredAngle = -M_PI/2;
+                desiredAngle = -PI/2;
             } //y cant be 0 here
         } else {
-            desiredAngle = atan(y/x);
+            desiredAngle = round(atan(y/x));
         }
 
         //We need to have a 360 angle
         if(x < 0 && y < 0) {
-            desiredAngle = desiredAngle - M_PI;
+            desiredAngle = desiredAngle - PI;
         } else if(x < 0 && y > 0) {
-            desiredAngle = desiredAngle + M_PI;
+            desiredAngle = desiredAngle + PI;
         } else if(x < 0 && y == 0) {
-            desiredAngle = M_PI;
+            desiredAngle = PI;
         }
         
         // Speed derived from analog stick displacement * max rpm * angle
-        double nwsw = (addedVectors/MAX_AXIS_VALUE)*MAX_SPEED*sin((-3*M_PI/4)-desiredAngle);
-        double nese = (addedVectors/MAX_AXIS_VALUE)*MAX_SPEED*sin((-M_PI/4)-desiredAngle);
+        int nwsw = (int)floor((addedVectors/MAX_AXIS_VALUE)*MAX_SPEED*sin((-THREE_PI_4)-desiredAngle));
+        int nese = (int)floor((addedVectors/MAX_AXIS_VALUE)*MAX_SPEED*sin((-PI_4)-desiredAngle));
         neWheel.setGoalVelocity(nese); 
         swWheel.setGoalVelocity(nwsw);
         nwWheel.setGoalVelocity(nwsw);
@@ -73,14 +79,14 @@ void movement(double x, double y, double turnValue) {
 
     } else {
         for(int i=0; i<NUM_WHEELS; i++) {
-            wheels[i]->setGoalVelocity(0.0);
+            wheels[i]->setGoalVelocity(0);
         }
     }
   
     //Turning (Right analog stick)
     //Simply add the velocity to the motors
     if(turnValue < -MIN_TURNING_AXIS_DISPLACEMENT || turnValue > MIN_TURNING_AXIS_DISPLACEMENT) { //Dont want tiny values to have any effect
-        double speed = MAX_SPEED*(turnValue/MAX_AXIS_VALUE);
+        int speed = (int)floor(MAX_SPEED*(turnValue/MAX_AXIS_VALUE));
         neWheel.setGoalVelocity(neWheel.getGoalVelocity() + -speed);
         swWheel.setGoalVelocity(swWheel.getGoalVelocity() + speed);
         nwWheel.setGoalVelocity(nwWheel.getGoalVelocity() + -speed);
