@@ -74,7 +74,7 @@ void movementAngle() {
 
 void temperature() {
     if(u == temperatureUnits::celsius) { vexBrain.Screen.print("Motor Temperature: (celcius)"); }
-    if(u == temperatureUnits::celsius) { vexBrain.Screen.print("Motor Temperature: (fahrenheit)"); }
+    if(u == temperatureUnits::fahrenheit) { vexBrain.Screen.print("Motor Temperature: (fahrenheit)"); }
     vexBrain.Screen.newLine();
 
     //Wheels
@@ -100,7 +100,7 @@ void temperature() {
     vexBrain.Screen.print(intakeRightMotor.temperature(u));
 }
 
-void rpm() {
+void print_rpm() {
     vexBrain.Screen.newLine();
     vexBrain.Screen.print("Motor RPM: ");
     vexBrain.Screen.newLine();
@@ -149,16 +149,17 @@ void debugMenuController(){
     movementAngle();
     vexBrain.Screen.newLine();
 
+    print_rpm();
+    vexBrain.Screen.newLine();
+
     temperature();
     vexBrain.Screen.newLine();
 }
 
-void number(int numb) { //Use this to get numbers
-    //vexBrain.Screen.clearScreen();
+void number(double numb) { //Use this to get numbers
+    vexBrain.Screen.clearLine();
+    vexBrain.Screen.clearScreen();
+    vexBrain.Screen.setOrigin(0, 0);
     vexBrain.Screen.print(numb);
     vexBrain.Screen.print(" ");
-    /*for(int i=0; i<NUM_WHEELS; i++) {
-        vexBrain.Screen.newLine();
-        vexBrain.Screen.print(wheels[i]->getGoalVelocity());
-    }*/
 }

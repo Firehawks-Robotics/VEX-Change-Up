@@ -56,7 +56,7 @@ const int MAX_AXIS_VALUE = 127;
  * @param y            Value of the y axis of the movement analog stick. 
  * @param turnvalue    Value of the turn analog stick horizontally.
 */
-void movement(double x, double y, double turnvalue);
+void movement(int x, int y, int turnvalue);
 
 /*
  * Moves the liftLeftMotor, liftRightMotor, intakeRightMotor, and 

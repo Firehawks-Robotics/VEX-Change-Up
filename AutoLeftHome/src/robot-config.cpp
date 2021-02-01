@@ -33,7 +33,7 @@ void Wheel::calculateAcceleratingVelocity() {
         return;
     }
     
-    this->acceleration = (int)floor((this->goalVelocity - this->initialVelocity) * (1.0*ANGULAR_ACCELERATIONAL_CONSTANT));
+    this->acceleration = (int)ceil((this->goalVelocity - this->initialVelocity) * (1.0*ANGULAR_ACCELERATIONAL_CONSTANT));
 
     this->velocity = this->velocity + this->acceleration;
 }

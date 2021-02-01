@@ -70,6 +70,6 @@ void resetDebug();
 */
 void debugMenuController();
 
-void number(int numb);
+void number(double numb);
 
 #endif

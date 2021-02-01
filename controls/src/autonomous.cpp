@@ -45,7 +45,7 @@ void pause(int milliseconds) { wait(milliseconds, timeUnits::msec); }
  *          values will result in turning left.
  * The 'ms' parameter determines how long the robot will be moving in this fashion, in milliseconds.
 */
-void timedMovement(double right, double forward, double turnValue, int ms) {
+void timedMovement(int right, int forward, int turnValue, int ms) {
 
     movement(right, forward, turnValue);
 

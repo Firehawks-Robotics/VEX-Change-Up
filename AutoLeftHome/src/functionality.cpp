@@ -17,7 +17,7 @@ using namespace vex;
 
 double desiredAngle = 0;
 
-int lastAddedVectors = 0;
+//int lastAddedVectors = 0;
 
 /* WHEEL GRADUAL ACCELERATION (Acceleration constant, velocity increasing to desired speed)
  *    When the robot is first supposed to move (when the analog stick is moved),
@@ -44,7 +44,7 @@ constexpr double THREE_PI_4 = 2.37;
 //the value of both left and right analog sticks.
 void movement(int x, int y, int turnValue) {
 
-    int addedVectors = (int)floor(sqrt(pow(x, 2) + pow(y, 2)));
+    int addedVectors = floor(sqrt(pow(x, 2) + pow(y, 2)));
     if (addedVectors >= MIN_MOVEMENT_AXIS_DISPLACEMENT) {  //We dont want to have the robot move when the analog stick is barely displaced, but really shouldnt be.
 
         //Omnidirectional (Left analog stick)
@@ -57,7 +57,7 @@ void movement(int x, int y, int turnValue) {
                 desiredAngle = -PI/2;
             } //y cant be 0 here
         } else {
-            desiredAngle = round(atan(y/x));
+            desiredAngle = atan(((double)y)/(x));
         }
 
         //We need to have a 360 angle
@@ -70,8 +70,9 @@ void movement(int x, int y, int turnValue) {
         }
         
         // Speed derived from analog stick displacement * max rpm * angle
-        int nwsw = (int)floor((addedVectors/MAX_AXIS_VALUE)*MAX_SPEED*sin((-THREE_PI_4)-desiredAngle));
-        int nese = (int)floor((addedVectors/MAX_AXIS_VALUE)*MAX_SPEED*sin((-PI_4)-desiredAngle));
+        double unfinishedSpeed = (((double)addedVectors)/MAX_AXIS_VALUE*(MAX_SPEED)); 
+        int nwsw = floor(unfinishedSpeed*sin((-THREE_PI_4)-desiredAngle));
+        int nese = floor(unfinishedSpeed*sin((-PI_4)-desiredAngle));
         neWheel.setGoalVelocity(nese); 
         swWheel.setGoalVelocity(nwsw);
         nwWheel.setGoalVelocity(nwsw);
@@ -86,14 +87,14 @@ void movement(int x, int y, int turnValue) {
     //Turning (Right analog stick)
     //Simply add the velocity to the motors
     if(turnValue < -MIN_TURNING_AXIS_DISPLACEMENT || turnValue > MIN_TURNING_AXIS_DISPLACEMENT) { //Dont want tiny values to have any effect
-        int speed = (int)floor(MAX_SPEED*(turnValue/MAX_AXIS_VALUE));
+        int speed = floor(MAX_SPEED*(((double)turnValue)/MAX_AXIS_VALUE));
         neWheel.setGoalVelocity(neWheel.getGoalVelocity() + -speed);
         swWheel.setGoalVelocity(swWheel.getGoalVelocity() + speed);
         nwWheel.setGoalVelocity(nwWheel.getGoalVelocity() + -speed);
         seWheel.setGoalVelocity(seWheel.getGoalVelocity() + speed);
     }
 
-    //Brake if the wheel is not supposed to move (Make the motor go back if it moves)
+    //Brake if the wheel is not supposed to move
     //Otherwise, spin
     for(int i=0; i<NUM_WHEELS; i++) {
         Wheel *wheel = wheels[i];
@@ -104,15 +105,16 @@ void movement(int x, int y, int turnValue) {
         }
     }
 
+    /*
     //Update the initial velocity of the wheels for the acceleration if necessary
     if (addedVectors != lastAddedVectors) { //Means that the driver now wants to move in a different direction.
         for(int i=0; i<NUM_WHEELS; i++) { //Now the thing should start accounting for new goal (new acceleration as well).
             wheels[i]->setInitialVelocity(wheels[i]->getVelocity());
         }
-    }
+    }*/
 
     //Update the lastAddedVectors to the new value for the latest tick.
-    lastAddedVectors = addedVectors;
+    //lastAddedVectors = addedVectors;
 }
 
 /*
