@@ -44,7 +44,7 @@ constexpr double THREE_PI_4 = 2.37;
 //the value of both left and right analog sticks.
 void movement(int x, int y, int turnValue) {
 
-    int addedVectors = floor(sqrt(pow(x, 2) + pow(y, 2)));
+    int addedVectors = (int)(sqrt(pow(x, 2) + pow(y, 2)));
     if (addedVectors >= MIN_MOVEMENT_AXIS_DISPLACEMENT) {  //We dont want to have the robot move when the analog stick is barely displaced, but really shouldnt be.
 
         //Omnidirectional (Left analog stick)
@@ -71,8 +71,9 @@ void movement(int x, int y, int turnValue) {
         
         // Speed derived from analog stick displacement * max rpm * angle
         double unfinishedSpeed = (((double)addedVectors)/MAX_AXIS_VALUE*(MAX_SPEED)); 
-        int nwsw = floor(unfinishedSpeed*sin((-THREE_PI_4)-desiredAngle));
-        int nese = floor(unfinishedSpeed*sin((-PI_4)-desiredAngle));
+        double calculationAngle = (-THREE_PI_4)-desiredAngle;
+        int nwsw = (int)(unfinishedSpeed*sin(calculationAngle));
+        int nese = (int)(unfinishedSpeed*cos(calculationAngle));
         neWheel.setGoalVelocity(nese); 
         swWheel.setGoalVelocity(nwsw);
         nwWheel.setGoalVelocity(nwsw);
@@ -87,7 +88,7 @@ void movement(int x, int y, int turnValue) {
     //Turning (Right analog stick)
     //Simply add the velocity to the motors
     if(turnValue < -MIN_TURNING_AXIS_DISPLACEMENT || turnValue > MIN_TURNING_AXIS_DISPLACEMENT) { //Dont want tiny values to have any effect
-        int speed = floor(MAX_SPEED*(((double)turnValue)/MAX_AXIS_VALUE));
+        int speed = (int)(MAX_SPEED*(((double)turnValue)/MAX_AXIS_VALUE));
         neWheel.setGoalVelocity(neWheel.getGoalVelocity() + -speed);
         swWheel.setGoalVelocity(swWheel.getGoalVelocity() + speed);
         nwWheel.setGoalVelocity(nwWheel.getGoalVelocity() + -speed);
