@@ -18,7 +18,7 @@ using code = vision::code;
 brain vexBrain;
 controller mainCon;
 
-double percentOfMaxSpeed = 0.75; //default is 75%
+double percentOfMaxSpeed = 0.66; //default is 75%
 
 Wheel::Wheel(motor &wheelMotor) {
     this->wheelMotor = &wheelMotor;
@@ -33,9 +33,15 @@ void Wheel::calculateAcceleratingVelocity() {
         return;
     }
     
-    this->acceleration = (int)ceil((this->goalVelocity - this->initialVelocity) * (1.0*ANGULAR_ACCELERATIONAL_CONSTANT));
+    this->acceleration = (int)((this->goalVelocity - this->initialVelocity) * (ANGULAR_ACCELERATIONAL_CONSTANT));
 
     this->velocity = this->velocity + this->acceleration;
+
+    if(getVelocity() == 0) {
+        wheelMotor->stop(coast);
+    } else {
+        spin(forward);
+    }
 }
 
 void Wheel::spin(directionType dir) {

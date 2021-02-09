@@ -71,9 +71,8 @@ void movement(int x, int y, int turnValue) {
         
         // Speed derived from analog stick displacement * max rpm * angle
         double unfinishedSpeed = (((double)addedVectors)/MAX_AXIS_VALUE*(MAX_SPEED)); 
-        double calculationAngle = (-THREE_PI_4)-desiredAngle;
-        int nwsw = (int)(unfinishedSpeed*sin(calculationAngle));
-        int nese = (int)(unfinishedSpeed*cos(calculationAngle));
+        int nwsw = (int)(unfinishedSpeed*sin((-THREE_PI_4)-desiredAngle));
+        int nese = (int)(unfinishedSpeed*sin((-PI_4)-desiredAngle));
         neWheel.setGoalVelocity(nese); 
         swWheel.setGoalVelocity(nwsw);
         nwWheel.setGoalVelocity(nwsw);
@@ -93,17 +92,6 @@ void movement(int x, int y, int turnValue) {
         swWheel.setGoalVelocity(swWheel.getGoalVelocity() + speed);
         nwWheel.setGoalVelocity(nwWheel.getGoalVelocity() + -speed);
         seWheel.setGoalVelocity(seWheel.getGoalVelocity() + speed);
-    }
-
-    //Brake if the wheel is not supposed to move
-    //Otherwise, spin
-    for(int i=0; i<NUM_WHEELS; i++) {
-        Wheel *wheel = wheels[i];
-        if(wheel->getVelocity() == 0) {
-            wheel->wheelMotor->stop(coast);
-        } else {
-            wheel->spin(forward);
-        }
     }
 
     /*

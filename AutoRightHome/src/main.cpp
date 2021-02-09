@@ -84,7 +84,7 @@ void userControl() {
             if (percentOfMaxSpeed < 0) percentOfMaxSpeed = 0;
         }
 
-        //debugMenuController(); //Debug screen is updated every tick
+        debugMenuController(); //Debug screen is updated every tick
     }
 
 }
