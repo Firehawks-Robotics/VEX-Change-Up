@@ -63,6 +63,15 @@ void timedMovement(int right, int forward, int turnValue, int ms) {
     movement(0,0,0);
 }
 
+void endAutonomous() {
+    for(int i=0; i<NUM_WHEELS; i++) {
+      wheels[i]->setVelocity(0);
+      wheels[i]->wheelMotor->stop(brake);
+    }
+}
+
+const int AUTONOMOUS_MAX_SPEED = 100;
+
 /*
  * How to write autonomous:
  * 
@@ -83,11 +92,8 @@ void timedMovement(int right, int forward, int turnValue, int ms) {
  * motion may be necessary or desired. The SIDE variable can be used in other ways as well (however you want to, just treat it as 
  * reversing a number's sign).
  *
- * BUGS:
- *      Currently, the *first* timedFunction call will cause the robot to move once the robot is supposed to STOP moving (working on fixing it).
- *          To fix this, make a call to timedFunction with a sufficiently large value (like 100) in both the right and forward parameters,
- *                  for a very short period of time (not 0, although that might work. I havent tested that yet).
- *          Example: 1. timedFunction(100, 100, 0, 1); //1 ms is a good amount of time to ensure that the rest of your autonomous is not messed up.
+ * You must end the autonomous function with a call to endAutonomous, otherwise the robot will not stop moving (and you will be disqualified
+ * from the autonomous competition).
  *
  * Functions you will likely need to use: (see the respective indepth documentation above the function's declaration in the header file)
  *      timedMovement(double right, double forward, double turnValue, int ms)
@@ -117,15 +123,44 @@ void timedMovement(int right, int forward, int turnValue, int ms) {
  *
 */
 void autonomous() {
-    //KEEP THE FIRST timedMovement CALL HERE
-    //THIS MAKES IT WORK BY CALLING THE movement FUNCTION AT ONCE BEFORE EVERYTHING ELSE
-    timedMovement(101, 101, 101, 1); 
-    //Move NE to get in front of goal
-    timedMovement(MAX_AXIS_VALUE, SIDE*MAX_AXIS_VALUE, 0, 1000);
+    //Move forwards to get in front of goal
+    timedMovement(0, 75, 0, 1100);
 
     //Turn around
-    timedMovement(0, 0, SIDE*MAX_AXIS_VALUE, 500);
+    timedMovement(0, 0, SIDE*50, 1250);
 
+    //Go up to the goal
+    ballFunction(up);
+    timedMovement(0, 50, 0, 2000);
+
+    //Put ball in goal
+    wait(500, msec);
+
+    //Go back a little so the robot does not smack the goal while it turns (and turn at the same time)
+    timedMovement(-50, 0, 75, 400);
+
+    //Go to the side to the middle goal
+    timedMovement(100, 0, 0, 1750);
+    
+    //Put ball in goal
+    ballFunction(up);
+    wait(500, msec);
+
+    //turn to angle correctly
+    timedMovement(0, 0, 50, 500);
+
+    //Give wide berth to other robot
+    timedMovement(100, 0, 0, 1000);
+
+    //Go up to goal while intaking
+    ballFunction(up);
+    timedMovement(0, 100, 0, 1500);
+
+    endAutonomous();
+
+
+
+    /*
     //Move forwards and intake the two balls
     ballFunction(up); //Will continue for an entire second (Account for the 500 ms in timedMovement() as well)
     timedMovement(MAX_AXIS_VALUE, 0, 0, 500);
@@ -158,5 +193,5 @@ void autonomous() {
     ballFunction(stop); //Stop everything
 
     //IDEA: if there is still enough time at the end, then move somewhere that would give a strategic advantage
-
+    */
 }

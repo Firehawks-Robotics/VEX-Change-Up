@@ -28,14 +28,15 @@ void Wheel::calculateAcceleratingVelocity() {
     //velocity > goalVelocity
     if(abs(goalVelocity-velocity) < abs(acceleration)) { //If the acceleration is close, then just go there now
         velocity = goalVelocity;
-        return; 
+         
     } else if (velocity == goalVelocity) { //Just dont bother doing anything (no acceleration needed)
-        return;
-    }
+        
+    } else {
     
-    this->acceleration = (int)((this->goalVelocity - this->initialVelocity) * (ANGULAR_ACCELERATIONAL_CONSTANT));
+        this->acceleration = (int)((this->goalVelocity - this->initialVelocity) * (ANGULAR_ACCELERATIONAL_CONSTANT));
 
-    this->velocity = this->velocity + this->acceleration;
+        this->velocity = this->velocity + this->acceleration;
+    }
 
     if(getVelocity() == 0) {
         wheelMotor->stop(coast);

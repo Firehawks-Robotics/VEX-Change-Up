@@ -31,6 +31,6 @@
  * this number. If on the left side during autonomous, then some actions will
  * be reversed (such as turning, direction to move, etc.).
 */
-const int SIDE = 0;
+const int SIDE = 1;
 
 #endif

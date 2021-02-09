@@ -96,11 +96,12 @@ int main() {
      * the rest of the code in this function
     */
     
-    /*
+    ///*
     vexcodeInit();
     autonomous();
     //*/
 
+    /*
     //If this is one of the autonomous programs, then we need to wait until something happens
     if(SIDE != 0) { 
 
@@ -109,13 +110,6 @@ int main() {
         comp.autonomous(autonomous);
         comp.drivercontrol(userControl);
         
-        /*
-         * prevent main from exiting with an infinite
-         * loop while we wait for instructions from the field switch
-         *
-         * Additionally, when in autonomous, we want the wheels to not skid,
-         * so we need to account for that every tick.
-        */
         while(1) {
             wait(20, msec);
         }
