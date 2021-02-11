@@ -36,6 +36,16 @@ using namespace vex;
 void pause(int milliseconds) { wait(milliseconds, timeUnits::msec); }
 
 /*
+ * Stop all the wheels
+*/
+void stopWheels() {
+    for(int i=0; i<NUM_WHEELS; i++) {
+        wheels[i]->setVelocity(0);
+        wheels[i]->wheelMotor->stop(brake);
+    }
+}
+
+/*
  * Adjusts for acceleration every tick. Automatically stops moving at end.
  * The 'right' parameter determines how quickly the robot will move on the left/right axis (in rpm) following acceleration.
  *      Negative values: move left.
@@ -61,13 +71,7 @@ void timedMovement(int right, int forward, int turnValue, int ms) {
 
     //We want the robot to stop moving now
     movement(0,0,0);
-}
-
-void endAutonomous() {
-    for(int i=0; i<NUM_WHEELS; i++) {
-      wheels[i]->setVelocity(0);
-      wheels[i]->wheelMotor->stop(brake);
-    }
+    stopWheels();
 }
 
 const int AUTONOMOUS_MAX_SPEED = 100;
@@ -91,9 +95,6 @@ const int AUTONOMOUS_MAX_SPEED = 100;
  * This is typically used on horizontal motion because that is usually what is reversed, however reversing forward/backward
  * motion may be necessary or desired. The SIDE variable can be used in other ways as well (however you want to, just treat it as 
  * reversing a number's sign).
- *
- * You must end the autonomous function with a call to endAutonomous, otherwise the robot will not stop moving (and you will be disqualified
- * from the autonomous competition).
  *
  * Functions you will likely need to use: (see the respective indepth documentation above the function's declaration in the header file)
  *      timedMovement(double right, double forward, double turnValue, int ms)
@@ -123,42 +124,48 @@ const int AUTONOMOUS_MAX_SPEED = 100;
  *
 */
 void autonomous() {
+    angular_accelerational_constant = 0.2;
     //Move forwards to get in front of goal
     timedMovement(0, 75, 0, 1100);
 
     //Turn around
-    timedMovement(0, 0, SIDE*50, 1250);
+    timedMovement(0, 0, SIDE*50, 1350);
 
     //Go up to the goal
     ballFunction(up);
-    timedMovement(0, 50, 0, 2000);
+    timedMovement(0, 50, 0, 1750);
 
-    //Put ball in goal
-    wait(500, msec);
+    //Make sure the ball goes in
+    pause(1000);
+    ballFunction(stop);
 
     //Go back a little so the robot does not smack the goal while it turns (and turn at the same time)
-    timedMovement(-50, 0, 75, 400);
+    timedMovement(-SIDE*60, -5, SIDE*40, 700);
 
-    //Go to the side to the middle goal
-    timedMovement(100, 0, 0, 1750);
+    //Stabilize
+    pause(250);
+
+    //Go sideways to the middle goal
+    timedMovement(SIDE*100, 0, 0, 2100);
+
+    //Go up to the goal
+    timedMovement(0, 20, 0, 100);
     
     //Put ball in goal
     ballFunction(up);
-    wait(500, msec);
+    pause(1000);
+    ballFunction(stop);
 
     //turn to angle correctly
-    timedMovement(0, 0, 50, 500);
+    timedMovement(0, -5, SIDE*50, 600);
 
     //Give wide berth to other robot
-    timedMovement(100, 0, 0, 1000);
+    timedMovement(SIDE*100, 0, 0, 1150);
 
-    //Go up to goal while intaking
+    pause(250);
+
     ballFunction(up);
     timedMovement(0, 100, 0, 1500);
-
-    endAutonomous();
-
-
 
     /*
     //Move forwards and intake the two balls

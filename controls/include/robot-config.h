@@ -60,6 +60,31 @@ double constexpr PERCENTOFMAXSPEEDSTEP = 0.05;
 */
 extern double percentOfMaxSpeed;
 
+/*
+  * The rate at which the velocity of the robot's wheels moves toward their
+  * respective goal velocities. Should be constant so that we have a constant
+  * change in the velocity (a linear model).
+  *
+  * Proportional to the acceleration of the wheels.
+  *
+  * Can (and should) be modified in the autonomous to make things go smoother.
+  *
+  * Should be between 0 and 1. An accelerational constant of 1 means that the
+  * wheel's velocity will immediately go up to the goalVelocity (which means
+  * there is no gradual acceleration). An accelerational constant of 0 means
+  * that the wheel's velocity will never change.
+  *
+  * A good rule for determining the accelerational constant is using this:
+  * ANGULAR_ACCELERATIONAL_CONSTANT = 1/(ticks), where ticks is the number of
+  * ticks that should pass between the time the wheel starts accelerating
+  * and when it reaches its goalVelocity. 
+  *
+  * For example, an accelerational constant of 1/20 would result in the wheel
+  * accelerating to its goal velocity over 20 ticks (approximately 400 ms or
+  * 2/5 of a second when the ticklength is 20 ms).
+*/
+extern double angular_accelerational_constant; 
+
 /**
  * A wrapper for motor class that implements drift correction.
  * Drift correction includes velocity records for the last MAX_VELOCITY_RECORDS ticks (approximately 1/5 of a second)
@@ -93,28 +118,6 @@ class Wheel {
         int acceleration = 0;
 
     public:
-        /*
-         * The rate at which the velocity of the robot's wheels moves toward their
-         * respective goal velocities. Should be constant so that we have a constant
-         * change in the velocity (a linear model).
-         *
-         * Proportional to the acceleration of the wheels.
-         *
-         * Should be between 0 and 1. An accelerational constant of 1 means that the
-         * wheel's velocity will immediately go up to the goalVelocity (which means
-         * there is no gradual acceleration). An accelerational constant of 0 means
-         * that the wheel's velocity will never change.
-         *
-         * A good rule for determining the accelerational constant is using this:
-         * ANGULAR_ACCELERATIONAL_CONSTANT = 1/(ticks), where ticks is the number of
-         * ticks that should pass between the time the wheel starts accelerating
-         * and when it reaches its goalVelocity. 
-         *
-         * For example, an accelerational constant of 1/20 would result in the wheel
-         * accelerating to its goal velocity over 20 ticks (approximately 400 ms or
-         * 2/5 of a second when the ticklength is 20 ms).
-        */
-        static double constexpr ANGULAR_ACCELERATIONAL_CONSTANT = 0.5; 
 
         /**
          * The default constructor for the Wheel class. It takes the motor it 

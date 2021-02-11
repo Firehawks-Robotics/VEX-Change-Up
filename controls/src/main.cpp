@@ -40,6 +40,7 @@ using namespace vex;
 #include "debugScreen.h"
 #include "functionality.h"
 #include "autonomous.h"
+#include "robot-config.h"
 
 //By using this, I will be able to copy the entirety of the code EXCEPT the side.h file and the autonomous.
 //This will allow me to easily copy new code from other programs (the controls program) over here.
@@ -95,6 +96,8 @@ int main() {
      * If testing autonomous, then uncomment the below lines and comment out
      * the rest of the code in this function
     */
+
+    //angular_accelerational_constant = 0.5;
     
     ///*
     vexcodeInit();

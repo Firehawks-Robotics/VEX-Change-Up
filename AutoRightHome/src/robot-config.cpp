@@ -20,6 +20,8 @@ controller mainCon;
 
 double percentOfMaxSpeed = 0.66; //default is 75%
 
+double angular_accelerational_constant = 0.5;
+
 Wheel::Wheel(motor &wheelMotor) {
     this->wheelMotor = &wheelMotor;
 }
@@ -32,8 +34,10 @@ void Wheel::calculateAcceleratingVelocity() {
     } else if (velocity == goalVelocity) { //Just dont bother doing anything (no acceleration needed)
         
     } else {
+
+        number(angular_accelerational_constant);
     
-        this->acceleration = (int)((this->goalVelocity - this->initialVelocity) * (ANGULAR_ACCELERATIONAL_CONSTANT));
+        this->acceleration = (int)((this->goalVelocity - this->initialVelocity) * (angular_accelerational_constant));
 
         this->velocity = this->velocity + this->acceleration;
     }
