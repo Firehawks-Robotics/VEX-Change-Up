@@ -66,11 +66,10 @@ void userControl() {
 
     //Movement is handled by an infinite while loop to ensure that the movement gets updated like it should
     //Sometimes the axis.changed event does not happen even if the axis value does change. Thus, our current solution.
-    while(1) { //Each iteration of this loop is one tick
-        movement((int)(omnidirectionalX.value()*(percentOfMaxSpeed)), (int)(omnidirectionalY.value()*(percentOfMaxSpeed)), (int)(turning.value()*(percentOfMaxSpeed)/2.0));
-        //Now account for initial skidding by gradually increasing velocity with a constant acceleration
+    while(1) { //Each iteration of this loop is one tick]
+        movement((int)(forwardAxis.value()*(percentOfMaxSpeed)), (int)(turningAxis.value()*(percentOfMaxSpeed)));
         //until the desired velocity is reached.
-        for(int i=0; i<NUM_WHEELS; i++) {
+        for(int i=0; i<NUM_WHEEL_TRAINS; i++) {
             wheels[i]->calculateAcceleratingVelocity();
         }
         wait(TICK_LENGTH, msec); //Use less battery this way
@@ -96,15 +95,13 @@ int main() {
      * If testing autonomous, then uncomment the below lines and comment out
      * the rest of the code in this function
     */
-
-    //angular_accelerational_constant = 0.5;
     
-    ///*
+    /*
     vexcodeInit();
     autonomous();
     //*/
 
-    /*
+    ///*
     //If this is one of the autonomous programs, then we need to wait until something happens
     if(SIDE != 0) { 
 
@@ -114,7 +111,7 @@ int main() {
         comp.drivercontrol(userControl);
         
         while(1) {
-            wait(20, msec);
+            wait(TICK_LENGTH, msec);
         }
         
     } else { //If this is the controls testing, then go directly to the drivercontrols

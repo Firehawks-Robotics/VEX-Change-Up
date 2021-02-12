@@ -39,7 +39,7 @@ void pause(int milliseconds) { wait(milliseconds, timeUnits::msec); }
  * Stop all the wheels
 */
 void stopWheels() {
-    for(int i=0; i<NUM_WHEELS; i++) {
+    for(int i=0; i<NUM_WHEEL_TRAINS; i++) {
         wheels[i]->setVelocity(0);
         wheels[i]->wheelMotor->stop(brake);
     }
@@ -47,21 +47,19 @@ void stopWheels() {
 
 /*
  * Adjusts for acceleration every tick. Automatically stops moving at end.
- * The 'right' parameter determines how quickly the robot will move on the left/right axis (in rpm) following acceleration.
- *      Negative values: move left.
  * The 'forward' parameter determines how quickly the robot will move on the forward/backward axis (in rpm) following acceleration.
  *      Negative values: move backwards.
  * The 'turnValue' parameter determines how quickly the robot will turn. Positive values will result in turning right. Negative
  *          values will result in turning left.
  * The 'ms' parameter determines how long the robot will be moving in this fashion, in milliseconds.
 */
-void timedMovement(int right, int forward, int turnValue, int ms) {
+void timedMovement(int forward, int turnValue, int ms) {
 
-    movement(right, forward, turnValue);
+    movement(forward, turnValue);
 
     while(ms > 0) { //Break if time is up
 
-        for(int i=0; i<NUM_WHEELS; i++) {
+        for(int i=0; i<NUM_WHEEL_TRAINS; i++) {
             wheels[i]->calculateAcceleratingVelocity();
         }
         
@@ -70,11 +68,9 @@ void timedMovement(int right, int forward, int turnValue, int ms) {
     }
 
     //We want the robot to stop moving now
-    movement(0,0,0);
+    movement(0,0);
     stopWheels();
 }
-
-const int AUTONOMOUS_MAX_SPEED = 100;
 
 /*
  * How to write autonomous:
@@ -85,7 +81,7 @@ const int AUTONOMOUS_MAX_SPEED = 100;
  * The SIDE is intended to be used through multiplication for reversing movement.
  *
  * For example:
- *      timedMovement(0, MAX_AXIS_VALUE*SIDE, 0, 1000)
+ *      timedMovement(MAX_AXIS_VALUE*SIDE, 0, 1000)
  *
  * The above line will cause the robot to move left or right depending on the SIDE of the board the robot starts on.
  * If the robot starts on the right side, then the SIDE value will be 1, and the horizontal motion argument ("right")
@@ -97,21 +93,21 @@ const int AUTONOMOUS_MAX_SPEED = 100;
  * reversing a number's sign).
  *
  * Functions you will likely need to use: (see the respective indepth documentation above the function's declaration in the header file)
- *      timedMovement(double right, double forward, double turnValue, int ms)
+ *      timedMovement(double forward, double turnValue, int ms)
  *          Located in the autonomous.h file.
- *          This will cause the robot to move in the desired direction ('right' and 'forward') for an amount of time ('ms').
+ *          This will cause the robot to move in the desired direction ('forward') for an amount of time ('ms').
  *              Make right a negative value to move left and forward a negative value to move backwards.
  *          Keep in mind that the time that passes in this function should also be accounted for in the autonomous function.
  *              For example, the following lines will run for 1500 milliseconds (1000 + 500 = 1500):
- *                  1. timedMovement(100, 100, 0, 1000);
+ *                  1. timedMovement(100, 0, 1000);
  *                  2. pause(500);
  *              If you want the robot to start moving the lift and intake motors while the robot is moving, then you must split the movement
  *                      into multiple function calls.
  *                    For example, the following lines causes the robot to start moving, then half a second in, start moving the ball function motors
  *                          (then stop moving half a second later):
- *                      1. timedMovement(100, 100, 0, 500); //this timedMovement call was split in two so that the ball function motors could move after half a second
+ *                      1. timedMovement(100, 0, 500); //this timedMovement call was split in two so that the ball function motors could move after half a second
  *                      2. ballFunction(up); 
- *                      3. timedMovement(100, 100, 0, 500);
+ *                      3. timedMovement(100, 0, 500);
  *
  *      ballFunction(int direction)
  *          Located in the functionality.h file.
@@ -125,80 +121,4 @@ const int AUTONOMOUS_MAX_SPEED = 100;
 */
 void autonomous() {
     angular_accelerational_constant = 0.2;
-    //Move forwards to get in front of goal
-    timedMovement(0, 75, 0, 1100);
-
-    //Turn around
-    timedMovement(0, 0, SIDE*50, 1350);
-
-    //Go up to the goal
-    ballFunction(up);
-    timedMovement(0, 50, 0, 1750);
-
-    //Make sure the ball goes in
-    pause(1000);
-    ballFunction(stop);
-
-    //Go back a little so the robot does not smack the goal while it turns (and turn at the same time)
-    timedMovement(-SIDE*60, -5, SIDE*40, 700);
-
-    //Stabilize
-    pause(250);
-
-    //Go sideways to the middle goal
-    timedMovement(SIDE*100, 0, 0, 2100);
-
-    //Go up to the goal
-    timedMovement(0, 20, 0, 100);
-    
-    //Put ball in goal
-    ballFunction(up);
-    pause(1000);
-    ballFunction(stop);
-
-    //turn to angle correctly
-    timedMovement(0, -5, SIDE*50, 600);
-
-    //Give wide berth to other robot
-    timedMovement(SIDE*100, 0, 0, 1150);
-
-    pause(250);
-
-    ballFunction(up);
-    timedMovement(0, 100, 0, 1500);
-
-    /*
-    //Move forwards and intake the two balls
-    ballFunction(up); //Will continue for an entire second (Account for the 500 ms in timedMovement() as well)
-    timedMovement(MAX_AXIS_VALUE, 0, 0, 500);
-
-    pause(500); //Intake balls and score preload at the same time
-
-    ballFunction(stop);
-
-    //Go score one ball in the middle goal
-    timedMovement(0, 0, SIDE*MAX_AXIS_VALUE, 200); //Fix angle
-
-    timedMovement(SIDE*MAX_AXIS_VALUE, 0, 0, 2000);
-    //Stop once reaches goal
-
-    ballFunction(up); //Put the ball in the goal
-
-    pause(250); //stop before we put the last ball in there (we dont want that)
-
-    ballFunction(stop);
-
-    //Go to the last goal on the home row
-    timedMovement(SIDE*MAX_AXIS_VALUE, MAX_AXIS_VALUE, 0, 1500); //Give wide berth to other robot so it doesnt get in the way (going out)
-
-    timedMovement(SIDE*MAX_AXIS_VALUE, -MAX_AXIS_VALUE, 0, 1500); //Give wide berth to other robot so it doesnt get in the way (going towards goal)
-
-    ballFunction(up); //Put the last ball in the last goal
-
-    pause(500);
-
-    ballFunction(stop); //Stop everything
-
-    //IDEA: if there is still enough time at the end, then move somewhere that would give a strategic advantage
-    */
 }

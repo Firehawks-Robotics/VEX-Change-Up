@@ -27,18 +27,10 @@ Wheel::Wheel(motor &wheelMotor) {
 }
 
 void Wheel::calculateAcceleratingVelocity() {
-    //velocity > goalVelocity
     if(abs(goalVelocity-velocity) < abs(acceleration)) { //If the acceleration is close, then just go there now
         velocity = goalVelocity;
-         
-    } else if (velocity == goalVelocity) { //Just dont bother doing anything (no acceleration needed)
-        
-    } else {
-
-        number(angular_accelerational_constant);
-    
+    } else if (velocity != goalVelocity) { //Accelerate
         this->acceleration = (int)((this->goalVelocity - this->initialVelocity) * (angular_accelerational_constant));
-
         this->velocity = this->velocity + this->acceleration;
     }
 
@@ -60,28 +52,28 @@ void Wheel::spin(int velocity, directionType dir) {
 }
 
 // VEXcode device constructors
-motor neWheelMotor = motor(PORT11, ratio36_1, true);
-motor nwWheelMotor = motor(PORT20, ratio36_1, true);
-motor seWheelMotor = motor(PORT10, ratio36_1, false);
-motor swWheelMotor = motor(PORT9, ratio36_1, false);
+motor nwWheelMotor = motor(PORT11, ratio36_1, false);
+motor swWheelMotor = motor(PORT11, ratio36_1, false);
+motor seWheelMotor = motor(PORT11, ratio36_1, false);
+motor neWheelMotor = motor(PORT11, ratio36_1, false);
 motor intakeLeftMotor = motor(PORT1, ratio36_1, false);
 motor intakeRightMotor = motor(PORT8, ratio36_1, true);
 motor liftLeftMotor = motor(PORT5, ratio36_1, false);
 motor liftRightMotor = motor(PORT7, ratio36_1, true);
 
 // Wheels
-Wheel neWheel = *new Wheel(neWheelMotor);
 Wheel nwWheel = *new Wheel(nwWheelMotor);
-Wheel seWheel = *new Wheel(seWheelMotor);
 Wheel swWheel = *new Wheel(swWheelMotor);
+Wheel seWheel = *new Wheel(seWheelMotor);
+Wheel neWheel = *new Wheel(neWheelMotor);
 
-Wheel *wheels[4] = {&neWheel, &nwWheel, &seWheel, &swWheel};
+Wheel *wheels[NUM_WHEEL_MOTORS] = {&nwWheel, &neWheel, &seWheel, &swWheel};
+Wheel *leftWheels[NUM_WHEEL_MOTORS_EACH_TRAIN] = {&nwWheel, &swWheel};
+Wheel *rightWheels[NUM_WHEEL_MOTORS_EACH_TRAIN] = {&neWheel, &seWheel};
 
 // Controls
-vex::controller::axis omnidirectionalY = mainCon.Axis3;
-vex::controller::axis omnidirectionalX = mainCon.Axis4;
-
-vex::controller::axis turning = mainCon.Axis1;
+vex::controller::axis forwardAxis = mainCon.Axis3;
+vex::controller::axis turningAxis = mainCon.Axis4;
 
 vex::controller::button speedUp = mainCon.ButtonL1;
 vex::controller::button speedDown = mainCon.ButtonL2;
@@ -102,15 +94,11 @@ const int FUNCTION_MOTOR_SPEED = 100; //rpm
  */
 void vexcodeInit( void ) {
     //Inititalize the default velocity for motors with unchanging velocities
-    intakeLeftMotor.setVelocity(FUNCTION_MOTOR_SPEED, rpm);
-    intakeRightMotor.setVelocity(FUNCTION_MOTOR_SPEED, rpm);
 
-    liftLeftMotor.setVelocity(FUNCTION_MOTOR_SPEED, rpm);
-    liftRightMotor.setVelocity(FUNCTION_MOTOR_SPEED, rpm);
-
-    percentOfMaxSpeed = 0.75;
-
-    //Create wheel objects
+    intakeLeftMotor.setVelocity(FUNCTION_MOTOR_SPEED, velocityUnits::rpm);
+    intakeRightMotor.setVelocity(FUNCTION_MOTOR_SPEED, velocityUnits::rpm);
+    liftLeftMotor.setVelocity(FUNCTION_MOTOR_SPEED, velocityUnits::rpm);
+    liftRightMotor.setVelocity(FUNCTION_MOTOR_SPEED, velocityUnits::rpm);
 
     debugMenuController(); //Put stuff on debug screen
 }

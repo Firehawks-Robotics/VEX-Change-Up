@@ -18,8 +18,6 @@ extern brain vexBrain;
 /** The one controller we have connected. */
 extern controller mainCon;
 
-extern double acc;
-
 /**
  * The net displacement (x and y combined using vector addition) from the
  * initial analog position required to have the robot move. Also used for the
@@ -46,7 +44,12 @@ const int TICK_LENGTH = 50;
 /**
  * Constant for the number of wheels on the robot. There are 4 wheels.
 */
-const int NUM_WHEELS = 4;
+const int NUM_WHEEL_MOTORS = 4;
+
+/**
+ * Constant for the number of wheels motors in a wheel train. There are 2 each.
+*/
+const int NUM_WHEEL_MOTORS_EACH_TRAIN = 2;
 
 /**
  * The amount that the percentOfMaxSpeed should change per tick when the
@@ -61,7 +64,7 @@ double constexpr PERCENTOFMAXSPEEDSTEP = 0.05;
 extern double percentOfMaxSpeed;
 
 /*
-  * The rate at which the velocity of the robot's wheels moves toward their
+  * The rate at which the velocity of the robot's wheel trains moves toward their
   * respective goal velocities. Should be constant so that we have a constant
   * change in the velocity (a linear model).
   *
@@ -86,8 +89,7 @@ extern double percentOfMaxSpeed;
 extern double angular_accelerational_constant; 
 
 /**
- * A wrapper for motor class that implements drift correction.
- * Drift correction includes velocity records for the last MAX_VELOCITY_RECORDS ticks (approximately 1/5 of a second)
+ * A wrapper for motor class that implements gradual acceleration.
  * Note the use of 'velocity' instead of 'speed' because direction is also important.
 */
 class Wheel {
@@ -230,14 +232,10 @@ class Wheel {
  * front of the robot (at the intake).
 */
 
-/** The northeast wheel motor. */
-extern motor neWheelMotor;
-/** The northeast wheel motor. */
 extern motor nwWheelMotor;
-/** The northeast wheel motor. */
+extern motor swWheelMotor;
 extern motor seWheelMotor;
-/** The northeast wheel motor. */
-extern motor swWheelMotor; 
+extern motor neWheelMotor;
 
 /** The left intake motor. Reversed here because it's reversed on the robot. */
 extern motor intakeLeftMotor; 
@@ -257,15 +255,17 @@ extern motor liftLeftMotor;
 extern motor liftRightMotor;
 
 //Wheels
-extern Wheel neWheel; /** Represents the northeast wheel */
-extern Wheel nwWheel; /** Represents the northwest wheel */
-extern Wheel seWheel; /** Represents the southeast wheel */
-extern Wheel swWheel; /** Represents the southwest wheel */
+extern Wheel nwWheel;
+extern Wheel swWheel;
+extern Wheel seWheel;
+extern Wheel neWheel;
 
 /**
  * Stores the wheels so that we can easily iterate over them.
 */
-extern Wheel *wheels[NUM_WHEELS]; 
+extern Wheel *wheels[NUM_WHEEL_MOTORS]; 
+extern Wheel *leftWheels[NUM_WHEEL_MOTORS_EACH_TRAIN];
+extern Wheel *rightWheels[NUM_WHEEL_MOTORS_EACH_TRAIN];
 
 /**
  * The following are all the controls on the controller. The axes represent
@@ -273,12 +273,9 @@ extern Wheel *wheels[NUM_WHEELS];
 */
 
 /** The vertical axis of the left (movement) analog stick */
-extern vex::controller::axis omnidirectionalY; 
-/** The horizontal axis of the left (movement) analog stick */
-extern vex::controller::axis omnidirectionalX;
-
-/** The horizontal axis of the right (turning) analog stick (vertical unused) */
-extern vex::controller::axis turning;
+extern vex::controller::axis forwardAxis; 
+/** The horizontal axis of the turning analog axis */
+extern vex::controller::axis turningAxis;
 
 /** Button that causes the wheel motor percentOfMaxSpeed to increase. */
 extern vex::controller::button speedUp;

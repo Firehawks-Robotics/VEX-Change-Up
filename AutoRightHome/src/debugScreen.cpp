@@ -66,26 +66,20 @@ void bumpers() {
     vexBrain.Screen.print(mainCon.ButtonR2.pressing());
 }
 
-
-void movementAngle() {
-    vexBrain.Screen.print(" | Angle | ");
-    vexBrain.Screen.print(desiredAngle); //from functionality.h
-}
-
 void temperature() {
     if(u == temperatureUnits::celsius) { vexBrain.Screen.print("Motor Temperature: (celcius)"); }
     if(u == temperatureUnits::fahrenheit) { vexBrain.Screen.print("Motor Temperature: (fahrenheit)"); }
     vexBrain.Screen.newLine();
 
     //Wheels
-    vexBrain.Screen.print("ne : ");
-    vexBrain.Screen.print(neWheelMotor.temperature(u));
-    vexBrain.Screen.print(" | nw : ");
+    vexBrain.Screen.print("nw : ");
     vexBrain.Screen.print(nwWheelMotor.temperature(u));
-    vexBrain.Screen.print(" | se | ");
-    vexBrain.Screen.print(seWheelMotor.temperature(u));
+    vexBrain.Screen.print(" | ne : ");
+    vexBrain.Screen.print(neWheelMotor.temperature(u));
     vexBrain.Screen.print(" | sw : ");
     vexBrain.Screen.print(swWheelMotor.temperature(u));
+    vexBrain.Screen.print(" | se : ");
+    vexBrain.Screen.print(seWheelMotor.temperature(u));
     vexBrain.Screen.newLine();
 
     //Function motors
@@ -104,13 +98,13 @@ void print_rpm() {
     vexBrain.Screen.newLine();
     vexBrain.Screen.print("Motor RPM: ");
     vexBrain.Screen.newLine();
-    vexBrain.Screen.print("ne : ");
-    vexBrain.Screen.print(neWheel.getVelocity());
-    vexBrain.Screen.print(" | nw : ");
+    vexBrain.Screen.print("nw : ");
     vexBrain.Screen.print(nwWheel.getVelocity());
-    vexBrain.Screen.print(" | se | ");
-    vexBrain.Screen.print(seWheel.getVelocity());
+    vexBrain.Screen.print(" | ne : ");
+    vexBrain.Screen.print(neWheel.getVelocity());
     vexBrain.Screen.print(" | sw : ");
+    vexBrain.Screen.print(swWheel.getVelocity());
+    vexBrain.Screen.print(" | se : ");
     vexBrain.Screen.print(swWheel.getVelocity());
     vexBrain.Screen.newLine();
 }
@@ -123,13 +117,9 @@ void resetDebug() {
     vexBrain.Screen.setOrigin(0, 0);
 }
 
+
 void debugMenuController(){
     resetDebug();
-
-    vexBrain.Screen.print(swWheel.getVelocity());
-    vexBrain.Screen.print(seWheel.getVelocity());
-    vexBrain.Screen.print(neWheel.getVelocity());
-    vexBrain.Screen.print(nwWheel.getVelocity());
 
     leftAnalogStick();
     vexBrain.Screen.newLine();
@@ -144,9 +134,6 @@ void debugMenuController(){
     vexBrain.Screen.newLine();
 
     bumpers();
-    vexBrain.Screen.newLine();
-
-    movementAngle();
     vexBrain.Screen.newLine();
 
     print_rpm();

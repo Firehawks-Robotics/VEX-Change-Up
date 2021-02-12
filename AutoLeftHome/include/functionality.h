@@ -15,17 +15,6 @@
 using namespace vex;
 
 /**
- * The angle that the displacement along the horizontal and vertical axes make in radians.
-*/
-extern double desiredAngle;
-
-/**
- * The value you get when you add the x and y vectors from the movement analog
- * stick that happened during the last tick.
-*/
-extern int lastAddedVectors;
-
-/**
  * Enumerates the actions that the intake and lift motors can take. The stop
  * action is used for both lift and intake.
 */
@@ -48,15 +37,11 @@ const int MAX_SPEED = 100;
 const int MAX_AXIS_VALUE = 127;
 
 /*
- * Allows for omnidirectional movement by using the ratio between the y and x
- * axes of the left analog stick. Displacement of the analog stick is taken
- * into account when determining relative speed. Turning is dealt with here on
- * every movement of both analog sticks to allow for movement and turning simulatneously.
- * @param x            Value of the x axis of the movement analog stick. 
- * @param y            Value of the y axis of the movement analog stick. 
+ * Moves the robot based on forward and turnvalue analog stick displacement
+ * @param foward       Value of the y axis of the movement analog stick. 
  * @param turnvalue    Value of the turn analog stick horizontally.
 */
-void movement(int x, int y, int turnvalue);
+void movement(int forward, int turnvalue);
 
 /*
  * Moves the liftLeftMotor, liftRightMotor, intakeRightMotor, and 

@@ -43,13 +43,6 @@ void arrows();
 void bumpers();
 
 /**
- * Displays the angle relative to the positive x-axis that is created if a line
- * were drawn between the left analog stick's natural position and its current
- * position.
-*/
-void movementAngle();
-
-/**
  * Displays the temperature of all motors like so:
  *
  * Motor Temperature:
