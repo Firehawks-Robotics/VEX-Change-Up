@@ -72,14 +72,10 @@ void temperature() {
     vexBrain.Screen.newLine();
 
     //Wheels
-    vexBrain.Screen.print("nw : ");
-    vexBrain.Screen.print(nwWheelMotor.temperature(u));
-    vexBrain.Screen.print(" | ne : ");
-    vexBrain.Screen.print(neWheelMotor.temperature(u));
-    vexBrain.Screen.print(" | sw : ");
-    vexBrain.Screen.print(swWheelMotor.temperature(u));
-    vexBrain.Screen.print(" | se : ");
-    vexBrain.Screen.print(seWheelMotor.temperature(u));
+    vexBrain.Screen.print("rw : ");
+    vexBrain.Screen.print(rightWheelTrainMotor.temperature(u));
+    vexBrain.Screen.print(" | lw : ");
+    vexBrain.Screen.print(leftWheelTrainMotor.temperature(u));
     vexBrain.Screen.newLine();
 
     //Function motors
@@ -98,14 +94,10 @@ void print_rpm() {
     vexBrain.Screen.newLine();
     vexBrain.Screen.print("Motor RPM: ");
     vexBrain.Screen.newLine();
-    vexBrain.Screen.print("nw : ");
-    vexBrain.Screen.print(nwWheel.getVelocity());
-    vexBrain.Screen.print(" | ne : ");
-    vexBrain.Screen.print(neWheel.getVelocity());
-    vexBrain.Screen.print(" | sw : ");
-    vexBrain.Screen.print(swWheel.getVelocity());
-    vexBrain.Screen.print(" | se : ");
-    vexBrain.Screen.print(swWheel.getVelocity());
+    vexBrain.Screen.print("rw : ");
+    vexBrain.Screen.print(rightWheelTrain.getVelocity());
+    vexBrain.Screen.print(" | lw : ");
+    vexBrain.Screen.print(leftWheelTrain.getVelocity());
     vexBrain.Screen.newLine();
 }
 

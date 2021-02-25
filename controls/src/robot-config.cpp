@@ -52,24 +52,18 @@ void Wheel::spin(int velocity, directionType dir) {
 }
 
 // VEXcode device constructors
-motor nwWheelMotor = motor(PORT11, ratio36_1, false);
-motor swWheelMotor = motor(PORT11, ratio36_1, false);
-motor seWheelMotor = motor(PORT11, ratio36_1, false);
-motor neWheelMotor = motor(PORT11, ratio36_1, false);
+motor rightWheelTrainMotor = motor(PORT11, ratio36_1, false);
+motor leftWheelTrainMotor = motor(PORT11, ratio36_1, false);
 motor intakeLeftMotor = motor(PORT1, ratio36_1, false);
 motor intakeRightMotor = motor(PORT8, ratio36_1, true);
 motor liftLeftMotor = motor(PORT5, ratio36_1, false);
 motor liftRightMotor = motor(PORT7, ratio36_1, true);
 
 // Wheels
-Wheel nwWheel = *new Wheel(nwWheelMotor);
-Wheel swWheel = *new Wheel(swWheelMotor);
-Wheel seWheel = *new Wheel(seWheelMotor);
-Wheel neWheel = *new Wheel(neWheelMotor);
+Wheel rightWheelTrain = *new Wheel(rightWheelTrainMotor);
+Wheel leftWheelTrain = *new Wheel(leftWheelTrainMotor);
 
-Wheel *wheels[NUM_WHEEL_MOTORS] = {&nwWheel, &neWheel, &seWheel, &swWheel};
-Wheel *leftWheels[NUM_WHEEL_MOTORS_EACH_TRAIN] = {&nwWheel, &swWheel};
-Wheel *rightWheels[NUM_WHEEL_MOTORS_EACH_TRAIN] = {&neWheel, &seWheel};
+Wheel *wheelTrains[NUM_WHEEL_TRAINS] = {&rightWheelTrain, &leftWheelTrain};
 
 // Controls
 vex::controller::axis forwardAxis = mainCon.Axis3;

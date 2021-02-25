@@ -40,8 +40,8 @@ void pause(int milliseconds) { wait(milliseconds, timeUnits::msec); }
 */
 void stopWheels() {
     for(int i=0; i<NUM_WHEEL_TRAINS; i++) {
-        wheels[i]->setVelocity(0);
-        wheels[i]->wheelMotor->stop(brake);
+        wheelTrains[i]->setVelocity(0);
+        wheelTrains[i]->wheelMotor->stop(brake);
     }
 }
 
@@ -60,7 +60,7 @@ void timedMovement(int forward, int turnValue, int ms) {
     while(ms > 0) { //Break if time is up
 
         for(int i=0; i<NUM_WHEEL_TRAINS; i++) {
-            wheels[i]->calculateAcceleratingVelocity();
+            wheelTrains[i]->calculateAcceleratingVelocity();
         }
         
         pause(TICK_LENGTH);

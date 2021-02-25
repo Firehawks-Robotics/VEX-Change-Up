@@ -44,12 +44,7 @@ const int TICK_LENGTH = 50;
 /**
  * Constant for the number of wheels on the robot. There are 4 wheels.
 */
-const int NUM_WHEEL_MOTORS = 4;
-
-/**
- * Constant for the number of wheels motors in a wheel train. There are 2 each.
-*/
-const int NUM_WHEEL_MOTORS_EACH_TRAIN = 2;
+const int NUM_WHEEL_TRAINS = 2;
 
 /**
  * The amount that the percentOfMaxSpeed should change per tick when the
@@ -232,10 +227,8 @@ class Wheel {
  * front of the robot (at the intake).
 */
 
-extern motor nwWheelMotor;
-extern motor swWheelMotor;
-extern motor seWheelMotor;
-extern motor neWheelMotor;
+extern motor rightWheelTrainMotor;
+extern motor leftWheelTrainMotor;
 
 /** The left intake motor. Reversed here because it's reversed on the robot. */
 extern motor intakeLeftMotor; 
@@ -255,17 +248,13 @@ extern motor liftLeftMotor;
 extern motor liftRightMotor;
 
 //Wheels
-extern Wheel nwWheel;
-extern Wheel swWheel;
-extern Wheel seWheel;
-extern Wheel neWheel;
+extern Wheel rightWheelTrain;
+extern Wheel leftWheelTrain;
 
 /**
  * Stores the wheels so that we can easily iterate over them.
 */
-extern Wheel *wheels[NUM_WHEEL_MOTORS]; 
-extern Wheel *leftWheels[NUM_WHEEL_MOTORS_EACH_TRAIN];
-extern Wheel *rightWheels[NUM_WHEEL_MOTORS_EACH_TRAIN];
+extern Wheel *wheelTrains[NUM_WHEEL_TRAINS]; 
 
 /**
  * The following are all the controls on the controller. The axes represent

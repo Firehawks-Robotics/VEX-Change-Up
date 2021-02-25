@@ -70,7 +70,7 @@ void userControl() {
         movement((int)(forwardAxis.value()*(percentOfMaxSpeed)), (int)(turningAxis.value()*(percentOfMaxSpeed)));
         //until the desired velocity is reached.
         for(int i=0; i<NUM_WHEEL_TRAINS; i++) {
-            wheels[i]->calculateAcceleratingVelocity();
+            wheelTrains[i]->calculateAcceleratingVelocity();
         }
         wait(TICK_LENGTH, msec); //Use less battery this way
 

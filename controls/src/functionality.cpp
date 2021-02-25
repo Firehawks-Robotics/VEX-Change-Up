@@ -48,10 +48,8 @@ void movement(int forward, int turnValue) {
         rightWheels += turnValue;
     }
     
-    nwWheel.setGoalVelocity(leftWheels);
-    swWheel.setGoalVelocity(leftWheels);
-    neWheel.setGoalVelocity(rightWheels);
-    seWheel.setGoalVelocity(rightWheels);
+    leftWheelTrain.setGoalVelocity(leftWheels);
+    leftWheelTrain.setGoalVelocity(rightWheels);
 }
 
 /*
@@ -80,10 +78,10 @@ void ballFunction(int dir) {
  * Immediately stop all motors and brake them
 */
 void emergencyStop() {
-    nwWheelMotor.stop(brake);
-    swWheelMotor.stop(brake);
-    neWheelMotor.stop(brake);
-    seWheelMotor.stop(brake);
+    rightWheelTrain.setVelocity(0);
+    leftWheelTrain.setVelocity(0);
+    rightWheelTrainMotor.stop(brake);
+    leftWheelTrainMotor.stop(brake);
     liftLeftMotor.stop(brake);
     liftRightMotor.stop(brake);
     intakeLeftMotor.stop(brake);
