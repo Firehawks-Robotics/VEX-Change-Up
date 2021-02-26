@@ -57,10 +57,15 @@ void userControl() {
 
     //Using lambdas here btw (learn more: https://en.cppreference.com/w/cpp/language/lambda)
     //Values of all axes are needed so that wheel velocity can be modified accordingly
-    functionUp.pressed([](){ballFunction(up);});
-    functionDown.pressed([](){ballFunction(down);});
-    functionUp.released([](){ballFunction(stop);});
-    functionDown.released([](){ballFunction(stop);});
+    functionUp.pressed([](){liftMotors(up);});
+    functionDown.pressed([](){liftMotors(down);});
+    functionUp.released([](){liftMotors(stopLift);});
+    functionDown.released([](){liftMotors(stopLift);});
+
+    functionIntake.pressed([](){intakeMotors(intake);});
+    functionExpel.pressed([](){intakeMotors(expel);});
+    functionIntake.released([](){intakeMotors(stopIntake);});
+    functionExpel.released([](){intakeMotors(stopIntake);});
 
     stopMotors.pressed(emergencyStop);
 

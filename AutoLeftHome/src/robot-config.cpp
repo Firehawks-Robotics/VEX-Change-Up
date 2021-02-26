@@ -56,8 +56,8 @@ motor rightWheelTrainMotor = motor(PORT11, ratio36_1, false);
 motor leftWheelTrainMotor = motor(PORT11, ratio36_1, false);
 motor intakeLeftMotor = motor(PORT1, ratio36_1, false);
 motor intakeRightMotor = motor(PORT8, ratio36_1, true);
-motor liftLeftMotor = motor(PORT5, ratio36_1, false);
-motor liftRightMotor = motor(PORT7, ratio36_1, true);
+motor liftTopMotor = motor(PORT5, ratio36_1, false);
+motor liftBottomMotor = motor(PORT7, ratio36_1, true);
 
 // Wheels
 Wheel rightWheelTrain = *new Wheel(rightWheelTrainMotor);
@@ -69,17 +69,19 @@ Wheel *wheelTrains[NUM_WHEEL_TRAINS] = {&rightWheelTrain, &leftWheelTrain};
 vex::controller::axis forwardAxis = mainCon.Axis3;
 vex::controller::axis turningAxis = mainCon.Axis4;
 
-vex::controller::button speedUp = mainCon.ButtonL1;
-vex::controller::button speedDown = mainCon.ButtonL2;
+vex::controller::button speedUp = mainCon.ButtonUp;
+vex::controller::button speedDown = mainCon.ButtonDown;
 
-vex::controller::button functionUp = mainCon.ButtonR1; //Front
-vex::controller::button functionDown = mainCon.ButtonR2; //Back
+vex::controller::button functionUp = mainCon.ButtonL1;
+vex::controller::button functionDown = mainCon.ButtonL2;
+vex::controller::button functionIntake = mainCon.ButtonR1;
+vex::controller::button functionExpel = mainCon.ButtonR2;
 
 vex::controller::button stopMotors = mainCon.ButtonDown;
 
 // VEXcode generated functions
 
-const int FUNCTION_MOTOR_SPEED = 100; //rpm
+const int FUNCTION_MOTOR_SPEED = 200; //rpm
 
 /**
  * Used to initialize code/tasks/devices added using tools in VEXcode Text.
@@ -91,8 +93,8 @@ void vexcodeInit( void ) {
 
     intakeLeftMotor.setVelocity(FUNCTION_MOTOR_SPEED, velocityUnits::rpm);
     intakeRightMotor.setVelocity(FUNCTION_MOTOR_SPEED, velocityUnits::rpm);
-    liftLeftMotor.setVelocity(FUNCTION_MOTOR_SPEED, velocityUnits::rpm);
-    liftRightMotor.setVelocity(FUNCTION_MOTOR_SPEED, velocityUnits::rpm);
+    liftTopMotor.setVelocity(FUNCTION_MOTOR_SPEED, velocityUnits::rpm);
+    liftBottomMotor.setVelocity(FUNCTION_MOTOR_SPEED, velocityUnits::rpm);
 
     debugMenuController(); //Put stuff on debug screen
 }

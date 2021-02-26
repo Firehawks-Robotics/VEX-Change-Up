@@ -79,10 +79,10 @@ void temperature() {
     vexBrain.Screen.newLine();
 
     //Function motors
-    vexBrain.Screen.print("liftleft | ");
-    vexBrain.Screen.print(liftLeftMotor.temperature(u));
-    vexBrain.Screen.print("| liftright | ");
-    vexBrain.Screen.print(liftRightMotor.temperature(u));
+    vexBrain.Screen.print("lifttop | ");
+    vexBrain.Screen.print(liftTopMotor.temperature(u));
+    vexBrain.Screen.print("| liftbottom | ");
+    vexBrain.Screen.print(liftBottomMotor.temperature(u));
     vexBrain.Screen.newLine();
     vexBrain.Screen.print("| intakeleft | ");
     vexBrain.Screen.print(intakeLeftMotor.temperature(u));

@@ -18,9 +18,15 @@ using namespace vex;
  * Enumerates the actions that the intake and lift motors can take. The stop
  * action is used for both lift and intake.
 */
-enum motorActions {
+enum intakeActions {
+    intake = -1,
+    stopIntake = 0,
+    expel = 1
+};
+
+enum liftActions {
     down = -1,
-    stop = 0,
+    stopLift = 0,
     up = 1
 };
 
@@ -43,12 +49,9 @@ const int MAX_AXIS_VALUE = 127;
 */
 void movement(int forward, int turnvalue);
 
-/*
- * Moves the liftLeftMotor, liftRightMotor, intakeRightMotor, and 
- * intakeLeftMotor motors according to desired  direction.
- * @param upOrDown     Direction desired. Using values from `motorActions`.
-*/
-void ballFunction(int dir);
+void liftMotors(int dir);
+
+void intakeMotors(int dir);
 
 
 /*

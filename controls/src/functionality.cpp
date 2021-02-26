@@ -45,32 +45,39 @@ void movement(int forward, int turnValue) {
     //Simply add (or subtract) the velocity to the motors
     if(turnValue < -MIN_TURNING_AXIS_DISPLACEMENT || turnValue > MIN_TURNING_AXIS_DISPLACEMENT) { //Dont want tiny values to have any effect
         leftWheels += turnValue;
-        rightWheels += turnValue;
+        rightWheels -= turnValue;
     }
     
     leftWheelTrain.setGoalVelocity(leftWheels);
-    leftWheelTrain.setGoalVelocity(rightWheels);
+    rightWheelTrain.setGoalVelocity(rightWheels);
 }
 
 /*
  * Using values stored in enum `motorActions`
 */
-void ballFunction(int dir) {
-    if(dir == down) { //Down
-        liftLeftMotor.spin(forward);
-        liftRightMotor.spin(forward);
+void intakeMotors(int dir) {
+    if(dir == expel) { //Down
         intakeLeftMotor.spin(reverse);
         intakeRightMotor.spin(reverse);
-    } else if(dir == stop) { //Stop
-        liftLeftMotor.stop(hold);
-        liftRightMotor.stop(hold);
+    } else if(dir == stopIntake) { //Stop
         intakeLeftMotor.stop(hold);
         intakeRightMotor.stop(hold);
-    } else if(dir == up) { //Up
-        liftLeftMotor.spin(reverse);
-        liftRightMotor.spin(reverse);
+    } else if(dir == intake) { //Up
         intakeLeftMotor.spin(forward);
         intakeRightMotor.spin(forward);
+    }
+}
+
+void liftMotors(int dir) {
+    if(dir == down) { //Down
+        liftTopMotor.spin(forward);
+        liftBottomMotor.spin(forward);
+    } else if(dir == stopLift) { //Stop
+        liftTopMotor.stop(hold);
+        liftBottomMotor.stop(hold);
+    } else if(dir == up) { //Up
+        liftTopMotor.spin(reverse);
+        liftBottomMotor.spin(reverse);
     }
 }
 
@@ -82,8 +89,8 @@ void emergencyStop() {
     leftWheelTrain.setVelocity(0);
     rightWheelTrainMotor.stop(brake);
     leftWheelTrainMotor.stop(brake);
-    liftLeftMotor.stop(brake);
-    liftRightMotor.stop(brake);
+    liftTopMotor.stop(brake);
+    liftTopMotor.stop(brake);
     intakeLeftMotor.stop(brake);
     intakeRightMotor.stop(brake);
 }

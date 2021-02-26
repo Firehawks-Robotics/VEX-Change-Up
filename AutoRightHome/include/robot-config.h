@@ -243,9 +243,9 @@ extern motor intakeRightMotor;
 */
 
 /** The left lift motor. */
-extern motor liftLeftMotor;
+extern motor liftTopMotor;
 /** The right lift motor. Reversed here because it's reversed on the robot. */
-extern motor liftRightMotor;
+extern motor liftBottomMotor;
 
 //Wheels
 extern Wheel rightWheelTrain;
@@ -275,6 +275,9 @@ extern vex::controller::button speedDown;
 extern vex::controller::button functionUp;
 /** Button that causes the intake motors to expel and bring balls down. */
 extern vex::controller::button functionDown;
+
+extern vex::controller::button functionIntake;
+extern vex::controller::button functionExpel;
 
 /**
  * Button that immediately stops all motors and makes them brake (using
