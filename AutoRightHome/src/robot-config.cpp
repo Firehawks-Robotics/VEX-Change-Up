@@ -18,9 +18,7 @@ using code = vision::code;
 brain vexBrain;
 controller mainCon;
 
-double percentOfMaxSpeed = 0.66; //default is 75%
-
-double angular_accelerational_constant = 0.5;
+double percentOfMaxSpeed = .5; //default is 75%
 
 Wheel::Wheel(motor &wheelMotor) {
     this->wheelMotor = &wheelMotor;
@@ -52,12 +50,12 @@ void Wheel::spin(int velocity, directionType dir) {
 }
 
 // VEXcode device constructors
-motor rightWheelTrainMotor = motor(PORT11, ratio36_1, false);
+motor rightWheelTrainMotor = motor(PORT1, ratio36_1, true);
 motor leftWheelTrainMotor = motor(PORT11, ratio36_1, false);
-motor intakeLeftMotor = motor(PORT1, ratio36_1, false);
-motor intakeRightMotor = motor(PORT8, ratio36_1, true);
+motor intakeLeftMotor = motor(PORT10, ratio36_1, true);
+motor intakeRightMotor = motor(PORT6, ratio36_1, false);
 motor liftTopMotor = motor(PORT5, ratio36_1, false);
-motor liftBottomMotor = motor(PORT7, ratio36_1, true);
+motor liftBottomMotor = motor(PORT7, ratio36_1, false);
 
 // Wheels
 Wheel rightWheelTrain = *new Wheel(rightWheelTrainMotor);
@@ -67,7 +65,7 @@ Wheel *wheelTrains[NUM_WHEEL_TRAINS] = {&rightWheelTrain, &leftWheelTrain};
 
 // Controls
 vex::controller::axis forwardAxis = mainCon.Axis3;
-vex::controller::axis turningAxis = mainCon.Axis4;
+vex::controller::axis turningAxis = mainCon.Axis1;
 
 vex::controller::button speedUp = mainCon.ButtonUp;
 vex::controller::button speedDown = mainCon.ButtonDown;

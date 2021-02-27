@@ -59,9 +59,9 @@ void timedMovement(int forward, int turnValue, int ms) {
 
     while(ms > 0) { //Break if time is up
 
-        for(int i=0; i<NUM_WHEEL_TRAINS; i++) {
+        /*for(int i=0; i<NUM_WHEEL_TRAINS; i++) {
             wheelTrains[i]->calculateAcceleratingVelocity();
-        }
+        }*/
         
         pause(TICK_LENGTH);
         ms = ms - TICK_LENGTH;
@@ -120,5 +120,5 @@ void timedMovement(int forward, int turnValue, int ms) {
  *
 */
 void autonomous() {
-    angular_accelerational_constant = 0.2;
+    //angular_accelerational_constant = 0.2;
 }

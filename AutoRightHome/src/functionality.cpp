@@ -44,12 +44,30 @@ void movement(int forward, int turnValue) {
     //Turning
     //Simply add (or subtract) the velocity to the motors
     if(turnValue < -MIN_TURNING_AXIS_DISPLACEMENT || turnValue > MIN_TURNING_AXIS_DISPLACEMENT) { //Dont want tiny values to have any effect
-        leftWheels += turnValue;
-        rightWheels -= turnValue;
+        if(rightWheels < 0) {
+            rightWheels += turnValue;
+        } else if(rightWheels >= 0) {
+            rightWheels -= turnValue;
+        }
+        if(leftWheels < 0) {
+            leftWheels -= turnValue;
+        } else if(leftWheels >= 0) {
+            leftWheels += turnValue;
+        }
     }
     
-    leftWheelTrain.setGoalVelocity(leftWheels);
-    rightWheelTrain.setGoalVelocity(rightWheels);
+    leftWheelTrain.setVelocity(leftWheels);
+    rightWheelTrain.setVelocity(rightWheels);
+    if(leftWheelTrain.getVelocity() == 0) {
+        leftWheelTrainMotor.stop(brake);
+    } else {
+        leftWheelTrain.spin(vex::forward);  
+    }
+    if(rightWheelTrain.getVelocity() == 0) {
+        rightWheelTrainMotor.stop(brake);
+    } else {
+        rightWheelTrain.spin(vex::forward);
+    }
 }
 
 /*

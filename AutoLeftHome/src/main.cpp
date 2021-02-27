@@ -67,25 +67,25 @@ void userControl() {
     functionIntake.released([](){intakeMotors(stopIntake);});
     functionExpel.released([](){intakeMotors(stopIntake);});
 
-    stopMotors.pressed(emergencyStop);
+    //stopMotors.pressed(emergencyStop);
 
     //Movement is handled by an infinite while loop to ensure that the movement gets updated like it should
     //Sometimes the axis.changed event does not happen even if the axis value does change. Thus, our current solution.
     while(1) { //Each iteration of this loop is one tick]
-        movement((int)(forwardAxis.value()*(percentOfMaxSpeed)), (int)(turningAxis.value()*(percentOfMaxSpeed)));
+        movement((int)(forwardAxis.value()*(percentOfMaxSpeed)), (int)(turningAxis.value()/2.0)*(percentOfMaxSpeed));
         //until the desired velocity is reached.
-        for(int i=0; i<NUM_WHEEL_TRAINS; i++) {
+        /*for(int i=0; i<NUM_WHEEL_TRAINS; i++) {
             wheelTrains[i]->calculateAcceleratingVelocity();
-        }
+        }*/
         wait(TICK_LENGTH, msec); //Use less battery this way
 
         //Speed control using left bumper
         //If both up and down are pressed, then nothing changess
         if (speedUp.pressing()) {
-            percentOfMaxSpeed += PERCENTOFMAXSPEEDSTEP;
+            percentOfMaxSpeed = .40;
             if (percentOfMaxSpeed > 100) percentOfMaxSpeed = 100;
         } if (speedDown.pressing()) {
-            percentOfMaxSpeed -= PERCENTOFMAXSPEEDSTEP;
+            percentOfMaxSpeed = .20;
             if (percentOfMaxSpeed < 0) percentOfMaxSpeed = 0;
         }
 
