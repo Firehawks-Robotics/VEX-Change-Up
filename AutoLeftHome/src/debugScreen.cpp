@@ -1,6 +1,6 @@
 /*----------------------------------------------------------------------------------*/
 /*                                                                                  */
-/*    Module:       debugMenuTemp.cpp                                               */
+/*    Module:       debugScreen.cpp                                                 */
 /*    Author:       Sean Johnson, Richard Wang, Luke Wittbrodt (Firehawks Robotics) */
 /*    Created:      Thu Oct 22 2020                                                 */
 /*    Description:  Robot Debug Screen Implementation                               */
@@ -10,27 +10,29 @@
 
 using namespace vex;
 
-// A global instance of vex::brain used for printing to the V5 brain screen
-brain vexBrain;
+#include "robot-config.h"
+#include "functionality.h"
+#include "debugScreen.h"
+#include "autonomous.h"
 
-//Controllers
-controller mainCon;
+/** The temperature units used to report the temperature on the debug screen. */
+temperatureUnits u = temperatureUnits::celsius;
 
-void rightTrigger(){
+void leftAnalogStick() {
     vexBrain.Screen.print("Axis 1 | ");
     vexBrain.Screen.print(mainCon.Axis1.value());
     vexBrain.Screen.print(" | Axis 2 | ");
     vexBrain.Screen.print(mainCon.Axis2.value());
 }
 
-void leftTrigger(){
+void rightAnalogStick() {
     vexBrain.Screen.print("Axis 4 | ");
     vexBrain.Screen.print(mainCon.Axis3.value());
     vexBrain.Screen.print(" | Axis 3 | ");
     vexBrain.Screen.print(mainCon.Axis4.value());
 }
 
-void buttons(){
+void buttons() {
     vexBrain.Screen.print("A | ");
     vexBrain.Screen.print(mainCon.ButtonA.pressing());
     vexBrain.Screen.print(" | B | ");
@@ -41,7 +43,7 @@ void buttons(){
     vexBrain.Screen.print(mainCon.ButtonY.pressing());
 }
 
-void arrows(){
+void arrows() {
     vexBrain.Screen.print("v | ");
     vexBrain.Screen.print(mainCon.ButtonDown.pressing());
     vexBrain.Screen.print(" | ^ | ");
@@ -52,7 +54,8 @@ void arrows(){
     vexBrain.Screen.print(mainCon.ButtonLeft.pressing());
 }
 
-void backButtons(){
+
+void bumpers() {
     vexBrain.Screen.print("L1 | ");
     vexBrain.Screen.print(mainCon.ButtonL1.pressing());
     vexBrain.Screen.print(" | L2 | ");
@@ -63,6 +66,42 @@ void backButtons(){
     vexBrain.Screen.print(mainCon.ButtonR2.pressing());
 }
 
+void temperature() {
+    if(u == temperatureUnits::celsius) { vexBrain.Screen.print("Motor Temperature: (celcius)"); }
+    if(u == temperatureUnits::fahrenheit) { vexBrain.Screen.print("Motor Temperature: (fahrenheit)"); }
+    vexBrain.Screen.newLine();
+
+    //Wheels
+    vexBrain.Screen.print("rw : ");
+    vexBrain.Screen.print(rightWheelTrainMotor.temperature(u));
+    vexBrain.Screen.print(" | lw : ");
+    vexBrain.Screen.print(leftWheelTrainMotor.temperature(u));
+    vexBrain.Screen.newLine();
+
+    //Function motors
+    vexBrain.Screen.print("lifttop | ");
+    vexBrain.Screen.print(liftTopMotor.temperature(u));
+    vexBrain.Screen.print("| liftbottom | ");
+    vexBrain.Screen.print(liftBottomMotor.temperature(u));
+    vexBrain.Screen.newLine();
+    vexBrain.Screen.print("| intakeleft | ");
+    vexBrain.Screen.print(intakeLeftMotor.temperature(u));
+    vexBrain.Screen.print("| intakeright | ");
+    vexBrain.Screen.print(intakeRightMotor.temperature(u));
+}
+
+void print_rpm() {
+    vexBrain.Screen.newLine();
+    vexBrain.Screen.print("Motor RPM: ");
+    vexBrain.Screen.newLine();
+    vexBrain.Screen.print("rw : ");
+    vexBrain.Screen.print(rightWheelTrain.getVelocity());
+    vexBrain.Screen.print(" | lw : ");
+    vexBrain.Screen.print(leftWheelTrain.getVelocity());
+    vexBrain.Screen.newLine();
+}
+
+
 void resetDebug() {
     vex::task::sleep(100);
     vexBrain.Screen.clearLine();
@@ -70,21 +109,14 @@ void resetDebug() {
     vexBrain.Screen.setOrigin(0, 0);
 }
 
-/*void vexBrainPrint(std::string toPrint, bool doNewLine){
-    if(doNewLine){
-      vexBrain.Screen.print(toPrint);
-      vexBrain.Screen.newLine();
-    }
-    else{
-      vexBrain.Screen.print(toPrint);
-    }
-}*/
 
 void debugMenuController(){
-    rightTrigger();
+    resetDebug();
+
+    leftAnalogStick();
     vexBrain.Screen.newLine();
 
-    leftTrigger();
+    rightAnalogStick();
     vexBrain.Screen.newLine();
     
     buttons();
@@ -93,6 +125,20 @@ void debugMenuController(){
     arrows();
     vexBrain.Screen.newLine();
 
-    backButtons();
+    bumpers();
     vexBrain.Screen.newLine();
+
+    print_rpm();
+    vexBrain.Screen.newLine();
+
+    temperature();
+    vexBrain.Screen.newLine();
+}
+
+void number(double numb) { //Use this to get numbers
+    vexBrain.Screen.clearLine();
+    vexBrain.Screen.clearScreen();
+    vexBrain.Screen.setOrigin(0, 0);
+    vexBrain.Screen.print(numb);
+    vexBrain.Screen.print(" ");
 }

@@ -18,7 +18,7 @@ using code = vision::code;
 brain vexBrain;
 controller mainCon;
 
-double percentOfMaxSpeed = .4;
+double percentOfMaxSpeed = .5; //default is 75%
 
 Wheel::Wheel(motor &wheelMotor) {
     this->wheelMotor = &wheelMotor;
