@@ -5,7 +5,7 @@ controlssrc="controls/src/*"
 controlsinclude="controls/include/*"
 
 #All autonomous programs need to start with "Auto"
-autonomousprograms=Auto*
+autonomousprograms=autonomous*
 
 #now copy all files from the controls program except side
 for dir in $autonomousprograms

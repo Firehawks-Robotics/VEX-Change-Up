@@ -120,5 +120,50 @@ void timedMovement(int forward, int turnValue, int ms) {
  *
 */
 void autonomous() {
-    //angular_accelerational_constant = 0.2;
+    //Move foward to be in line with the goal
+    timedMovement(75, 0, 1000);
+
+    //Turn to face the goal
+    timedMovement(0, 75, 500);
+
+    //Enable intake motors and move towards the goal
+    intakeMotors(intake);
+    timedMovement(50, 0, 1000);
+    intakeMotors(stopIntake);
+
+    //Once at goal, then enable lift to put ball in goal
+    liftMotors(up);
+    pause(500);
+    liftMotors(stopLift);
+
+    //Back up and turn
+    timedMovement(-50, 0, 100);
+    timedMovement(0, 50, 100);
+
+    //move towards second goal
+    timedMovement(75, 0, 1500);
+
+    //turn to face goal
+    timedMovement(0, 50, 250);
+
+    //Score goal
+    liftMotors(up);
+    pause(500);
+    liftMotors(stopLift);
+
+    //turn
+    timedMovement(0, 50, 500);
+
+    //go forwards
+    timedMovement(50, 0, 1000);
+
+    //Turn to face goal
+    timedMovement(0, -50, 1000);
+
+    //Go towards go, while intaking and lifting (scoring as well)
+    liftMotors(up);
+    intakeMotors(intake);
+    timedMovement(50, 0, 1000);
+    liftMotors(stopLift);
+    intakeMotors(stopIntake);
 }

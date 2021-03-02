@@ -111,9 +111,8 @@ int main() {
     if(SIDE != 0) { 
 
         pre_auton();
-        
-        autonomous();
 
+        autonomous();
         controls();
         
         /*while(1) {
@@ -122,7 +121,7 @@ int main() {
         
     } else { //If this is the controls testing, then go directly to the drivercontrols
         vexcodeInit();
-        //userControl();
+        controls();
     }
     //*/
 

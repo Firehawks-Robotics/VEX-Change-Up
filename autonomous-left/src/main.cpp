@@ -113,10 +113,7 @@ int main() {
         pre_auton();
 
         autonomous();
-
         controls();
-        //comp.autonomous(autonomous);
-        //comp.drivercontrol(controls);
         
         /*while(1) {
             wait(TICK_LENGTH, msec);
