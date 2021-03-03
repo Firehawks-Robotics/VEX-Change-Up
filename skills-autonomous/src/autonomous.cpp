@@ -167,4 +167,20 @@ void autonomous() {
 
     //Go back from goal
     timedMovement(-50, 0, 500);
+
+    //Now we move on to skills exclusive stuff
+    timedMovement(0, -50, 500);
+    pause(500);
+
+    timedMovement(75, 0, 1250);
+    pause(500);
+
+    timedMovement(0, 25, 750);
+    pause(500);
+
+    liftMotors(up);
+    intakeMotors(intake);
+    timedMovement(50, 0, 750);
+    liftMotors(stopLift);
+    intakeMotors(stopIntake);
 }

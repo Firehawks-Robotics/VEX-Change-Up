@@ -120,50 +120,51 @@ void timedMovement(int forward, int turnValue, int ms) {
  *
 */
 void autonomous() {
+    //angular_accelerational_constant = 0.2;
+
     //Move foward to be in line with the goal
-    timedMovement(75, 0, 1000);
+    timedMovement(75, 0, 900);
+    pause(500);
 
     //Turn to face the goal
-    timedMovement(0, 75, 500);
+    timedMovement(0, -75, 650);
+    pause(500);
 
     //Enable intake motors and move towards the goal
     intakeMotors(intake);
-    timedMovement(50, 0, 1000);
+    timedMovement(75, 0, 850);
     intakeMotors(stopIntake);
 
     //Once at goal, then enable lift to put ball in goal
     liftMotors(up);
-    pause(500);
+    pause(1000);
     liftMotors(stopLift);
 
     //Back up and turn
-    timedMovement(-50, 0, 100);
-    timedMovement(0, 50, 100);
+    timedMovement(-50, 0, 850);
+    pause(500);
+    timedMovement(0, -50, 850);
+    pause(500);
 
     //move towards second goal
-    timedMovement(75, 0, 1500);
+    timedMovement(75, 0, 1350);
+    pause(500);
 
     //turn to face goal
-    timedMovement(0, 50, 250);
+    timedMovement(0, 50, 600);
+    pause(500);
+
+    //Move forwards to goal
+    timedMovement(50, 0, 350);
+    pause(500);
 
     //Score goal
     liftMotors(up);
-    pause(500);
-    liftMotors(stopLift);
-
-    //turn
-    timedMovement(0, 50, 500);
-
-    //go forwards
-    timedMovement(50, 0, 1000);
-
-    //Turn to face goal
-    timedMovement(0, -50, 1000);
-
-    //Go towards go, while intaking and lifting (scoring as well)
-    liftMotors(up);
     intakeMotors(intake);
-    timedMovement(50, 0, 1000);
+    pause(1500);
     liftMotors(stopLift);
     intakeMotors(stopIntake);
+
+    //Go back from goal
+    timedMovement(-50, 0, 500);
 }
