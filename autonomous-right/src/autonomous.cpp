@@ -55,7 +55,7 @@ void stopWheels() {
 */
 void timedMovement(int forward, int turnValue, int ms) {
 
-    movement(forward, turnValue);
+    movement(forward, turnValue*SIDE);
 
     while(ms > 0) { //Break if time is up
 
@@ -120,14 +120,12 @@ void timedMovement(int forward, int turnValue, int ms) {
  *
 */
 void autonomous() {
-    //angular_accelerational_constant = 0.2;
-
-    //Move foward to be in line with the goal
+ //Move foward to be in line with the goal
     timedMovement(75, 0, 900);
     pause(500);
 
     //Turn to face the goal
-    timedMovement(0, -75, 650);
+    timedMovement(0, 75, 650);
     pause(500);
 
     //Enable intake motors and move towards the goal
@@ -143,7 +141,7 @@ void autonomous() {
     //Back up and turn
     timedMovement(-50, 0, 850);
     pause(500);
-    timedMovement(0, -50, 850);
+    timedMovement(0, 50, 850);
     pause(500);
 
     //move towards second goal
@@ -151,7 +149,7 @@ void autonomous() {
     pause(500);
 
     //turn to face goal
-    timedMovement(0, 50, 600);
+    timedMovement(0, -50, 600);
     pause(500);
 
     //Move forwards to goal
