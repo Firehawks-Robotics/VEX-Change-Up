@@ -53,6 +53,27 @@ void pre_auton() {
     vexcodeInit();
 }
 
+constexpr double levelOnePower = .2;
+constexpr double levelTwoPower = .4;
+constexpr double levelThreePower = .7;
+
+void updateSpeedPower(double newPower) {
+    percentOfMaxSpeed = newPower;
+    if(newPower == levelOnePower) {
+        mainCon.rumble(".");
+        mainCon.Screen.clearScreen();
+        mainCon.Screen.print("1");
+    } else if(newPower == levelTwoPower) {
+        mainCon.rumble("..");
+        mainCon.Screen.clearScreen();
+        mainCon.Screen.print("2");
+    } else if(newPower == levelThreePower) {
+        mainCon.rumble("...");
+        mainCon.Screen.clearScreen();
+        mainCon.Screen.print("3");
+    }
+}
+
 void controls() {
 
     //Using lambdas here btw (learn more: https://en.cppreference.com/w/cpp/language/lambda)
@@ -67,27 +88,35 @@ void controls() {
     functionIntake.released([](){intakeMotors(stopIntake);});
     functionExpel.released([](){intakeMotors(stopIntake);});
 
+    speedUp.pressed([](){
+        if(percentOfMaxSpeed == levelOnePower) {
+            updateSpeedPower(levelTwoPower);
+        } else if(percentOfMaxSpeed == levelTwoPower) {
+            updateSpeedPower(levelThreePower);
+        } else if(percentOfMaxSpeed == levelThreePower) {
+            updateSpeedPower(levelThreePower);
+        }
+    });
+
+    speedDown.pressed([](){
+        if(percentOfMaxSpeed == levelThreePower) {
+            updateSpeedPower(levelTwoPower);
+        } else if(percentOfMaxSpeed == levelTwoPower) {
+            updateSpeedPower(levelOnePower);
+        } else if(percentOfMaxSpeed == levelOnePower) {
+            updateSpeedPower(levelOnePower); //No change
+        }
+    });
+
+    updateSpeedPower(levelTwoPower);
+
     //stopMotors.pressed(emergencyStop);
 
     //Movement is handled by an infinite while loop to ensure that the movement gets updated like it should
     //Sometimes the axis.changed event does not happen even if the axis value does change. Thus, our current solution.
     while(1) { //Each iteration of this loop is one tick]
         movement((int)(forwardAxis.value()*(percentOfMaxSpeed)), (int)(turningAxis.value()/2.0)*(percentOfMaxSpeed));
-        //until the desired velocity is reached.
-        /*for(int i=0; i<NUM_WHEEL_TRAINS; i++) {
-            wheelTrains[i]->calculateAcceleratingVelocity();
-        }*/
         wait(TICK_LENGTH, msec); //Use less battery this way
-
-        //Speed control using left bumper
-        //If both up and down are pressed, then nothing changess
-        if (speedUp.pressing()) {
-            percentOfMaxSpeed = .40;
-            if (percentOfMaxSpeed > 100) percentOfMaxSpeed = 100;
-        } if (speedDown.pressing()) {
-            percentOfMaxSpeed = .20;
-            if (percentOfMaxSpeed < 0) percentOfMaxSpeed = 0;
-        }
 
         debugMenuController(); //Debug screen is updated every tick
     }

@@ -47,12 +47,6 @@ const int TICK_LENGTH = 50;
 const int NUM_WHEEL_TRAINS = 2;
 
 /**
- * The amount that the percentOfMaxSpeed should change per tick when the
- * appropriate control is held down. Is 1% per tick.
-*/
-double constexpr PERCENTOFMAXSPEEDSTEP = 0.05; 
-
-/**
  * The percentage of the max speed (200 rpm) that the wheels should move
  * when at full speed. Defaults to 75%.
 */
