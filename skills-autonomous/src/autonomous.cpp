@@ -120,138 +120,190 @@ void timedMovement(int forward, int turnValue, int ms) {
  *
 */
 void autonomous() {
- //Move foward to be in line with the goal
+    //Move foward to be in line with the goal
+    intakeMotors(intake);
     timedMovement(75, 0, 900);
+    intakeMotors(stopIntake);
     pause(500);
+    
+    //Push ball back out to reduce chances of jamming
+    liftMotors(down);
+    intakeMotors(expel);
+    pause(400);
+    intakeMotors(stopIntake);
+    liftMotors(stopLift); 
 
     //Turn to face the goal
-    timedMovement(0, 75, 650);
+    timedMovement(0, 75, 700);
     pause(500);
 
-    //Enable intake motors and move towards the goal
-    intakeMotors(intake);
+    //Go to goal
     timedMovement(75, 0, 850);
+    
+    //Score goal and get ball out of bottom
+    liftMotors(up);
+    pause(300);
+    intakeMotors(intake);
+    pause(700);
+    intakeMotors(stopIntake);
+    liftMotors(stopLift);
+
+    //Go back and turn
+    timedMovement(-50, 0, 400);
+    pause(500);
+    timedMovement(0, 50, 300);
+    pause(500);
+
+    //Throw ball
+    intakeMotors(expel);
+    pause(500);
     intakeMotors(stopIntake);
 
-    //Once at goal, then enable lift to put ball in goal
+    //Turn to go back into wall
+    timedMovement(0, 50, 650);
+    pause(700);
+
+    //Corrrectly align using the wall
+    timedMovement(-50, 0, 1250);
+    pause(500);
+
+    //Go towards the second goal
+    timedMovement(75, 0, 2100);
+    pause(500);
+
+    //Turn towards the goal
+    timedMovement(0, -50, 650);
+    pause(600);
+
+    //Go towards the goal
+    timedMovement(50, 0, 500);
+
+    //Put ball in the second goal
     liftMotors(up);
     pause(1000);
     liftMotors(stopLift);
 
-    //Back up and turn
-    timedMovement(-50, 0, 850);
-    pause(500);
-    timedMovement(0, 50, 850);
-    pause(500);
+    //Disengage from second goal
+    timedMovement(-50, 0, 400);
+    pause(300);
 
-    //move towards second goal
-    timedMovement(75, 0, 1350);
-    pause(500);
-
-    //turn to face goal
-    timedMovement(0, -50, 600);
-    pause(500);
-
-    //Move forwards to goal
-    timedMovement(50, 0, 350);
-    pause(500);
-
-    //Score goal
-    liftMotors(up);
-    intakeMotors(intake);
-    pause(1500);
-    liftMotors(stopLift);
-    intakeMotors(stopIntake);
-
-    //Go back from goal
-    timedMovement(-50, 0, 500);
-
-
-
-
-    //extra 1 minute stuff
-    pause(500);
-    //Turn
+    //Turn towards third goal
     timedMovement(0, 50, 600);
-    pause(500);
+    pause(300);
 
-    //Go fowards to the left goal
-    timedMovement(75, 0, 2000);
-    pause(500);
-
-    //Go backwards to be in line with the goal
-    timedMovement(-75, 0, 750);
-    pause(500);
-
-    //Turn towards the goal
-    timedMovement(0, -50, 400);
-    pause(500);
-
-    //Go towards the goal
-    liftMotors(up);
+    //Go towards 3rd goal, pick up ball, align with wall.
     intakeMotors(intake);
-    timedMovement(50, 0, 1500);
-    pause(500);
+    timedMovement(75, 0, 2750);
+    pause(750);
+    liftMotors(up);
     intakeMotors(stopIntake);
     pause(500);
     liftMotors(stopLift);
 
-    //backup
-    timedMovement(-50, 0, 1250);
+    //Pull back from the wall
+    timedMovement(-75, 0, 450);
     pause(500);
 
-    //Turn to face center
-    timedMovement(0, 50, 900);
-    pause(500);
+    //Turn towards the 3rd goal
+    timedMovement(0, -50, 450);
+    pause(250);
 
-    //Move to center while intaking
-    intakeMotors(intake);
-    timedMovement(75, 0, 1000);
-    pause(500);
-    intakeMotors(stopIntake);
-
-    //Turn to have back to goal
-    timedMovement(0, -50, 600);
-    pause(500);
-
-    //Go to center goal, pushing ball into the middle
-    timedMovement(-75, 0, 1000);
-    pause(500);
-
-    //Go back from center goal
-    timedMovement(50, 0, 750);
-    pause(500);
-
-    //Turn
-    timedMovement(0, -50, 850);
-    pause(500);
-
-    //Go forwards
-    timedMovement(75, 0, 1000);
-    pause(500);
-
-    //Turn
-    timedMovement(0, -50, 750);
-    pause(500);
-
+    //Go up to the 3rd goal;
     timedMovement(50, 0, 1000);
-    pause(500);
+    pause(250);
 
-    timedMovement(0, 50, 750);
-    pause(500);
-
-    timedMovement(50, 0, 1500);
-    intakeMotors(intake);
+    //shoot the ball in the goal;
     liftMotors(up);
+    intakeMotors(intake);
+    pause(1250);
     intakeMotors(stopIntake);
     liftMotors(stopLift);
 
-    //Switch the last goal
-    timedMovement(0, -25, 1500);
+    //Go backwards
+    timedMovement(-50, 0, 666);
+    pause(250);
+
+    //Turn towards the 4th goal
+    timedMovement(0, 50, 333);
+    pause(250);
+
+    //Throw blue ball possibly picked up
+    intakeMotors(expel);
+    pause(500);
+    intakeMotors(stopIntake);
+
+    //Turn towards the 4th goal
+    timedMovement(0, 50, 666);
+    pause(250);
+
+    //Go align on back wall
+    timedMovement(-50, 0, 2000);
+    pause(250);
+
+    //Go towards the 4th goal, while intaking
+    intakeMotors(intake);
+    timedMovement(50, 0, 3150);
+    liftMotors(up);
+    pause(300);
+    liftMotors(stopLift);
+    intakeMotors(stopIntake);
+
+    //Turn towards the 4th goal
+    timedMovement(0, -50, 666);
+    pause(250);
+
+    //Go towards the 4th goal
+    timedMovement(50, 0, 500);
+    pause(250);
+
+    //put ball in goal
     intakeMotors(intake);
     liftMotors(up);
-    pause(2000);
+    pause(1000);
+    liftMotors(stopLift);
+    intakeMotors(stopIntake);
+
+    /*
+
+    //Go to be near 4th goal, and get ball on middle line
+    timedMovement(50, 0, 1000);
+    pause(250);
+    intakeMotors(intake);
+    liftMotors(up);
+    pause(450);
+    intakeMotors(stopIntake);
+    pause(1250);
+    liftMotors(stopLift);
+
+    //Pull back then release any garbage orbs.
+    timedMovement(-50, 0, 750);
+    pause(250);
+    liftMotors(down);
+    intakeMotors(expel);
+    pause(750);
     intakeMotors(stopIntake);
     liftMotors(stopLift);
+
+    //Become sentient
+    timedMovement(0, 50, 800);
+    pause(500);
+    intakeMotors(intake);
+    liftMotors(up);
+    timedMovement(75, 0, 1600);
+    pause(250);
+    intakeMotors(stopIntake);
+    liftMotors(stopLift);
+    timedMovement(0, -50, 610);
+    pause(250);
+    timedMovement(50, 0, 550);
+
+    // H U R T
+    liftMotors(up);
+    intakeMotors(intake);
+    timedMovement(-50, 0, 50);
+    pause(750);
+    intakeMotors(stopIntake);
+    liftMotors(stopLift);*/
+
 
 }
