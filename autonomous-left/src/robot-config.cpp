@@ -50,8 +50,9 @@ void Wheel::spin(int velocity, directionType dir) {
 }
 
 // VEXcode device constructors
-motor rightWheelTrainMotor = motor(PORT1, ratio36_1, true);
-motor leftWheelTrainMotor = motor(PORT11, ratio36_1, false);
+motor rightWheelTrainMotor = motor(PORT1, ratio18_1, true);
+motor leftWheelTrainMotor = motor(PORT11, ratio18_1, false);
+drivetrain train = drivetrain(leftWheelTrainMotor, rightWheelTrainMotor, WHEELTRAVEL, TRACKWIDTH, WHEELBASE, distanceUnits::mm, 1.0);
 motor intakeLeftMotor = motor(PORT10, ratio36_1, true);
 motor intakeRightMotor = motor(PORT6, ratio36_1, false);
 motor liftTopMotor = motor(PORT5, ratio36_1, false);

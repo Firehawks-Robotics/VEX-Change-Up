@@ -53,9 +53,9 @@ void pre_auton() {
     vexcodeInit();
 }
 
-constexpr double levelOnePower = .2;
-constexpr double levelTwoPower = .4;
-constexpr double levelThreePower = .7;
+constexpr double levelOnePower = 0.4;
+constexpr double levelTwoPower = 0.8;
+constexpr double levelThreePower = 1.4;
 
 void updateSpeedPower(double newPower) {
     percentOfMaxSpeed = newPower;

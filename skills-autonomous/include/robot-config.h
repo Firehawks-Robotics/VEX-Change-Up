@@ -47,12 +47,6 @@ const int TICK_LENGTH = 50;
 const int NUM_WHEEL_TRAINS = 2;
 
 /**
- * The amount that the percentOfMaxSpeed should change per tick when the
- * appropriate control is held down. Is 1% per tick.
-*/
-double constexpr PERCENTOFMAXSPEEDSTEP = 0.05; 
-
-/**
  * The percentage of the max speed (200 rpm) that the wheels should move
  * when at full speed. Defaults to 75%.
 */
@@ -229,6 +223,11 @@ class Wheel {
 
 extern motor rightWheelTrainMotor;
 extern motor leftWheelTrainMotor;
+
+constexpr double WHEELTRAVEL = 320;
+constexpr double TRACKWIDTH = 330;
+constexpr double WHEELBASE = 275;
+extern drivetrain train;
 
 /** The left intake motor. Reversed here because it's reversed on the robot. */
 extern motor intakeLeftMotor; 

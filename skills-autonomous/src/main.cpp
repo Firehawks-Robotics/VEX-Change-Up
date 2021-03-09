@@ -53,23 +53,23 @@ void pre_auton() {
     vexcodeInit();
 }
 
-constexpr double levelOnePower = .2;
-constexpr double levelTwoPower = .4;
-constexpr double levelThreePower = .7;
+constexpr double levelOnePower = 0.4;
+constexpr double levelTwoPower = 0.8;
+constexpr double levelThreePower = 1.4;
 
 void updateSpeedPower(double newPower) {
     percentOfMaxSpeed = newPower;
     if(newPower == levelOnePower) {
         mainCon.rumble(".");
-        mainCon.Screen.clearScreen();
+        mainCon.Screen.setCursor(0, 0);
         mainCon.Screen.print("1");
     } else if(newPower == levelTwoPower) {
         mainCon.rumble("..");
-        mainCon.Screen.clearScreen();
+        mainCon.Screen.setCursor(0, 0);
         mainCon.Screen.print("2");
     } else if(newPower == levelThreePower) {
         mainCon.rumble("...");
-        mainCon.Screen.clearScreen();
+        mainCon.Screen.setCursor(0, 0);
         mainCon.Screen.print("3");
     }
 }
