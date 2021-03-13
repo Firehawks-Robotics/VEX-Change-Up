@@ -5,10 +5,13 @@ controlssrc="controls/src/*"
 controlsinclude="controls/include/*"
 
 #All autonomous programs need to start with "Auto"
-autonomousprograms=autonomous*
+matchautonomousprograms=autonomous*
+
+skillsautonomous=skills-autonomous
+
 
 #now copy all files from the controls program except side
-for dir in $autonomousprograms
+for dir in $matchautonomousprograms
 do
     echo
     echo Copying to program \"${dir}\"
@@ -19,4 +22,10 @@ do
     #include
     find ${controlsinclude} ! -name "side.h" -exec cp -vrfp {} ${dir}/include/ \;
 done
+
+#Copy all but autonomous AND side to skillsautonomous
+echo
+echo Copying to skills autonomous
+find ${controlssrc} ! -name "side.h" ! -name "autonomous.cpp" -exec cp -vrfp {} $skillsautonomous/src/ \;
+find ${controlsinclude} ! -name "side.h" -exec cp -vrfp {} $skillsautonomous/include/ \;
 

@@ -63,6 +63,9 @@ void resetDebug();
 */
 void debugMenuController();
 
+/**
+ * Used in debugging to get a number and print it to the vex brain lcd screen
+*/
 void number(double numb);
 
 #endif

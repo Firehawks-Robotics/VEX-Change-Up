@@ -115,7 +115,21 @@ void controls() {
     //Movement is handled by an infinite while loop to ensure that the movement gets updated like it should
     //Sometimes the axis.changed event does not happen even if the axis value does change. Thus, our current solution.
     while(1) { //Each iteration of this loop is one tick]
-        movement((int)(forwardAxis.value()*(percentOfMaxSpeed)), (int)(turningAxis.value()/2.0)*(percentOfMaxSpeed));
+
+        //Movement
+        bool movement = false;
+        if(abs(forwardAxis.value()) > MIN_MOVEMENT_AXIS_DISPLACEMENT) {
+            movement = true;
+            train.drive(forward, forwardAxis.value()*(percentOfMaxSpeed), rpm);
+        }
+        if(abs(turningAxis.value()) > MIN_TURNING_AXIS_DISPLACEMENT) {
+            movement = false;
+            train.turn(right, turningAxis.value(), rpm);
+        }
+        if(!movement) { //Make it brake if its not supposed to move
+            train.stop(brake);
+        }
+
         wait(TICK_LENGTH, msec); //Use less battery this way
 
         debugMenuController(); //Debug screen is updated every tick
