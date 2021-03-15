@@ -44,6 +44,85 @@ void followLine(double dist) {
  *
 */
 void autonomous() {
+    //Move forward to be in line with the goal
+    train.driveFor(TILE_WIDTH*1.5, inches);
+    pause(250);
+
+    //turn to face the goal
+    train.turnFor(SIDE*135, deg);
+    pause(250);
+
+    //Move towards goal and intake ball
+    intakeMotors(intake);
+    train.driveFor(TILE_DIAGONAL, inches);
+    intakeMotors(stopIntake);
+    pause(250);
+
+    //Enable lift and put preload in goal
+    liftMotors(up);
+    pause(1000);
+    liftMotors(stopLift);
+
+    //Back up from goal and turn
+    train.driveFor(TILE_DIAGONAL, inches);
+    pause(250);
+    train.turnFor(SIDE*270, degrees);
+    pause(250);
+
+    //Align on wall to account for slippage
+    train.driveFor(reverse, TILE_WIDTH*2, inches);
+    pause(250);
+
+    //Go to the second goal
+    train.driveFor(TILE_WIDTH*2.5, inches);
+    pause(250);
+
+    //Turn to second goal
+    train.turnFor(-90*SIDE, deg);
+    pause(250);
+
+    //Go up to second goal
+    train.driveFor(TILE_WIDTH, inches);
+    
+    //Put ball in middle goal
+    intakeMotors(intake);
+    liftMotors(up);
+    pause(1000);
+    liftMotors(stopLift);
+    intakeMotors(stopIntake);
+
+    //Go back from middle goal
+    train.driveFor(reverse, TILE_WIDTH, inches);
+    pause(250);
+
+    //Turn to go towards the 3rd goal
+    train.turnFor(SIDE*90, deg);
+    pause(250);
+
+    //Go to the 3rd goal, but align on the wall first
+    train.driveFor(TILE_WIDTH*3, inches);
+    pause(250);
+
+    //Back up to line up with 3rd goal
+    train.driveFor(TILE_WIDTH, inches);
+    pause(250);
+
+    //Turn to go to goal
+    train.turnFor(-45*SIDE, degrees);
+    pause(250);
+
+    //Go to goal, pick up ball, and score all at one time
+    intakeMotors(intake);
+    liftMotors(up);
+    train.driveFor(TILE_WIDTH, inches);
+    pause(500);
+    intakeMotors(stopIntake);
+    liftMotors(stopLift);
+
+    //Back away from goal
+    train.driveFor(reverse, TILE_WIDTH, inches);
+
+  /*
  //Move foward to be in line with the goal
     timedMovement(75, 0, 900);
     pause(500);
@@ -88,5 +167,5 @@ void autonomous() {
     intakeMotors(stopIntake);
 
     //Go back from goal
-    timedMovement(-50, 0, 500);
+    timedMovement(-50, 0, 500);*/
 }

@@ -14,6 +14,10 @@
 
 using namespace vex;
 
+constexpr double TILE_WIDTH = 23.416; //Inches
+
+constexpr double TILE_DIAGONAL = 33.116; //Inches
+
 /**
  * The procedural autonomous.
  * 
