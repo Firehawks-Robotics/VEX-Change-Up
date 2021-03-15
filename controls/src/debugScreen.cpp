@@ -69,6 +69,7 @@ void bumpers() {
 void temperature() {
     if(u == temperatureUnits::celsius) { vexBrain.Screen.print("Motor Temperature: (celcius)"); }
     if(u == temperatureUnits::fahrenheit) { vexBrain.Screen.print("Motor Temperature: (fahrenheit)"); }
+    vexBrain.Screen.newLine();
 
     //Wheels
     vexBrain.Screen.print("rw : ");
@@ -94,9 +95,9 @@ void print_rpm() {
     vexBrain.Screen.print("Motor RPM: ");
     vexBrain.Screen.newLine();
     vexBrain.Screen.print("rw : ");
-    vexBrain.Screen.print(rightWheelTrainMotor.velocity(rpm));
+    vexBrain.Screen.print(rightWheelTrain.getVelocity());
     vexBrain.Screen.print(" | lw : ");
-    vexBrain.Screen.print(leftWheelTrainMotor.velocity(rpm));
+    vexBrain.Screen.print(leftWheelTrain.getVelocity());
     vexBrain.Screen.newLine();
 }
 

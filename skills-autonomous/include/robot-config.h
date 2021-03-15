@@ -78,6 +78,144 @@ extern double percentOfMaxSpeed;
 extern double angular_accelerational_constant; 
 
 /**
+ * A wrapper for motor class that implements gradual acceleration.
+ * Note the use of 'velocity' instead of 'speed' because direction is also important.
+*/
+class Wheel {
+    private:
+        /*
+         * double   The velocity at which the motor will be turning (not
+         * necessarily at this moment) (measured in rpm).
+        */
+        int velocity = 0;
+
+        /*
+         * double   The velcoity at which we want the motor to be turning soon
+         * (measured in rpm). Used for implementing gradual acceleration.
+         * To prevent the robot from slipping initially.
+        */
+        int goalVelocity = 0;
+
+        /*
+         * double   The velocity the wheel was moving at when the analog stick moved.
+        */
+        int initialVelocity = 0;
+
+        /*
+         * double   The rate at which the robot's velocity is changing in order
+         * to reach the goalVelocity. Proportional to the
+         * ANGULAR_ACCELERATIONAL_CONSTANT.
+        */
+        int acceleration = 0;
+
+    public:
+
+        /**
+         * The default constructor for the Wheel class. It takes the motor it 
+         * is intended to wrap, and stores that motor.
+        */
+        Wheel(motor &wheelMotor);
+
+        /**
+         * @returns int   The wheel's current velocity.
+        */
+        int getVelocity() { return velocity; }
+
+        /**
+         * @param double  The new velocity of the wheel.
+        */
+        void setVelocity(int velocity) {
+            this->velocity = velocity;
+        }
+
+        /**
+         * @returns double    The wheel's goal velocity we want.
+        */
+        int getGoalVelocity() { return goalVelocity; }
+
+        /**
+         * Sets the goal velocity. 
+         * Updates the acceleration of the wheel accordingly.
+         * @param double    The new goal velocity we want.
+        */
+        void setGoalVelocity(int goalVel) {
+            // Only have change in acceleration if there is a change in goal velocity
+            // (We don't want to have the acceleration decrease unnecessarily,
+            // particularly in autonomous).
+            if(this->goalVelocity != goalVel) { 
+                // (final-initial) * accelerational_constant
+                this->goalVelocity = goalVel;
+                this->initialVelocity = this->velocity;
+            }
+        }
+
+        /**
+         * @return double   The initial velocity.
+        */
+        int getInitialVelocity() {
+            return initialVelocity;
+        }
+
+        /**
+         * @param double   The initial velocity.
+        */
+        void setInitialVelocity(int initialVelocity) {
+            this->initialVelocity = initialVelocity;
+        }
+
+        int getAcceleration() {
+            return acceleration;
+        }
+
+        /*
+         * motor    The motor that this wheel is controlled by.
+        */
+        motor *wheelMotor;
+
+        /*
+         * A method to control drifting and changing of direction when the
+         * robot first starts to move. This allows us to gradually change the
+         * velocity of the robot so that we do not have kinetic friction
+         * between the robot's wheels and the floor.
+         *
+         * The model for the increase in acceleration should be linear. It
+         * should slope up in the case that the desired velocity is positive.
+         * The slope will be negative when 
+         * This gives us a constant acceleration.
+         *
+         * The rate at which this occurs is proportional to the 
+         * ACCELERATIONAL_CONSTANT, which will allow us to adjust the rate of
+         * acceleration so that the driver has the most control over the
+         * robot's movement.
+         *
+         * This will be called once per tick.
+         *
+         * V = initialV + (acceleration)(time)
+        */
+        void calculateAcceleratingVelocity();
+
+        /*
+         * Spins the motor that controls this wheel at the velocity stored in
+         * `Wheel#velocity` (measured in rpm)
+         * @param directionType dir   The direction defined by vex that you
+         *                                want (forward or backward).
+        */
+        void spin(directionType dir);
+
+        /*
+         * Spins the motor that controls this wheel at a custom velocity
+         * (measured in rpm)
+         * @param double velocity     The velocity at which this wheel should
+         *                                be spinning (measured in rpm)
+         *                            Used for having a different velocity than
+         *                                the one stored in `Wheel#velocity`
+         * @param directionType dir   The direction defined by vex that you
+         *                                want (forward or backward)
+        */
+        void spin(int velocity, directionType dir);
+};
+
+/**
  * The direction of the wheel motors are determined by their position (not 
  * orientation) on a compass if you look straight ahead, with North being the
  * front of the robot (at the intake).
@@ -107,6 +245,15 @@ extern motor intakeRightMotor;
 extern motor liftTopMotor;
 /** The right lift motor. Reversed here because it's reversed on the robot. */
 extern motor liftBottomMotor;
+
+//Wheels
+extern Wheel rightWheelTrain;
+extern Wheel leftWheelTrain;
+
+/**
+ * Stores the wheels so that we can easily iterate over them.
+*/
+extern Wheel *wheelTrains[NUM_WHEEL_TRAINS]; 
 
 /**
  * The following are all the controls on the controller. The axes represent

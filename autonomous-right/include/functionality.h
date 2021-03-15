@@ -42,6 +42,13 @@ const int MAX_SPEED = 100;
 */
 const int MAX_AXIS_VALUE = 127;
 
+/*
+ * Moves the robot based on forward and turnvalue analog stick displacement
+ * @param foward       Value of the y axis of the movement analog stick. 
+ * @param turnvalue    Value of the turn analog stick horizontally.
+*/
+void movement(int forward, int turnvalue);
+
 void liftMotors(int dir);
 
 void intakeMotors(int dir);
