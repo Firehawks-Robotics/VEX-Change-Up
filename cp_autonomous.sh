@@ -20,3 +20,10 @@ do
     find ${controlsinclude} ! -name "side.h" -exec cp -vrfp {} ${dir}/include/ \;
 done
 
+echo
+echo Copying to skillsautonomous
+#src
+find ${controlssrc} ! -name "side.h" ! -name "autonomous.cpp" -exec cp -vrfp {} ${dir}/src/ \;
+
+#include
+find ${controlsinclude} ! -name "side.h" -exec cp -vrfp {} ${dir}/include/ \;
