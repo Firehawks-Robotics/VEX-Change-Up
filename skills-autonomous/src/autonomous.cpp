@@ -39,6 +39,171 @@ void pause(int milliseconds) { wait(milliseconds, timeUnits::msec); }
  * The skills autonomous (different things to do)
 */
 void autonomous() {
+
+    //Move forward to be in line with the goal
+    intakeMotors(intake);
+    train.driveFor(TILE_WIDTH*1.25, inches);
+    intakeMotors(stopIntake);
+    pause(250);
+
+    //Push ball back out to reduce chances of jamming
+    intakeMotors(expel);
+    pause(250);
+    intakeMotors(stopIntake);
+
+    //Turn to face the first goal
+    train.turnFor(SIDE*135, deg);
+    pause(250);
+
+    //Go towards the first goal
+    train.driveFor(TILE_DIAGONAL, inches);
+
+    //Begin to score goal and take ball out of bottom
+    liftMotors(up);
+    intakeMotors(intake);
+    train.driveFor(TILE_DIAGONAL/4, inches);
+    pause(1000);
+    liftMotors(stopLift);
+    intakeMotors(stopIntake);
+
+    // Back from goal
+    train.driveFor(reverse, TILE_DIAGONAL/2, inches);
+    pause(250);
+
+    //Spit out blue ball
+    train.turnFor(SIDE*45, deg);
+    intakeMotors(expel);
+    pause(500);
+    intakeMotors(stopIntake);
+
+    //Turn to face the middle goal
+    train.turnFor(SIDE*90, deg);
+    pause(250);
+
+    //Go back to align on back wall
+    train.driveFor(reverse, TILE_WIDTH, inches);
+    pause(250);
+
+    //Go towards middle goal
+    train.driveFor(TILE_WIDTH*2.75, inches);
+    pause(250);
+
+    //Turn towards the middle goal
+    train.turnFor(-90*SIDE, deg);
+    pause(250);
+
+    //Go to the middle goal
+    train.driveFor(TILE_WIDTH/4, inches);
+
+    //Take out blue ball and put ball in
+    intakeMotors(intake);
+    liftMotors(up);
+    pause(750);
+    intakeMotors(stopIntake);
+    liftMotors(stopLift);
+
+    //Go backwards a little bit
+    train.driveFor(reverse, TILE_WIDTH/4, inches);
+    pause(250);
+
+    //Turn back to expel blue ball
+    train.turnFor(-90*SIDE, deg);
+    pause(250);
+
+    //Expel blue ball
+    intakeMotors(expel);
+    liftMotors(down);
+    pause(750);
+    intakeMotors(stopIntake);
+    liftMotors(stopLift);
+
+    //Turn back to 3rd goal
+    train.turnFor(-180*SIDE, deg);
+    pause(250);
+
+    //Go to the wall to align itself, picking up ball at the same time
+    intakeMotors(intake);
+    train.driveFor(3*TILE_WIDTH, inches);
+    intakeMotors(stopIntake);
+
+    //Go back from wall to line up with the 3rd goal
+    train.driveFor(TILE_WIDTH/2, inches);
+    pause(250);
+
+    //Turn towards the goal
+    train.turnFor(-45*SIDE, deg);
+    pause(250);
+
+    //Go up to the goal
+    train.driveFor(TILE_DIAGONAL/2, inches);
+    pause(250);
+
+    //Score goal and take bottom ball out
+    liftMotors(up);
+    intakeMotors(intake);
+    pause(750);
+    liftMotors(stopLift);
+    intakeMotors(stopIntake);
+
+    //Move back
+    train.driveFor(reverse, TILE_DIAGONAL/2, inches);
+    pause(250);
+
+    //Turn to look at wall so can expel ball
+    train.turnFor(-45*SIDE, deg);
+    pause(250);
+
+    //Expel blue ball
+    intakeMotors(expel);
+    liftMotors(down);
+    pause(500);
+    intakeMotors(stopIntake);
+    liftMotors(stopLift);
+
+    //Turn to middle line
+    train.turnFor(90*SIDE, deg);
+    pause(250);
+
+    //Go to middle line, intaking the ball on the middle line
+    intakeMotors(intake);
+    train.driveFor(TILE_WIDTH*2, inches);
+    intakeMotors(stopIntake);
+
+    //Turn towards goal B
+    train.turnFor(-90*SIDE, deg);
+    pause(250);
+
+    //Go up to goal B
+    train.driveFor(TILE_WIDTH/4, inches);
+    pause(250);
+
+    //Score in goal B and take blue ball out
+    intakeMotors(intake);
+    liftMotors(up);
+    pause(750);
+    intakeMotors(stopIntake);
+    liftMotors(stopLift);
+
+    //Back from goal B
+    train.driveFor(reverse, TILE_WIDTH/4, inches);
+    pause(250);
+
+    //Turn back to blue ball can be expelled
+    train.turnFor(-45*SIDE, deg);
+    pause(250);
+
+    //Expel blue ball
+    intakeMotors(expel);
+    liftMotors(down);
+    pause(500);
+    intakeMotors(stopIntake);
+    liftMotors(stopLift);
+
+    //Turn back towards goal C
+    train.turnFor(135*SIDE, deg);
+    pause(250);
+
+  /*
     //Move foward to be in line with the goal
     intakeMotors(intake);
     timedMovement(75, 0, 900);
@@ -182,47 +347,6 @@ void autonomous() {
     liftMotors(stopLift);
     intakeMotors(stopIntake);
 
-    /*
-
-    //Go to be near 4th goal, and get ball on middle line
-    timedMovement(50, 0, 1000);
-    pause(250);
-    intakeMotors(intake);
-    liftMotors(up);
-    pause(450);
-    intakeMotors(stopIntake);
-    pause(1250);
-    liftMotors(stopLift);
-
-    //Pull back then release any garbage orbs.
-    timedMovement(-50, 0, 750);
-    pause(250);
-    liftMotors(down);
-    intakeMotors(expel);
-    pause(750);
-    intakeMotors(stopIntake);
-    liftMotors(stopLift);
-
-    //Become sentient
-    timedMovement(0, 50, 800);
-    pause(500);
-    intakeMotors(intake);
-    liftMotors(up);
-    timedMovement(75, 0, 1600);
-    pause(250);
-    intakeMotors(stopIntake);
-    liftMotors(stopLift);
-    timedMovement(0, -50, 610);
-    pause(250);
-    timedMovement(50, 0, 550);
-
-    // H U R T
-    liftMotors(up);
-    intakeMotors(intake);
-    timedMovement(-50, 0, 50);
-    pause(750);
-    intakeMotors(stopIntake);
-    liftMotors(stopLift);*/
-
+    */
 
 }
