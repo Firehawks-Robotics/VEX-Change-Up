@@ -55,13 +55,15 @@ void movement(int forward, int turnValue) {
             leftWheels += turnValue;
         }
     }
-
+    
+    leftWheelTrainMotor.setVelocity(leftWheels, rpm);
+    rightWheelTrainMotor.setVelocity(rightWheels, rpm);
+    //Move or stay in place
     if(leftWheels == 0) {
         leftWheelTrainMotor.stop(brake);
     } else {
         leftWheelTrainMotor.spin(vex::forward, leftWheels, rpm);
     }
-
     if(rightWheels == 0) {
         rightWheelTrainMotor.stop(brake);
     } else {

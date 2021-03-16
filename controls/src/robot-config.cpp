@@ -18,7 +18,7 @@ using code = vision::code;
 brain vexBrain;
 controller mainCon;
 
-double percentOfMaxSpeed = 0;
+double percentOfMaxSpeed = levelTwoPower;
 
 // VEXcode device constructors
 motor rightWheelTrainMotor = motor(PORT1, ratio18_1, true);

@@ -19,8 +19,7 @@ extern brain vexBrain;
 extern controller mainCon;
 
 const int FUNCTION_MOTOR_SPEED = 200; //rpm
-
-const int DRIVE_TRAIN_SPEED = 100;
+const int DRIVE_TRAIN_SPEED = 100; //rpm (used only in autonomous)
 
 /**
  * The net displacement (x and y combined using vector addition) from the
@@ -45,41 +44,15 @@ const int MIN_TURNING_AXIS_DISPLACEMENT = 5;
 */
 const int TICK_LENGTH = 50;
 
-/**
- * Constant for the number of wheels on the robot. There are 4 wheels.
-*/
-const int NUM_WHEEL_TRAINS = 2;
+constexpr double levelOnePower = 0.4;
+constexpr double levelTwoPower = 0.8;
+constexpr double levelThreePower = 1.4;
 
 /**
  * The percentage of the max speed (200 rpm) that the wheels should move
  * when at full speed. Defaults to 75%.
 */
 extern double percentOfMaxSpeed;
-
-/*
-  * The rate at which the velocity of the robot's wheel trains moves toward their
-  * respective goal velocities. Should be constant so that we have a constant
-  * change in the velocity (a linear model).
-  *
-  * Proportional to the acceleration of the wheels.
-  *
-  * Can (and should) be modified in the autonomous to make things go smoother.
-  *
-  * Should be between 0 and 1. An accelerational constant of 1 means that the
-  * wheel's velocity will immediately go up to the goalVelocity (which means
-  * there is no gradual acceleration). An accelerational constant of 0 means
-  * that the wheel's velocity will never change.
-  *
-  * A good rule for determining the accelerational constant is using this:
-  * ANGULAR_ACCELERATIONAL_CONSTANT = 1/(ticks), where ticks is the number of
-  * ticks that should pass between the time the wheel starts accelerating
-  * and when it reaches its goalVelocity. 
-  *
-  * For example, an accelerational constant of 1/20 would result in the wheel
-  * accelerating to its goal velocity over 20 ticks (approximately 400 ms or
-  * 2/5 of a second when the ticklength is 20 ms).
-*/
-extern double angular_accelerational_constant; 
 
 /**
  * The direction of the wheel motors are determined by their position (not 
@@ -91,8 +64,8 @@ extern motor rightWheelTrainMotor;
 extern motor leftWheelTrainMotor;
 
 constexpr double WHEELTRAVEL = 320;
-constexpr double TRACKWIDTH = 330;
-constexpr double WHEELBASE = 275;
+constexpr double TRACKWIDTH = 320;
+constexpr double WHEELBASE = 100;
 extern drivetrain train;
 
 /** The left intake motor. Reversed here because it's reversed on the robot. */

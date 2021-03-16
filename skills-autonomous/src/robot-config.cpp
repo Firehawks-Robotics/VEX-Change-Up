@@ -18,36 +18,7 @@ using code = vision::code;
 brain vexBrain;
 controller mainCon;
 
-double percentOfMaxSpeed = 0;
-
-Wheel::Wheel(motor &wheelMotor) {
-    this->wheelMotor = &wheelMotor;
-}
-
-void Wheel::calculateAcceleratingVelocity() {
-    if(abs(goalVelocity-velocity) < abs(acceleration)) { //If the acceleration is close, then just go there now
-        velocity = goalVelocity;
-    } else if (velocity != goalVelocity) { //Accelerate
-        this->acceleration = (int)((this->goalVelocity - this->initialVelocity) * (angular_accelerational_constant));
-        this->velocity = this->velocity + this->acceleration;
-    }
-
-    if(getVelocity() == 0) {
-        wheelMotor->stop(coast);
-    } else {
-        spin(forward);
-    }
-}
-
-void Wheel::spin(directionType dir) {
-    this->wheelMotor->setVelocity(this->velocity, rpm);
-    this->wheelMotor->spin(dir);
-}
-
-void Wheel::spin(int velocity, directionType dir) {
-    this->wheelMotor->setVelocity(velocity, rpm);
-    this->wheelMotor->spin(dir);
-}
+double percentOfMaxSpeed = levelTwoPower;
 
 // VEXcode device constructors
 motor rightWheelTrainMotor = motor(PORT1, ratio18_1, true);
@@ -57,12 +28,6 @@ motor intakeLeftMotor = motor(PORT10, ratio36_1, true);
 motor intakeRightMotor = motor(PORT6, ratio36_1, false);
 motor liftTopMotor = motor(PORT5, ratio36_1, false);
 motor liftBottomMotor = motor(PORT7, ratio36_1, false);
-
-// Wheels
-Wheel rightWheelTrain = *new Wheel(rightWheelTrainMotor);
-Wheel leftWheelTrain = *new Wheel(leftWheelTrainMotor);
-
-Wheel *wheelTrains[NUM_WHEEL_TRAINS] = {&rightWheelTrain, &leftWheelTrain};
 
 // Controls
 vex::controller::axis forwardAxis = mainCon.Axis3;
@@ -79,8 +44,6 @@ vex::controller::button functionExpel = mainCon.ButtonR2;
 vex::controller::button stopMotors = mainCon.ButtonDown;
 
 // VEXcode generated functions
-
-const int FUNCTION_MOTOR_SPEED = 200; //rpm
 
 /**
  * Used to initialize code/tasks/devices added using tools in VEXcode Text.

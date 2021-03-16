@@ -51,11 +51,8 @@ competition comp;
 
 void pre_auton() {
     vexcodeInit();
+    train.setDriveVelocity(DRIVE_TRAIN_SPEED, rpm);
 }
-
-constexpr double levelOnePower = 0.4;
-constexpr double levelTwoPower = 0.8;
-constexpr double levelThreePower = 1.4;
 
 void updateSpeedPower(double newPower) {
     percentOfMaxSpeed = newPower;
