@@ -55,18 +55,17 @@ void movement(int forward, int turnValue) {
             leftWheels += turnValue;
         }
     }
-    
-    leftWheelTrain.setVelocity(leftWheels);
-    rightWheelTrain.setVelocity(rightWheels);
-    if(leftWheelTrain.getVelocity() == 0) {
+
+    if(leftWheels == 0) {
         leftWheelTrainMotor.stop(brake);
     } else {
-        leftWheelTrain.spin(vex::forward);  
+        leftWheelTrainMotor.spin(vex::forward, leftWheels, rpm);
     }
-    if(rightWheelTrain.getVelocity() == 0) {
+
+    if(rightWheels == 0) {
         rightWheelTrainMotor.stop(brake);
     } else {
-        rightWheelTrain.spin(vex::forward);
+        rightWheelTrainMotor.spin(vex::forward, rightWheels, rpm);
     }
 }
 
@@ -103,8 +102,8 @@ void liftMotors(int dir) {
  * Immediately stop all motors and brake them
 */
 void emergencyStop() {
-    rightWheelTrain.setVelocity(0);
-    leftWheelTrain.setVelocity(0);
+    rightWheelTrainMotor.setVelocity(0, rpm);
+    leftWheelTrainMotor.setVelocity(0, rpm);
     rightWheelTrainMotor.stop(brake);
     leftWheelTrainMotor.stop(brake);
     liftTopMotor.stop(brake);

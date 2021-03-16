@@ -95,9 +95,9 @@ void print_rpm() {
     vexBrain.Screen.print("Motor RPM: ");
     vexBrain.Screen.newLine();
     vexBrain.Screen.print("rw : ");
-    vexBrain.Screen.print(rightWheelTrain.getVelocity());
+    vexBrain.Screen.print(rightWheelTrainMotor.velocity(rpm));
     vexBrain.Screen.print(" | lw : ");
-    vexBrain.Screen.print(leftWheelTrain.getVelocity());
+    vexBrain.Screen.print(leftWheelTrainMotor.velocity(rpm));
     vexBrain.Screen.newLine();
 }
 
