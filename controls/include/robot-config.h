@@ -19,7 +19,8 @@ extern brain vexBrain;
 extern controller mainCon;
 
 const int FUNCTION_MOTOR_SPEED = 200; //rpm
-const int DRIVE_TRAIN_SPEED = 100; //rpm (used only in autonomous)
+const int DRIVE_TRAIN_MOTOR_SPEED = 100; //rpm (used only in autonomous)
+const int DRIVE_TRAIN_TURN_SPEED = 50; //rpm (used only in autonomous)
 
 /**
  * The net displacement (x and y combined using vector addition) from the
@@ -44,21 +45,15 @@ const int MIN_TURNING_AXIS_DISPLACEMENT = 5;
 */
 const int TICK_LENGTH = 50;
 
-constexpr double levelOnePower = 0.4;
-constexpr double levelTwoPower = 0.8;
-constexpr double levelThreePower = 1.4;
+constexpr double LEVEL_ONE_POWER = 0.4;
+constexpr double LEVEL_TWO_POWER = 0.8;
+constexpr double LEVEL_THREE_POWER = 1.4;
 
 /**
  * The percentage of the max speed (200 rpm) that the wheels should move
  * when at full speed. Defaults to 75%.
 */
 extern double percentOfMaxSpeed;
-
-/**
- * The direction of the wheel motors are determined by their position (not 
- * orientation) on a compass if you look straight ahead, with North being the
- * front of the robot (at the intake).
-*/
 
 extern motor rightWheelTrainMotor;
 extern motor leftWheelTrainMotor;

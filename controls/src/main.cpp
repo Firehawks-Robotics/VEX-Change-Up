@@ -51,20 +51,21 @@ competition comp;
 
 void pre_auton() {
     vexcodeInit();
-    train.setDriveVelocity(DRIVE_TRAIN_SPEED, rpm);
+    train.setDriveVelocity(DRIVE_TRAIN_MOTOR_SPEED, rpm);
+    train.setTurnVelocity(DRIVE_TRAIN_TURN_SPEED, rpm);
 }
 
 void updateSpeedPower(double newPower) {
     percentOfMaxSpeed = newPower;
-    if(newPower == levelOnePower) {
+    if(newPower == LEVEL_ONE_POWER) {
         mainCon.rumble(".");
         mainCon.Screen.setCursor(0, 0);
         mainCon.Screen.print("1");
-    } else if(newPower == levelTwoPower) {
+    } else if(newPower == LEVEL_ONE_POWER) {
         mainCon.rumble("..");
         mainCon.Screen.setCursor(0, 0);
         mainCon.Screen.print("2");
-    } else if(newPower == levelThreePower) {
+    } else if(newPower == LEVEL_ONE_POWER) {
         mainCon.rumble("...");
         mainCon.Screen.setCursor(0, 0);
         mainCon.Screen.print("3");
@@ -86,26 +87,26 @@ void controls() {
     functionExpel.released([](){intakeMotors(stopIntake);});
 
     speedUp.pressed([](){
-        if(percentOfMaxSpeed == levelOnePower) {
-            updateSpeedPower(levelTwoPower);
-        } else if(percentOfMaxSpeed == levelTwoPower) {
-            updateSpeedPower(levelThreePower);
-        } else if(percentOfMaxSpeed == levelThreePower) {
-            updateSpeedPower(levelThreePower);
+        if(percentOfMaxSpeed == LEVEL_ONE_POWER) {
+            updateSpeedPower(LEVEL_TWO_POWER);
+        } else if(percentOfMaxSpeed == LEVEL_TWO_POWER) {
+            updateSpeedPower(LEVEL_THREE_POWER);
+        } else if(percentOfMaxSpeed == LEVEL_THREE_POWER) {
+            updateSpeedPower(LEVEL_THREE_POWER);
         }
     });
 
     speedDown.pressed([](){
-        if(percentOfMaxSpeed == levelThreePower) {
-            updateSpeedPower(levelTwoPower);
-        } else if(percentOfMaxSpeed == levelTwoPower) {
-            updateSpeedPower(levelOnePower);
-        } else if(percentOfMaxSpeed == levelOnePower) {
-            updateSpeedPower(levelOnePower); //No change
+        if(percentOfMaxSpeed == LEVEL_THREE_POWER) {
+            updateSpeedPower(LEVEL_TWO_POWER);
+        } else if(percentOfMaxSpeed == LEVEL_TWO_POWER) {
+            updateSpeedPower(LEVEL_ONE_POWER);
+        } else if(percentOfMaxSpeed == LEVEL_ONE_POWER) {
+            updateSpeedPower(LEVEL_ONE_POWER); //No change
         }
     });
 
-    updateSpeedPower(levelTwoPower);
+    updateSpeedPower(LEVEL_TWO_POWER);
 
     //stopMotors.pressed(emergencyStop);
 

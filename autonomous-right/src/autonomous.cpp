@@ -62,7 +62,58 @@ void timedMovement(int forward, int turnValue, int ms) {
 }
 
 /*
- * Programming skills autonomous.
+ * How to write autonomous:
+ *    Sean's First Law of Autonomous: 
+ *        Speed is inversely proportional to Accuracy and Reliability. When the robot goes fast, the robot has more slippage,
+ *        causing the robot to often be misaligned (thus reducing accuracy and reliability). On the flip side, when the robot
+ *        goes slow, you cannot do as much within the time alotted. You must balance these to make the best autonomous.
+ *
+ *    You can adjust the drive train's motor speed. The initial drive speed is set to DRIVE_TRAIN_DRIVE_SPEED and
+ *    initial turn speed is DRIVE_TRAIN_TURN_SPEED. Keep in mind that, when turning, the robot can jerk a bit more than when driving,
+ *    so it is recommended to keep the robot turn speed fairly low, but not to the point that it harms the overall autonomous. EX:
+ *        train.setDriveSpeed(speed, unit);
+ *        train.setTurnSpeed(speed, unit);
+ *
+ *    Use the drivetrain instance (stored in `train`) to drive and turn
+ *        train.driveFor(distance, units) - drive for a distance
+ *            Use the TILE_WIDTH and TILE_DIAGONAL constants for the distance (they are in inches). These constants make developing the
+ *            match and skills autonomous much more streamlined, as you can simply count the tiles on the field.
+ *                ex: `train.driveFor(TILE_WIDTH/2, inches)`
+ *                ex: `train.turnFor(135*SIDE, degrees)`
+ *
+ *        train.turnFor(angle, units) - turn to robot (use degrees here for everyone's sanity and for optimization purposes)
+ *
+ *    Sides:
+ *        Each program has its own 'side' (defined in `side.h`). This side is the side of the board the robot starts on from the
+ *        perspective of the driver. The side should NOT be changed for ANY reason. The values of the sides are as follows:
+ *            1: Right
+ *            0: No side (as in no autonomous, meaning only driver control)
+ *            -1: Left
+ *        This number is used in autonomous to change the direction the robot turns (no effect on forwards/backwards movement).
+ *        To use this, multiply the turning angle by the side like so:
+ *            train.turnFor(-135*SIDE, deg);
+ *        If the robot is on the right side in the above example, SIDE=1, so the robot will turn to the *left* by 135 degrees. If the
+ *        robot is on the left side in the above example, SIDE=-1, so the robot will turn to the *right* by 135 degrees.
+ *
+ *        During a match, the autonomous programs' names indicate the side the robot starts on (like autoright, and autoleft). During
+ *        programming skills, the robot always starts on the right side (`skills-autonomous` program).
+ *
+ *    Timeouts:
+ *            When the robot runs into a wall or a goal (or anything else that does not move), the wheels do not spin due to friction
+ *        with the ground. This causes the encoder in the motor to not spin either (detects angular position). The drivetrain instance
+ *        goes a distance based on what angular distance the motor spins. Since the motor is not spinning, the drivetrain will perpetually
+ *        attempt to go the distance it was given (not good). 
+ *            To fix this, set a timeout, which is the maximum amount of time the drivetrain will attempt to reach the correct
+ *        destination. If the time is reached, then the drivetrain will stop.
+ *            When the robot could run into a wall or goal, set a drivetrain timeout (using `train.setTimeout(int32_t time, timeUnits units)` ).
+ *                Ensure this timeout is enough to allow the robot to reach the correct distance even without obstacles.
+ *
+ *    Turning note:
+ *        When the robot turns, it does not turn about its center, but instead an axis that is a few inches towards the back.
+ *        Adjust your autonomous program to accomodate for this difference (especially important when attempting to line up to a goal).
+ *
+ *    You cannot turn and go forwards/backwards at the same time. The drivetrain API simply does not allow that. Don't look at me, I
+ *    didn't design Vex.
 */
 void autonomous() {
 
