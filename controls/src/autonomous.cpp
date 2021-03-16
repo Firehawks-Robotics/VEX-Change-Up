@@ -58,11 +58,6 @@ void timedMovement(int forward, int turnValue, int ms) {
     movement(forward, turnValue*SIDE);
 
     while(ms > 0) { //Break if time is up
-
-        /*for(int i=0; i<NUM_WHEEL_TRAINS; i++) {
-            wheelTrains[i]->calculateAcceleratingVelocity();
-        }*/
-        
         pause(TICK_LENGTH);
         ms = ms - TICK_LENGTH;
     }
