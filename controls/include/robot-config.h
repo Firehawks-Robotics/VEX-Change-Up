@@ -90,11 +90,6 @@ extern double angular_accelerational_constant;
 extern motor rightWheelTrainMotor;
 extern motor leftWheelTrainMotor;
 
-constexpr double WHEELTRAVEL = 320;
-constexpr double TRACKWIDTH = 330;
-constexpr double WHEELBASE = 275;
-extern drivetrain train;
-
 /** The left intake motor. Reversed here because it's reversed on the robot. */
 extern motor intakeLeftMotor; 
 /** The right intake motor. */
