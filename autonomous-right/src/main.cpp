@@ -51,7 +51,6 @@ competition comp;
 
 void pre_auton() {
     vexcodeInit();
-    train.setDriveVelocity(DRIVE_TRAIN_SPEED, rpm);
 }
 
 constexpr double levelOnePower = .2;
