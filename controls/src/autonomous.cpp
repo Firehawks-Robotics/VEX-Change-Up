@@ -20,6 +20,8 @@ using namespace vex;
 #include "autonomous.h"
 #include "debugScreen.h"
 
+#define BIG_TIMEOUT = 100000;
+
 /* Using these values, all that is needed is to multiply some values by the side, thus making some negative and some positive
  * Sides:
  * -1: Left Side

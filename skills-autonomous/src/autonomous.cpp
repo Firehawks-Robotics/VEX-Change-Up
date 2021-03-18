@@ -20,6 +20,8 @@ using namespace vex;
 #include "autonomous.h"
 #include "debugScreen.h"
 
+const int BIG_TIMEOUT = 100000;
+
 /* Using these values, all that is needed is to multiply some values by the side, thus making some negative and some positive
  * Sides:
  * -1: Left Side
@@ -133,14 +135,14 @@ void autonomous() {
     //Go towards the first goal
     train.setTimeout(1000, msec);
     train.driveFor(TILE_DIAGONAL, inches);
-    train.setTimeout(100000, msec);
+    train.setTimeout(BIG_TIMEOUT, msec);
 
     //Begin to score goal and take ball out of bottom
     liftMotors(up);
     intakeMotors(intake);
     train.setTimeout(500, msec);
     train.driveFor(TILE_DIAGONAL/4, inches);
-    train.setTimeout(100000, msec);
+    train.setTimeout(BIG_TIMEOUT, msec);
     pause(625);
     intakeMotors(stopIntake);
     liftMotors(stopLift);
@@ -162,7 +164,7 @@ void autonomous() {
     //Go back to align on back wall
     train.setTimeout(2000, msec);
     train.driveFor(reverse, TILE_WIDTH, inches);
-    train.setTimeout(100000, msec);
+    train.setTimeout(BIG_TIMEOUT, msec);
     pause(250);
 
     //Go towards middle goal
@@ -176,7 +178,7 @@ void autonomous() {
     //Go to the middle goal
     train.setTimeout(500, msec);
     train.driveFor(TILE_WIDTH/4, inches);
-    train.setTimeout(100000, msec);
+    train.setTimeout(BIG_TIMEOUT, msec);
 
     //Take out blue ball and put ball in
     intakeMotors(intake);
@@ -204,11 +206,13 @@ void autonomous() {
     train.turnFor(-180*SIDE, deg);
     pause(250);
 
-    //Go to the wall to align itself, picking up ball at the same time
+    //Go to the wall to align itself, picking up ball at the same time, but only start intaking after the 
+    //robot comes in contact with the ball (this will reduce the chances of ball deflection).
+    train.driveFor(2*TILE_WIDTH, inches);
     intakeMotors(intake);
-    train.setTimeout(6000, msec);
-    train.driveFor(3*TILE_WIDTH, inches);
-    train.setTimeout(100000, msec);
+    train.setTimeout(2000, msec);
+    train.driveFor(TILE_WIDTH, inches);
+    train.setTimeout(BIG_TIMEOUT, msec);
     intakeMotors(stopIntake);
     pause(250);
 
@@ -221,7 +225,9 @@ void autonomous() {
     pause(250);
 
     //Go up to the goal
+    train.setTimeout(500, msec);
     train.driveFor(TILE_DIAGONAL/2, inches);
+    train.setTimeout(BIG_TIMEOUT, msec);
     pause(250);
 
     //Score goal and take bottom ball out
@@ -250,9 +256,15 @@ void autonomous() {
     train.turnFor(90*SIDE, deg);
     pause(250);
 
+    //Go back to align on wall
+    train.setTimeout(1500, msec);
+    train.driveFor(TILE_WIDTH*1.5, inches);
+    train.setTimeout(BIG_TIMEOUT, msec);
+    pause(250);
+
     //Go to middle line, intaking the ball on the middle line
     intakeMotors(intake);
-    train.driveFor(TILE_WIDTH*2, inches);
+    train.driveFor(TILE_WIDTH*2.75, inches);
     intakeMotors(stopIntake);
 
     //Turn towards goal B
@@ -260,7 +272,9 @@ void autonomous() {
     pause(250);
 
     //Go up to goal B
+    train.setTimeout(500, msec);
     train.driveFor(TILE_WIDTH/4, inches);
+    train.setTimeout(BIG_TIMEOUT, msec);
     pause(250);
 
     //Score in goal B and take blue ball out
