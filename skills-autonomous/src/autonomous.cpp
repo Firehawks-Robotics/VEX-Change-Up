@@ -116,35 +116,37 @@ void timedMovement(int forward, int turnValue, int ms) {
  *    didn't design Vex.
 */
 void autonomous() {
+    train.setDriveVelocity(75, rpm);
+    train.setTurnVelocity(40, rpm);
 
     //Move forward to be in line with the goal
     intakeMotors(intake);
-    train.driveFor(TILE_WIDTH*1.25, inches);
+    train.driveFor(TILE_WIDTH/3, inches);
     intakeMotors(stopIntake);
+    train.driveFor(TILE_WIDTH, inches);
     pause(250);
-
-    //Push ball back out to reduce chances of jamming
-    intakeMotors(expel);
-    pause(250);
-    intakeMotors(stopIntake);
 
     //Turn to face the first goal
     train.turnFor(SIDE*135, deg);
     pause(250);
 
     //Go towards the first goal
+    train.setTimeout(1000, msec);
     train.driveFor(TILE_DIAGONAL, inches);
+    train.setTimeout(100000, msec);
 
     //Begin to score goal and take ball out of bottom
     liftMotors(up);
     intakeMotors(intake);
+    train.setTimeout(500, msec);
     train.driveFor(TILE_DIAGONAL/4, inches);
-    pause(1000);
-    liftMotors(stopLift);
+    train.setTimeout(100000, msec);
+    pause(625);
     intakeMotors(stopIntake);
+    liftMotors(stopLift);
 
     // Back from goal
-    train.driveFor(reverse, TILE_DIAGONAL/2, inches);
+    train.driveFor(reverse, TILE_DIAGONAL/3, inches);
     pause(250);
 
     //Spit out blue ball
@@ -158,7 +160,9 @@ void autonomous() {
     pause(250);
 
     //Go back to align on back wall
+    train.setTimeout(2000, msec);
     train.driveFor(reverse, TILE_WIDTH, inches);
+    train.setTimeout(100000, msec);
     pause(250);
 
     //Go towards middle goal
@@ -170,7 +174,9 @@ void autonomous() {
     pause(250);
 
     //Go to the middle goal
+    train.setTimeout(500, msec);
     train.driveFor(TILE_WIDTH/4, inches);
+    train.setTimeout(100000, msec);
 
     //Take out blue ball and put ball in
     intakeMotors(intake);
@@ -200,8 +206,11 @@ void autonomous() {
 
     //Go to the wall to align itself, picking up ball at the same time
     intakeMotors(intake);
+    train.setTimeout(6000, msec);
     train.driveFor(3*TILE_WIDTH, inches);
+    train.setTimeout(100000, msec);
     intakeMotors(stopIntake);
+    pause(250);
 
     //Go back from wall to line up with the 3rd goal
     train.driveFor(TILE_WIDTH/2, inches);
@@ -223,7 +232,7 @@ void autonomous() {
     intakeMotors(stopIntake);
 
     //Move back
-    train.driveFor(reverse, TILE_DIAGONAL/2, inches);
+    train.driveFor(reverse, TILE_DIAGONAL/3, inches);
     pause(250);
 
     //Turn to look at wall so can expel ball

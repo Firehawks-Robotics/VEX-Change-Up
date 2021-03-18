@@ -60,7 +60,7 @@ extern motor leftWheelTrainMotor;
 
 constexpr double WHEELTRAVEL = 320;
 constexpr double TRACKWIDTH = 320;
-constexpr double WHEELBASE = 100;
+constexpr double WHEELBASE = 80;
 extern drivetrain train;
 
 /** The left intake motor. Reversed here because it's reversed on the robot. */
