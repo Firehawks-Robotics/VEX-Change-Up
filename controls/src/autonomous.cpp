@@ -20,7 +20,7 @@ using namespace vex;
 #include "autonomous.h"
 #include "debugScreen.h"
 
-#define BIG_TIMEOUT = 100000;
+const int BIG_TIMEOUT = 100000;
 
 /* Using these values, all that is needed is to multiply some values by the side, thus making some negative and some positive
  * Sides:
@@ -119,37 +119,40 @@ void timedMovement(int forward, int turnValue, int ms) {
 */
 void autonomous() {
 
+    train.setDriveVelocity(75, rpm);
+    train.setTurnVelocity(40, rpm);
+
     //Move forward to be in line with the goal
     intakeMotors(intake);
-    train.driveFor(TILE_WIDTH*1.25, inches);
+    train.driveFor(TILE_WIDTH/3, inches);
     intakeMotors(stopIntake);
+    train.driveFor(TILE_WIDTH, inches);
     pause(250);
-
-    //Push ball back out to reduce chances of jamming
-    intakeMotors(expel);
-    pause(250);
-    intakeMotors(stopIntake);
 
     //Turn to face the first goal
     train.turnFor(SIDE*135, deg);
     pause(250);
 
     //Go towards the first goal
+    train.setTimeout(1000, msec);
     train.driveFor(TILE_DIAGONAL, inches);
+    train.setTimeout(BIG_TIMEOUT, msec);
 
     //Begin to score goal and take ball out of bottom
     liftMotors(up);
     intakeMotors(intake);
+    train.setTimeout(500, msec);
     train.driveFor(TILE_DIAGONAL/4, inches);
-    pause(1000);
-    liftMotors(stopLift);
+    train.setTimeout(BIG_TIMEOUT, msec);
     intakeMotors(stopIntake);
+    pause(625);
+    liftMotors(stopLift);
 
     // Back from goal
-    train.driveFor(reverse, TILE_DIAGONAL/2, inches);
+    train.driveFor(reverse, TILE_DIAGONAL/3, inches);
     pause(250);
 
-    //Spit out blue ball
+    //Spit out blue ball if we have one
     train.turnFor(SIDE*45, deg);
     intakeMotors(expel);
     pause(500);
@@ -160,7 +163,9 @@ void autonomous() {
     pause(250);
 
     //Go back to align on back wall
+    train.setTimeout(2000, msec);
     train.driveFor(reverse, TILE_WIDTH, inches);
+    train.setTimeout(BIG_TIMEOUT, msec);
     pause(250);
 
     //Go towards middle goal
@@ -172,114 +177,17 @@ void autonomous() {
     pause(250);
 
     //Go to the middle goal
+    train.setTimeout(500, msec);
     train.driveFor(TILE_WIDTH/4, inches);
+    train.setTimeout(BIG_TIMEOUT, msec);
 
     //Take out blue ball and put ball in
-    intakeMotors(intake);
     liftMotors(up);
     pause(750);
-    intakeMotors(stopIntake);
     liftMotors(stopLift);
 
     //Go backwards a little bit
     train.driveFor(reverse, TILE_WIDTH/4, inches);
-    pause(250);
-
-    //Turn back to expel blue ball
-    train.turnFor(-90*SIDE, deg);
-    pause(250);
-
-    //Expel blue ball
-    intakeMotors(expel);
-    liftMotors(down);
-    pause(750);
-    intakeMotors(stopIntake);
-    liftMotors(stopLift);
-
-    //Turn back to 3rd goal
-    train.turnFor(-180*SIDE, deg);
-    pause(250);
-
-    //Go to the wall to align itself, picking up ball at the same time
-    intakeMotors(intake);
-    train.driveFor(3*TILE_WIDTH, inches);
-    intakeMotors(stopIntake);
-
-    //Go back from wall to line up with the 3rd goal
-    train.driveFor(TILE_WIDTH/2, inches);
-    pause(250);
-
-    //Turn towards the goal
-    train.turnFor(-45*SIDE, deg);
-    pause(250);
-
-    //Go up to the goal
-    train.driveFor(TILE_DIAGONAL/2, inches);
-    pause(250);
-
-    //Score goal and take bottom ball out
-    liftMotors(up);
-    intakeMotors(intake);
-    pause(750);
-    liftMotors(stopLift);
-    intakeMotors(stopIntake);
-
-    //Move back
-    train.driveFor(reverse, TILE_DIAGONAL/2, inches);
-    pause(250);
-
-    //Turn to look at wall so can expel ball
-    train.turnFor(-45*SIDE, deg);
-    pause(250);
-
-    //Expel blue ball
-    intakeMotors(expel);
-    liftMotors(down);
-    pause(500);
-    intakeMotors(stopIntake);
-    liftMotors(stopLift);
-
-    //Turn to middle line
-    train.turnFor(90*SIDE, deg);
-    pause(250);
-
-    //Go to middle line, intaking the ball on the middle line
-    intakeMotors(intake);
-    train.driveFor(TILE_WIDTH*2, inches);
-    intakeMotors(stopIntake);
-
-    //Turn towards goal B
-    train.turnFor(-90*SIDE, deg);
-    pause(250);
-
-    //Go up to goal B
-    train.driveFor(TILE_WIDTH/4, inches);
-    pause(250);
-
-    //Score in goal B and take blue ball out
-    intakeMotors(intake);
-    liftMotors(up);
-    pause(750);
-    intakeMotors(stopIntake);
-    liftMotors(stopLift);
-
-    //Back from goal B
-    train.driveFor(reverse, TILE_WIDTH/4, inches);
-    pause(250);
-
-    //Turn back to blue ball can be expelled
-    train.turnFor(-45*SIDE, deg);
-    pause(250);
-
-    //Expel blue ball
-    intakeMotors(expel);
-    liftMotors(down);
-    pause(500);
-    intakeMotors(stopIntake);
-    liftMotors(stopLift);
-
-    //Turn back towards goal C
-    train.turnFor(135*SIDE, deg);
     pause(250);
 
   /*
