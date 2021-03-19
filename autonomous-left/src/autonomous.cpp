@@ -37,6 +37,11 @@ const int BIG_TIMEOUT = 100000;
 //1000 milliseconds = 1 second
 void pause(int milliseconds) { wait(milliseconds, timeUnits::msec); }
 
+void stopWheels() {
+    leftWheelTrainMotor.setStopping(brake);
+    rightWheelTrainMotor.setStopping(brake);
+}
+
 /*
  * Adjusts for acceleration every tick. Automatically stops moving at end.
  * The 'forward' parameter determines how quickly the robot will move on the forward/backward axis (in rpm) following acceleration.
@@ -61,6 +66,7 @@ void timedMovement(int forward, int turnValue, int ms) {
 
     //We want the robot to stop moving now
     movement(0,0);
+    stopWheels();
 }
 
 /*
