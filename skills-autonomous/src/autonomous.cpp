@@ -139,7 +139,7 @@ void autonomous() {
     pause(250);
 
     //Go towards the first goal
-    train.setTimeout(2500, msec);
+    train.setTimeout(2000, msec);
     train.driveFor(TILE_DIAGONAL, inches);
     train.setTimeout(BIG_TIMEOUT, msec);
 

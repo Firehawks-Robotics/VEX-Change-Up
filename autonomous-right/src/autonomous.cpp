@@ -125,51 +125,39 @@ void timedMovement(int forward, int turnValue, int ms) {
 */
 void autonomous() {
 
-    train.setDriveVelocity(75, rpm);
+    train.setDriveVelocity(100, rpm);
     train.setTurnVelocity(40, rpm);
 
     //Move forward to be in line with the goal
-    intakeMotors(intake);
-    train.driveFor(TILE_WIDTH/3, inches);
-    intakeMotors(stopIntake);
-    train.driveFor(TILE_WIDTH, inches);
+    train.driveFor(TILE_WIDTH*1.25, inches);
     pause(250);
 
     //Turn to face the first goal
     train.turnFor(SIDE*135, deg);
     pause(250);
 
-    //Go towards the first goal
-    train.setTimeout(1000, msec);
-    train.driveFor(TILE_DIAGONAL, inches);
-    train.setTimeout(BIG_TIMEOUT, msec);
-
-    //Begin to score goal and take ball out of bottom
-    liftMotors(up);
+    //Go towards the first goal, while picking up the ball there
     intakeMotors(intake);
-    train.setTimeout(500, msec);
-    train.driveFor(TILE_DIAGONAL/4, inches);
+    train.setTimeout(2000, msec);
+    train.driveFor(TILE_DIAGONAL*0.75, inches);
     train.setTimeout(BIG_TIMEOUT, msec);
     intakeMotors(stopIntake);
-    pause(625);
+
+    //Score goal
+    liftMotors(up);
+    pause(750);
     liftMotors(stopLift);
 
     // Back from goal
-    train.driveFor(reverse, TILE_DIAGONAL/3, inches);
+    train.driveFor(reverse, TILE_DIAGONAL/4, inches);
     pause(250);
 
-    //Spit out blue ball if we have one
-    train.turnFor(SIDE*45, deg);
-    intakeMotors(expel);
-    pause(500);
-    intakeMotors(stopIntake);
-
-    //Turn to face the middle goal
-    train.turnFor(SIDE*90, deg);
+    //Turn towards the middle goal
+    train.turnFor(SIDE*135, deg);
     pause(250);
 
-    //Go back to align on back wall
-    train.setTimeout(2000, msec);
+    //Go backwards to align on the wall
+    train.setTimeout(1500, msec);
     train.driveFor(reverse, TILE_WIDTH, inches);
     train.setTimeout(BIG_TIMEOUT, msec);
     pause(250);
@@ -187,14 +175,38 @@ void autonomous() {
     train.driveFor(TILE_WIDTH/4, inches);
     train.setTimeout(BIG_TIMEOUT, msec);
 
-    //Take out blue ball and put ball in
+    //Score ball
     liftMotors(up);
-    pause(750);
+    pause(1000);
     liftMotors(stopLift);
 
-    //Go backwards a little bit
-    train.driveFor(reverse, TILE_WIDTH/4, inches);
+    //Back from the goal
+    train.driveFor(reverse, TILE_WIDTH, inches);
     pause(250);
+    
+    //Turn to go to the last goal
+    train.turnFor(90*SIDE, deg);
+    pause(250);
+
+    //Go to align with the last goal
+    train.driveFor(TILE_WIDTH*1.5, inches);
+    pause(250);
+
+    //Turn towards the last goal
+    train.turnFor(-45*SIDE, deg);
+    pause(250);
+    
+    //Go towards goal, pickup ball, and score all at once
+    liftMotors(up);
+    intakeMotors(intake);
+    train.setTimeout(2500, msec);
+    train.driveFor(TILE_WIDTH, inches);
+    train.setTimeout(BIG_TIMEOUT, msec);
+    intakeMotors(stopIntake);
+    liftMotors(stopLift);
+
+    //Go back a little
+    train.driveFor(reverse, TILE_WIDTH, inches);
 
   /*
     //Move foward to be in line with the goal
