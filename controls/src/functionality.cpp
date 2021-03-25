@@ -44,16 +44,8 @@ void movement(int forward, int turnValue) {
     //Turning
     //Simply add (or subtract) the velocity to the motors
     if(turnValue < -MIN_TURNING_AXIS_DISPLACEMENT || turnValue > MIN_TURNING_AXIS_DISPLACEMENT) { //Dont want tiny values to have any effect
-        if(rightWheels < 0) {
-            rightWheels += turnValue;
-        } else if(rightWheels >= 0) {
-            rightWheels -= turnValue;
-        }
-        if(leftWheels < 0) {
-            leftWheels -= turnValue;
-        } else if(leftWheels >= 0) {
-            leftWheels += turnValue;
-        }
+        rightWheels -= turnValue;
+        leftWheels += turnValue;
     }
     
     leftWheelTrainMotor.setVelocity(leftWheels, rpm);

@@ -61,11 +61,11 @@ void updateSpeedPower(double newPower) {
         mainCon.rumble(".");
         mainCon.Screen.setCursor(0, 0);
         mainCon.Screen.print("1");
-    } else if(newPower == LEVEL_ONE_POWER) {
+    } else if(newPower == LEVEL_TWO_POWER) {
         mainCon.rumble("..");
         mainCon.Screen.setCursor(0, 0);
         mainCon.Screen.print("2");
-    } else if(newPower == LEVEL_ONE_POWER) {
+    } else if(newPower == LEVEL_THREE_POWER) {
         mainCon.rumble("...");
         mainCon.Screen.setCursor(0, 0);
         mainCon.Screen.print("3");

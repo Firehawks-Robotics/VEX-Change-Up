@@ -111,6 +111,12 @@ void resetDebug() {
 
 
 void debugMenuController(){
+
+// In the future I would like to add multiple pages so we can keep track of different variable from the code
+//  therefore we will have one page for mainly the mechanical side, maybe one page for controller output
+//  and then one page for variables from the code.
+
+  // Read-out page one
     resetDebug();
 
     leftAnalogStick();

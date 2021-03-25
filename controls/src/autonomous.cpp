@@ -125,7 +125,7 @@ void timedMovement(int forward, int turnValue, int ms) {
 */
 void autonomous() {
 
-    train.setDriveVelocity(175, rpm);
+     train.setDriveVelocity(175, rpm);
    train.setTurnVelocity(50, rpm);
  
    //Move forward to be in line with the goal
@@ -145,7 +145,7 @@ void autonomous() {
  
    //Score goal
    liftMotors(up);
-   pause(1000);
+   pause(850);
    liftMotors(stopLift);
  
    // Back from goal
@@ -154,6 +154,34 @@ void autonomous() {
  
    //Turn towards the middle goal
    train.turnFor(SIDE*135, deg);
+   pause(250);
+ 
+   /*//Go backwards to align on the wall
+   train.setTimeout(1250, msec);
+   train.driveFor(reverse, TILE_WIDTH, inches);
+   train.setTimeout(BIG_TIMEOUT, msec);
+   pause(250);*/
+ 
+   //Go towards middle goal
+   train.driveFor(TILE_WIDTH*2, inches);
+   pause(250);
+ 
+   //Turn towards the middle goal
+   train.turnFor(-90*SIDE, deg);
+   pause(250);
+ 
+   //Go to the middle goal
+   train.setTimeout(1000, msec);
+   train.driveFor(TILE_WIDTH/2, inches);
+   train.setTimeout(BIG_TIMEOUT, msec);
+ 
+   //Score ball
+   liftMotors(up);
+   pause(1000);
+   liftMotors(stopLift);
+ 
+   //Back from the goal
+   train.driveFor(reverse, TILE_WIDTH, inches);
    pause(250);
  
    /*//Go backwards to align on the wall
